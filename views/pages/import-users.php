@@ -63,14 +63,13 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                             'fas fa-database'
                         ); ?>
                         <div class="card-body p-0">
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="max-height: 60vh; overflow-y: auto;">
                                 <table class="table table-sm table-hover mb-0" id="localUsersTable">
                                     <thead class="table-light">
                                         <tr>
                                             <th width="40" class="text-center" style="<?= $headerConfig['styles']['table_header'] ?>">#</th>
                                             <th style="<?= $headerConfig['styles']['table_header'] ?>"><?= t('import_users.member_code') ?></th>
                                             <th class="d-none d-sm-table-cell" style="<?= $headerConfig['styles']['table_header'] ?>"><?= t('import_users.fullname_th') ?></th>
-                                            <th class="d-none d-md-table-cell" style="<?= $headerConfig['styles']['table_header'] ?>"><?= t('import_users.phone') ?></th>
                                             <th width="80" class="text-center" style="<?= $headerConfig['styles']['table_header'] ?>"><?= t('import_users.status') ?></th>
                                         </tr>
                                     </thead>
@@ -85,7 +84,6 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                                                 <td class="d-none d-sm-table-cell">
                                                     <div class="small"><?= $user['name_f'] ?></div>
                                                 </td>
-                                                <td class="d-none d-md-table-cell small"><?= $user['mobile'] ?></td>
                                                 <td class="text-center">
                                                     <span class="badge bg-success" style="<?= $headerConfig['styles']['badge'] ?>"><?= t('import_users.in_system') ?></span>
                                                 </td>
@@ -108,7 +106,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                         ); ?>
                 
                         <div class="card-body p-0">
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="max-height: 60vh; overflow-y: auto;">
                                 <table class="table table-sm table-hover mb-0" id="externalUsersTable">
                                     <thead class="table-light">
                                         <tr>
@@ -117,7 +115,6 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                                             </th>
                                             <th style="<?= $headerConfig['styles']['table_header'] ?>"><?= t('import_users.member_code') ?></th>
                                             <th class="d-none d-sm-table-cell" style="<?= $headerConfig['styles']['table_header'] ?>"><?= t('import_users.fullname_th') ?></th>
-                                            <th class="d-none d-md-table-cell" style="<?= $headerConfig['styles']['table_header'] ?>"><?= t('import_users.phone') ?></th>
                                             <th width="80" class="text-center" style="<?= $headerConfig['styles']['table_header'] ?>"><?= t('import_users.status') ?></th>
                                         </tr>
                                     </thead>
@@ -129,12 +126,11 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                                                 </td>
                                                 <td>
                                                     <div class="fw-bold small"><?= $user['mcode'] ?></div>
-                                                    <div class="small text-muted d-sm-none"><?= $user['name_f'] ?></div>
+                                                    <div class="small text-muted d-sm-none"><?= isset($user['name_t']) ? $user['name_t'] : '' ?></div>
                                                 </td>
                                                 <td class="d-none d-sm-table-cell">
-                                                    <div class="small"><?= $user['name_f'] ?></div>
+                                                    <div class="small"><?= isset($user['name_t']) ? $user['name_t'] : '' ?></div>
                                                 </td>
-                                                <td class="d-none d-md-table-cell small"><?= $user['mobile'] ?></td>
                                                 <td class="text-center">
                                                     <span class="badge bg-warning" style="<?= $headerConfig['styles']['badge'] ?>"><?= t('import_users.waiting') ?></span>
                                                 </td>
@@ -204,20 +200,58 @@ document.addEventListener('DOMContentLoaded', function() {
             cancelButtonText: '<?= t("import_users.cancel") ?>'
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch('/mesuk/import-users/action', {
+                // แสดง loading
+                Swal.fire({
+                    title: 'กำลังนำเข้าข้อมูล...',
+                    text: 'กรุณารอสักครู่',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                
+                fetch('/import-users/action', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ users: selectedUsers })
                 })
                 .then(response => response.json())
                 .then(data => {
+                    Swal.close(); // ปิด loading ก่อน
+                    
                     if (data.success) {
-                        Swal.fire('<?= t("import_users.import_success") ?>'.replace('{count}', data.imported), '', 'success').then(() => location.reload());
+                        let message = 'นำเข้าข้อมูลสำเร็จ ' + data.imported + ' รายการ';
+                        if (data.errors && data.errors.length > 0) {
+                            message += '\n\nข้อผิดพลาด:\n' + data.errors.join('\n');
+                        }
+                        Swal.fire({
+                            title: 'สำเร็จ!',
+                            html: message.replace(/\n/g, '<br>'),
+                            icon: 'success',
+                            confirmButtonText: 'ตกลง'
+                        }).then(() => {
+                            location.reload();
+                        });
                     } else {
-                        Swal.fire('<?= t("import_users.import_error") ?>: ' + data.message, '', 'error');
+                        Swal.fire({
+                            title: 'เกิดข้อผิดพลาด!',
+                            text: data.message,
+                            icon: 'error',
+                            confirmButtonText: 'ตกลง'
+                        });
                     }
                 })
-                .catch(() => Swal.fire('<?= t("import_users.import_error_connection") ?>', '', 'error'));
+                .catch(error => {
+                    Swal.close(); // ปิด loading ก่อน
+                    console.error('Error:', error);
+                    Swal.fire({
+                        title: 'เกิดข้อผิดพลาด!',
+                        text: 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้',
+                        icon: 'error',
+                        confirmButtonText: 'ตกลง'
+                    });
+                });
             }
         });
     });
@@ -247,9 +281,43 @@ document.addEventListener('DOMContentLoaded', function() {
     background-color: #A9D654 !important;
     color: #fff;
 }
+
 .badge.bg-primary {
     background-color: #405000 !important;
     color: #fff;
 }
-    </style>
+
+/* Table Scrollable with Sticky Header */
+.table-responsive {
+    position: relative;
+}
+
+.table-responsive thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa !important;
+    z-index: 10;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom Scrollbar */
+.table-responsive::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+</style>
 

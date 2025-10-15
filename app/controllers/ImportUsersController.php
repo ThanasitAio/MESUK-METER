@@ -1,67 +1,177 @@
 <?php
 // app/controllers/ImportUsersController.php
 
+require_once __DIR__ . '/../core/Database.php';
+
 class ImportUsersController extends Controller {
     
     public function showImportUsersForm() {
-        // ตั้งค่าข้อมูลสำหรับหน้า
-        $data = [
-            'title' => 'นำเข้าข้อมูลผู้ใช้',
-            'currentPage' => 'import-users',
+        try {
+            $db = Database::getInstance();
             
-            // ตัวอย่างข้อมูล (ในกรณีจริงจะดึงจากฐานข้อมูล)
-            'localUsers' => [
-                ['mcode' => 'M001', 'name_f' => 'สมชาย', 'name_t' => 'Somchai', 'birthday' => '1990-01-15', 'id_card' => '1234567890123', 'mobile' => '0812345678', 'sex' => 'M', 'email' => 'somchai@example.com', 'sv_code' => 'SV001'],
-                ['mcode' => 'M002', 'name_f' => 'สมหญิง', 'name_t' => 'Somying', 'birthday' => '1992-05-20', 'id_card' => '9876543210987', 'mobile' => '0898765432', 'sex' => 'F', 'email' => 'somying@example.com', 'sv_code' => 'SV002'],
-            ],
+            // ดึงข้อมูลจาก me_users (ที่อยู่ในระบบแล้ว)
+            $sqlLocal = "SELECT code as mcode, name as name_f, tel as mobile 
+                        FROM me_users 
+                        ORDER BY code";
+            $stmtLocal = $db->prepare($sqlLocal);
+            $stmtLocal->execute();
+            $localUsers = $stmtLocal->fetchAll(PDO::FETCH_ASSOC);
             
-            'externalUsers' => [
-                ['mcode' => 'M003', 'name_f' => 'กฤษณะ', 'name_t' => 'Kritsana', 'birthday' => '1988-11-10', 'id_card' => '4567891230456', 'mobile' => '0855554444', 'sex' => 'M', 'email' => 'kritsana@example.com', 'sv_code' => 'SV003'],
-                ['mcode' => 'M004', 'name_f' => 'นฤมล', 'name_t' => 'Naruemol', 'birthday' => '1995-03-25', 'id_card' => '6543219870654', 'mobile' => '0866667777', 'sex' => 'F', 'email' => 'naruemol@example.com', 'sv_code' => 'SV004'],
-                ['mcode' => 'M001', 'name_f' => 'สมชาย', 'name_t' => 'Somchai', 'birthday' => '1990-01-15', 'id_card' => '1234567890123', 'mobile' => '0812345678', 'sex' => 'M', 'email' => 'somchai@example.com', 'sv_code' => 'SV001'], // ข้อมูลซ้ำ
-            ]
-        ];
-        
-        // กรองข้อมูลที่ซ้ำกัน
-        $data['uniqueExternalUsers'] = [];
-        foreach ($data['externalUsers'] as $user) {
-            $isDuplicate = false;
-            foreach ($data['localUsers'] as $localUser) {
-                if ($user['mcode'] === $localUser['mcode']) {
-                    $isDuplicate = true;
-                    break;
+            // ดึงข้อมูลจาก ali_member (ที่รออยู่)
+            $sqlExternal = "SELECT 
+                            mcode, 
+                            name_t, 
+                            mobile,
+                            sv_code,
+                            birthday,
+                            facebook_name,
+                            line_id
+                        FROM ali_member 
+                        WHERE mcode IS NOT NULL 
+                        AND mcode != ''
+                        ORDER BY mcode
+                        LIMIT 100";
+            $stmtExternal = $db->prepare($sqlExternal);
+            $stmtExternal->execute();
+            $externalUsers = $stmtExternal->fetchAll(PDO::FETCH_ASSOC);
+            
+            // กรองข้อมูลที่ซ้ำกัน (เช็คว่าอยู่ใน me_users แล้วหรือยัง)
+            $uniqueExternalUsers = array();
+            $localCodes = array();
+            
+            // สร้าง array ของ code ที่มีอยู่แล้ว
+            foreach ($localUsers as $localUser) {
+                $localCodes[] = $localUser['mcode'];
+            }
+            
+            // กรองเฉพาะที่ยังไม่มีใน me_users
+            foreach ($externalUsers as $user) {
+                if (!in_array($user['mcode'], $localCodes)) {
+                    $uniqueExternalUsers[] = $user;
                 }
             }
-            if (!$isDuplicate) {
-                $data['uniqueExternalUsers'][] = $user;
-            }
+            
+            $data = array(
+                'title' => 'นำเข้าข้อมูลผู้ใช้',
+                'currentPage' => 'import-users',
+                'localUsers' => $localUsers,
+                'externalUsers' => $externalUsers,
+                'uniqueExternalUsers' => $uniqueExternalUsers
+            );
+            
+            // โหลด view
+            $this->view('pages/import-users', $data);
+            
+        } catch (PDOException $e) {
+            die("Error: " . $e->getMessage());
         }
-        
-        // โหลด view
-        $this->view('pages/import-users', $data);
     }
     
     // API สำหรับนำเข้าข้อมูล
     public function importUsersAction() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // แก้ไขบรรทัดนี้: ใช้ isset() แทน ??
-            $input = json_decode(file_get_contents('php://input'), true);
-            $selectedUsers = isset($input['users']) ? $input['users'] : [];
+            header('Content-Type: application/json');
             
-            // จำลองการนำเข้าข้อมูล
-            // ในกรณีจริงควรบันทึกลงฐานข้อมูล
-            $importedCount = 0;
-            foreach ($selectedUsers as $mcode) {
-                // บันทึกข้อมูลลงฐานข้อมูล
-                // $this->model('User')->importUser($mcode);
-                $importedCount++;
+            try {
+                $input = json_decode(file_get_contents('php://input'), true);
+                $selectedUsers = isset($input['users']) ? $input['users'] : array();
+                
+                if (empty($selectedUsers)) {
+                    echo json_encode(array(
+                        'success' => false,
+                        'message' => 'ไม่มีข้อมูลที่เลือก'
+                    ));
+                    return;
+                }
+                
+                $db = Database::getInstance();
+                $importedCount = 0;
+                $errors = array();
+                
+                foreach ($selectedUsers as $mcode) {
+                    try {
+                        // ดึงข้อมูลจาก ali_member
+                        $sqlSelect = "SELECT 
+                                        mcode,
+                                        name_t,
+                                        sv_code,
+                                        mobile,
+                                        birthday,
+                                        facebook_name,
+                                        line_id
+                                    FROM ali_member 
+                                    WHERE mcode = :mcode 
+                                    LIMIT 1";
+                        
+                        $stmtSelect = $db->prepare($sqlSelect);
+                        $stmtSelect->execute(array(':mcode' => $mcode));
+                        $user = $stmtSelect->fetch(PDO::FETCH_ASSOC);
+                        
+                        if (!$user) {
+                            $errors[] = "ไม่พบข้อมูล mcode: {$mcode}";
+                            continue;
+                        }
+                        
+                        // เช็คว่ามีอยู่ใน me_users แล้วหรือยัง
+                        $sqlCheck = "SELECT id FROM me_users WHERE code = :code OR username = :username LIMIT 1";
+                        $stmtCheck = $db->prepare($sqlCheck);
+                        $stmtCheck->execute(array(
+                            ':code' => $user['mcode'],
+                            ':username' => $user['mcode']
+                        ));
+                        
+                        if ($stmtCheck->fetch()) {
+                            $errors[] = "มีข้อมูลอยู่แล้ว: {$mcode}";
+                            continue;
+                        }
+                        
+                        // Insert เข้า me_users
+                        $sqlInsert = "INSERT INTO me_users 
+                                    (id, code, username, password, name, tel, birthday, facebook_name, line_id, role, created_by) 
+                                    VALUES 
+                                    (UUID(), :code, :username, :password, :name, :tel, :birthday, :facebook_name, :line_id, 'agent', 'import')";
+                        
+                        $stmtInsert = $db->prepare($sqlInsert);
+                        $password = !empty($user['sv_code']) ? md5($user['sv_code']) : md5('123456');
+                        
+                        $success = $stmtInsert->execute(array(
+                            ':code' => $user['mcode'],
+                            ':username' => $user['mcode'],
+                            ':password' => $password,
+                            ':name' => $user['name_t'],
+                            ':tel' => $user['mobile'],
+                            ':birthday' => !empty($user['birthday']) ? $user['birthday'] : null,
+                            ':facebook_name' => $user['facebook_name'],
+                            ':line_id' => $user['line_id']
+                        ));
+                        
+                        if ($success) {
+                            $importedCount++;
+                        }
+                        
+                    } catch (PDOException $e) {
+                        $errors[] = "Error importing {$mcode}: " . $e->getMessage();
+                    }
+                }
+                
+                echo json_encode(array(
+                    'success' => true,
+                    'imported' => $importedCount,
+                    'errors' => $errors,
+                    'message' => "นำเข้าข้อมูลสำเร็จ {$importedCount} รายการ"
+                ));
+                
+            } catch (Exception $e) {
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'เกิดข้อผิดพลาด: ' . $e->getMessage()
+                ));
             }
-            
-            echo json_encode([
-                'success' => true, 
-                'imported' => $importedCount,
-                'message' => 'นำเข้าข้อมูลสำเร็จ'
-            ]);
+        } else {
+            echo json_encode(array(
+                'success' => false,
+                'message' => 'Invalid request method'
+            ));
         }
     }
 }
