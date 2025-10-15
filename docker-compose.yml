@@ -1,12 +1,30 @@
 version: '3.8'
 
 services:
+  # MySQL 5.7 Database
+  db:
+    image: mysql:5.7
+    container_name: mesuk-meter-db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: meesuk_db
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_unicode_ci
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password
+
   # PHP 5.6 Web Server
   web:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: mesuk-meter-web
+    depends_on:
+      - db
     ports:
       - "8000:80"
     volumes:
@@ -16,35 +34,23 @@ services:
       - DB_PORT=3306
       - DB_DATABASE=meesuk_db
       - DB_USERNAME=root
-      - DB_PASSWORD=secret
-    depends_on:
-      - db
+      - DB_PASSWORD=root
     restart: unless-stopped
-
-  # MySQL Database
-  db:
-    image: mysql:8.0
-    container_name: mesuk-meter-db
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: meesuk_db
-    volumes:
-      - mysql_data:/var/lib/mysql
 
   # phpMyAdmin
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: mesuk-meter-phpmyadmin
+    depends_on:
+      - db
     ports:
       - "8080:80"
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
-      MYSQL_ROOT_PASSWORD: secret
-    depends_on:
-      - db
+      PMA_USER: root
+      PMA_PASSWORD: root
+    restart: unless-stopped
 
 volumes:
   mysql_data:

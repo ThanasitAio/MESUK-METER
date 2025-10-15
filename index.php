@@ -47,6 +47,7 @@ require_once 'app/core/Model.php';
 
 // Load utility classes
 require_once 'app/utils/DatabaseSetup.php';
+require_once 'app/utils/Auth.php';
 
 // Handle the request
 $router = new Router();

@@ -9,6 +9,8 @@ return array(
     'navbar' => array(
         'users' => 'Users',
         'posts' => 'Posts',
+        'active_users' => 'Active Users',
+        'days' => 'Days',
         'profile' => 'Profile',
         'settings' => 'Settings',
         'logout' => 'Logout'

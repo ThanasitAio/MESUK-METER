@@ -6,7 +6,7 @@
         </button>
 
         <!-- Brand Logo & Name -->
-        <a class="navbar-brand fw-bold text-dark d-flex align-items-center" href="/mesuk">
+        <a class="navbar-brand fw-bold text-dark d-flex align-items-center" href="/">
             <div class="brand-logo me-2 d-flex align-items-center justify-content-center rounded" 
                  style="width: 40px; height: 40px; background-color: #D3EE98;margin: 0;">
                 <i class="bi bi-grid-3x3-gap-fill text-dark fs-5"></i>
@@ -30,7 +30,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-start shadow border-0" >
                     <li>
-                        <form method="POST" action="/mesuk/language/switch" class="dropdown-item p-0">
+                        <form method="POST" action="/language/switch" class="dropdown-item p-0">
                             <input type="hidden" name="lang" value="en">
                             <button type="submit" class="dropdown-item d-flex align-items-center py-2 <?php echo currentLang() === 'en' ? 'active' : ''; ?>">
                                 <i class="bi bi-flag me-2"></i>
@@ -39,7 +39,7 @@
                         </form>
                     </li>
                     <li>
-                        <form method="POST" action="/mesuk/language/switch" class="dropdown-item p-0">
+                        <form method="POST" action="/language/switch" class="dropdown-item p-0">
                             <input type="hidden" name="lang" value="th">
                             <button type="submit" class="dropdown-item d-flex align-items-center py-2 <?php echo currentLang() === 'th' ? 'active' : ''; ?>">
                                 <i class="bi bi-flag me-2"></i>
@@ -54,17 +54,23 @@
         <!-- Navbar Items -->
         <div class="navbar-collapse collapse" id="navbarContent">
             <ul class="navbar-nav ms-auto align-items-center">
-                <!-- Quick Stats -->
+                <!-- Quick Stats - Active Users in Last 3 Days -->
+                <?php 
+                require_once __DIR__ . '/../../app/core/Database.php';
+                require_once __DIR__ . '/../../app/utils/LoginHistory.php';
+                $activeUsersCount = LoginHistory::getActiveUsersCount(3);
+                ?>
                 <li class="nav-item mx-2 d-none d-lg-block">
-                    <div class="d-flex align-items-center text-muted">
-                        <i class="bi bi-people me-1"></i>
-                        <small>150 <?php echo t('navbar.users', 'Users'); ?></small>
+                    <div class="d-flex align-items-center text-muted" title="ผู้ใช้งานใน 3 วันล่าสุด">
+                        <i class="bi bi-people-fill me-1" style="color: #28a745;"></i>
+                        <small class="fw-bold"><?php echo $activeUsersCount; ?></small>
+                        <small class="ms-1"><?php echo t('navbar.active_users', 'Active Users'); ?></small>
                     </div>
                 </li>
                 <li class="nav-item mx-2 d-none d-lg-block">
                     <div class="d-flex align-items-center text-muted">
-                        <i class="bi bi-file-text me-1"></i>
-                        <small>45 <?php echo t('navbar.posts', 'Posts'); ?></small>
+                        <i class="bi bi-clock-history me-1"></i>
+                        <small>3 <?php echo t('navbar.days', 'Days'); ?></small>
                     </div>
                 </li>
 
@@ -108,19 +114,26 @@
                             <i class="bi bi-person-fill text-dark"></i>
                         </div>
                         <div class="d-none d-md-block">
-                            <span class="fw-medium text-dark">John Doe</span>
-                            <small class="d-block text-muted" style="font-size: 0.7rem; line-height: 1;">Administrator</small>
+                            <?php 
+                            $currentUser = Auth::user();
+                            $displayName = $currentUser ? $currentUser['full_name'] : 'Guest';
+                            $role = $currentUser ? $currentUser['role'] : 'user';
+                            ?>
+                            <span class="fw-medium text-dark"><?php echo htmlspecialchars($displayName); ?></span>
+                            <small class="d-block text-muted" style="font-size: 0.7rem; line-height: 1;">
+                                <?php echo htmlspecialchars(ucfirst($role)); ?>
+                            </small>
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0">
                         <li>
-                            <a class="dropdown-item d-flex align-items-center py-2" href="/mesuk/profile">
+                            <a class="dropdown-item d-flex align-items-center py-2" href="/profile">
                                 <i class="bi bi-person me-3" style="color: #D3EE98;"></i>
                                 <span><?php echo t('navbar.profile', 'Profile'); ?></span>
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item d-flex align-items-center py-2" href="/mesuk/settings">
+                            <a class="dropdown-item d-flex align-items-center py-2" href="/settings">
                                 <i class="bi bi-gear me-3" style="color: #D3EE98;"></i>
                                 <span><?php echo t('navbar.settings', 'Settings'); ?></span>
                             </a>
@@ -129,7 +142,7 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item d-flex align-items-center py-2 text-danger" href="/mesuk/logout">
+                            <a class="dropdown-item d-flex align-items-center py-2 text-danger" href="/logout">
                                 <i class="bi bi-box-arrow-right me-3"></i>
                                 <span><?php echo t('navbar.logout', 'Logout'); ?></span>
                             </a>
@@ -144,7 +157,7 @@
 <!-- Mobile Bottom Navigation -->
 <nav class="mobile-bottom-nav d-lg-none">
     <div class="mobile-nav-container">
-        <a href="/mesuk" class="mobile-nav-item">
+        <a href="/" class="mobile-nav-item">
             <i class="bi bi-speedometer2"></i>
             <span><?php echo t('sidebar.dashboard'); ?></span>
         </a>
@@ -155,7 +168,7 @@
             <span><?php echo t('mobile.menu'); ?></span>
         </a>
         
-        <a href="/mesuk/profile" class="mobile-nav-item">
+        <a href="/profile" class="mobile-nav-item">
             <i class="bi bi-person"></i>
             <span><?php echo t('mobile.profile'); ?></span>
         </a>

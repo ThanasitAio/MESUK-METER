@@ -9,6 +9,8 @@ return array(
     'navbar' => array(
         'users' => 'ผู้ใช้',
         'posts' => 'โพสต์',
+        'active_users' => 'ผู้ใช้งาน',
+        'days' => 'วัน',
         'profile' => 'โปรไฟล์',
         'settings' => 'ตั้งค่า',
         'logout' => 'ออกจากระบบ'

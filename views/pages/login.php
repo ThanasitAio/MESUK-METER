@@ -119,11 +119,27 @@
         .error-message {
             background-color: #f8d7da;
             color: #721c24;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #f5c6cb;
             border-radius: 8px;
             margin-bottom: 20px;
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* 3. โค้ดสำหรับปรับปรุงการแสดงผลบนมือถือ */
@@ -148,20 +164,42 @@
 
         <p>กรุณาเข้าสู่ระบบเพื่อจัดการระบบ</p>
 
-        <?php if (isset($_GET['error'])): ?>
+        <?php
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // แสดง error message
+        if (isset($_SESSION['error'])):
+        ?>
             <div class="error-message">
-                ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <?php echo htmlspecialchars($_SESSION['error']); ?>
             </div>
-        <?php endif; ?>
+        <?php
+            unset($_SESSION['error']);
+        endif;
+        
+        // แสดง success message
+        if (isset($_SESSION['success'])):
+        ?>
+            <div class="success-message">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <?php echo htmlspecialchars($_SESSION['success']); ?>
+            </div>
+        <?php
+            unset($_SESSION['success']);
+        endif;
+        ?>
 
-        <form action="login" method="POST">
+        <form action="/login" method="POST">
             <div class="form-group">
                 <label for="username">ชื่อผู้ใช้</label>
-                <input type="text" id="username" name="username" autocomplete="off" value="mesuk" required>
+                <input type="text" id="username" name="username" autocomplete="off" placeholder="กรอกชื่อผู้ใช้" required>
             </div>
             <div class="form-group">
                 <label for="password">รหัสผ่าน</label>
-                <input type="password" id="password" name="password" value="123456" required>
+                <input type="password" id="password" name="password" placeholder="กรอกรหัสผ่าน" required>
             </div>
             <button type="submit" class="login-button">เข้าสู่ระบบ</button>
         </form>

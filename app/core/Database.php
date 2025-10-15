@@ -25,13 +25,18 @@ class Database {
             try {
                 $config = require __DIR__ . '/../../config/database.php';
                 $connectionConfig = $config['connections']['mysql'];
-                $dsn = "mysql:host={$connectionConfig['host']};port={$connectionConfig['port']};dbname={$connectionConfig['database']};charset={$connectionConfig['charset']}";
+                // PHP 5.6 + MySQL 5.7 - ไม่ใส่ charset ใน DSN
+                $dsn = "mysql:host={$connectionConfig['host']};port={$connectionConfig['port']};dbname={$connectionConfig['database']}";
+
+                // เพิ่ม charset command แยกต่างหาก
+                $options = $connectionConfig['options'];
+                $options[PDO::MYSQL_ATTR_INIT_COMMAND] = "SET NAMES utf8mb4";
 
                 self::$pdo = new PDO(
                     $dsn,
                     $connectionConfig['username'],
                     $connectionConfig['password'],
-                    $connectionConfig['options']
+                    $options
                 );
             } catch (PDOException $e) {
                 die("Database connection failed: " . $e->getMessage());
