@@ -1,16 +1,20 @@
 <?php
 // config/database.php
+
+// Load environment variables
+require_once __DIR__ . '/env.php';
+
 return array(
     'default' => 'mysql',
     
     'connections' => array(
         'mysql' => array(
             'driver' => 'mysql',
-            'host' => 'localhost',
-            'port' => '3306',
-            'database' => 'meesuk_db', // ตรวจสอบชื่อ database
-            'username' => 'root',              // ตรวจสอบ username
-            'password' => '',                  // ตรวจสอบ password (ว่างถ้าไม่มี)
+            'host' => env('DB_HOST', 'localhost'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => env('DB_DATABASE', 'meesuk_db'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',

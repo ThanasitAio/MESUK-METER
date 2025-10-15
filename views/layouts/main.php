@@ -13,10 +13,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
     
-<link href="/mesuk/assets/css/app.css" rel="stylesheet">
-<link href="/mesuk/assets/css/theme.css" rel="stylesheet">
-<link href="/mesuk/assets/css/sidebar.css" rel="stylesheet">
-<link href="/mesuk/assets/css/navbar.css" rel="stylesheet">
+<link href="/assets/css/app.css" rel="stylesheet">
+<link href="/assets/css/theme.css" rel="stylesheet">
+<link href="/assets/css/sidebar.css" rel="stylesheet">
+<link href="/assets/css/navbar.css" rel="stylesheet">
 </head>
 <body>
     <div class="d-flex">
@@ -49,8 +49,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
 <!-- Main JS --> 
- <script src="/mesuk/assets/js/app.js"></script>
- <script src="/mesuk/assets/js/sidebar.js"></script>
+ <script src="/assets/js/app.js"></script>
+ <script src="/assets/js/sidebar.js"></script>
  <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>

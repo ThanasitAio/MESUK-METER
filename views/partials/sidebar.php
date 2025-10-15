@@ -3,7 +3,7 @@
         <div class="sidebar-nav-container">
             <ul class="sidebar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="/mesuk">
+                    <a class="nav-link" href="/">
                         <div class="nav-icon"><i class="bi bi-speedometer2"></i></div>
                         <span class="nav-text"><?php echo t('sidebar.dashboard'); ?></span>
                     </a>
@@ -13,7 +13,7 @@
 
                 <!-- ตัวอย่างเมนูหลักปกติ -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/mesuk/users">
+                    <a class="nav-link" href="/users">
                         <div class="nav-icon"><i class="bi bi-people"></i></div>
                         <span class="nav-text"><?php echo t('sidebar.user_management'); ?></span>
                     </a>
@@ -21,7 +21,7 @@
 
                 <!-- ตัวอย่างเมนูหลักปกติ -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/mesuk/import-users">
+                    <a class="nav-link" href="/import-users">
                         <div class="nav-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
                         <span class="nav-text"><?php echo t('sidebar.import_user_data'); ?></span>
                     </a>
@@ -35,9 +35,9 @@
                         <i class="bi bi-chevron-down submenu-arrow"></i>
                     </a>
                     <ul class="submenu">
-                        <li><a href="/mesuk/reports/sales"><?php echo t('sidebar.sales_report'); ?></a></li>
-                        <li><a href="/mesuk/reports/users"><?php echo t('sidebar.user_report'); ?></a></li>
-                        <li><a href="/mesuk/reports/system"><?php echo t('sidebar.system_logs'); ?></a></li>
+                        <li><a href="/reports/sales"><?php echo t('sidebar.sales_report'); ?></a></li>
+                        <li><a href="/reports/users"><?php echo t('sidebar.user_report'); ?></a></li>
+                        <li><a href="/reports/system"><?php echo t('sidebar.system_logs'); ?></a></li>
                     </ul>
                 </li>
 
@@ -49,9 +49,9 @@
                         <i class="bi bi-chevron-down submenu-arrow"></i>
                     </a>
                     <ul class="submenu">
-                        <li><a href="/mesuk/settings/general"><?php echo t('sidebar.general_settings'); ?></a></li>
-                        <li><a href="/mesuk/settings/appearance"><?php echo t('sidebar.appearance'); ?></a></li>
-                        <li><a href="/mesuk/settings/notifications"><?php echo t('sidebar.notifications'); ?></a></li>
+                        <li><a href="/settings/general"><?php echo t('sidebar.general_settings'); ?></a></li>
+                        <li><a href="/settings/appearance"><?php echo t('sidebar.appearance'); ?></a></li>
+                        <li><a href="/settings/notifications"><?php echo t('sidebar.notifications'); ?></a></li>
                     </ul>
                 </li>
 
@@ -71,7 +71,7 @@
 <!-- Mobile Bottom Navigation -->
 <nav class="mobile-bottom-nav d-lg-none">
     <div class="mobile-nav-container">
-        <a href="/mesuk" class="mobile-nav-item">
+        <a href="/" class="mobile-nav-item">
             <i class="bi bi-speedometer2"></i>
             <span><?php echo t('sidebar.dashboard'); ?></span>
         </a>
@@ -84,7 +84,7 @@
             <span><?php echo t('mobile.alerts'); ?></span>
             <span class="mobile-badge">3</span>
         </a>
-        <a href="/mesuk/profile" class="mobile-nav-item">
+        <a href="/profile" class="mobile-nav-item">
             <i class="bi bi-person"></i>
             <span><?php echo t('mobile.profile'); ?></span>
         </a>

@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+// Set timezone for PHP
+date_default_timezone_set('Asia/Bangkok');
+
 // Define base paths
 define('BASE_PATH', __DIR__);
 define('APP_PATH', BASE_PATH . '/app');
