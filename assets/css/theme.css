@@ -1,0 +1,27 @@
+:root {
+    /* Primary Colors */
+    --color-primary: #086337;
+    --color-primary-dark: #064c28;
+    --color-primary-light: #0a7a46;
+    
+    /* Accent Colors */
+    --color-accent: #D3EE98;
+    --color-accent-dark: #b8d47a;
+    --color-accent-light: #e5f5c3;
+    
+    /* Status Colors */
+    --color-success: #28a745;
+    --color-info: #36b9cc;
+    --color-warning: #f6c23e;
+    --color-danger: #e74a3b;
+    
+    /* Neutral Colors */
+    --color-dark: #5a5c69;
+    --color-light: #f8f9fa;
+    
+    /* Component Colors */
+    --sidebar-bg: #2c3e50;
+    --navbar-bg: #ffffff;
+    --card-bg: #ffffff;
+    --body-bg: #f8f9fa;
+}

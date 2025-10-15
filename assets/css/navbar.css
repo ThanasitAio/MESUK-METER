@@ -1,0 +1,129 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* ✅ เหนือ sidebar */
+    width: 100%;
+}
+
+/* ปุ่มหลัก */
+.custom-toggler {
+  border: none;
+  background-color: #ffffff;
+  padding: 6px 8px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hover effect */
+.custom-toggler:hover {
+  background-color: #f1f3f5;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.12);
+  transform: scale(1.05);
+}
+
+/* Focus (เวลาคลิกหรือแท็บมา) */
+.custom-toggler:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(13,110,253,0.25);
+}
+
+/* ปรับขนาดไอคอน */
+.custom-toggler .navbar-toggler-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  background-size: 100%;
+  filter: brightness(0.3);
+  transition: filter 0.3s ease;
+}
+
+/* Hover ให้ไอคอนเข้มขึ้น */
+.custom-toggler:hover .navbar-toggler-icon {
+  filter: brightness(0.1);
+}
+
+/* เมื่อ sidebar เปิดอยู่ (เพิ่ม class active จาก JS ถ้ามี) */
+.custom-toggler.active {
+  background-color: #D3EE98;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.navbar-toggler.custom-toggler {
+    outline: none;       /* ลบเส้นรอบ */
+    box-shadow: none;    /* ลบเงาสีฟ้า */
+}
+
+/* ป้องกันเวลากดหรือ focus */
+.navbar-toggler.custom-toggler:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+
+.language-flag {
+    width: 20px;
+    height: 15px;
+    object-fit: cover;
+}
+
+.dropdown-item.active {
+    background-color: #D3EE98;
+    color: #000;
+}
+
+
+/* Mobile Language Switcher */
+.mobile-language-switcher {
+    display: flex;
+    align-items: center;
+}
+
+.mobile-language-switcher .btn {
+    font-size: 0.8rem;
+    border: none;
+    background: #f8f9fa;
+    color: #495057;
+    transition: all 0.3s ease;
+}
+
+.mobile-language-switcher .btn:hover {
+    background: #e9ecef;
+    color: #000;
+}
+
+.mobile-language-switcher .dropdown-menu {
+    min-width: 80px;
+}
+
+.mobile-language-switcher .dropdown-item.active {
+    background-color: #D3EE98;
+    color: #000;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .mobile-language-switcher .btn {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.75rem;
+    }
+    
+    .mobile-language-switcher .btn i {
+        font-size: 0.8rem;
+    }
+}
+
+/* สำหรับมือถือขนาดเล็กมาก */
+@media (max-width: 360px) {
+    .mobile-language-switcher .btn span {
+        display: none; /* ซ่อนตัวอักษรภาษา เหลือแต่ไอคอน */
+    }
+    
+    .mobile-language-switcher .btn i {
+        margin-right: 0;
+    }
+}

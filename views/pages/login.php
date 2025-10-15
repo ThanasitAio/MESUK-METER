@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เข้าสู่ระบบ - MESUK</title>
+    
+    <!-- 1. เพิ่มลิงก์สำหรับ Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <style>
+        /* ตั้งค่าฟอนต์และพื้นฐาน */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f2f5; /* สีพื้นหลังอ่อนๆ */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px; /* เพิ่ม padding เพื่อไม่ให้ชิดขอบจอบนมือถือ */
+            box-sizing: border-box;
+        }
+
+        /* กล่องฟอร์มล็อกอิน */
+        .login-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        /* 2. สไตล์สำหรับส่วนหัว (โลโก้ + ชื่อ) */
+        .login-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px; /* ระยะห่างระหว่างโลโก้กับตัวอักษร */
+            margin-bottom: 10px;
+        }
+
+        .logo-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #D3EE98; /* ใช้สีธีมเป็นพื้นหลังโลโก้ */
+            border-radius: 10px;
+        }
+
+        .logo-icon-wrapper .bi {
+            font-size: 26px; /* ขนาดไอคอน */
+            color: #333;
+        }
+
+        .login-container h1 {
+            color: #333;
+            margin: 0; /* นำ margin เดิมออก */
+            font-size: 28px;
+        }
+
+        .login-container p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        /* กลุ่มของ input */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #D3EE98;
+            box-shadow: 0 0 0 3px rgba(211, 238, 152, 0.5);
+        }
+
+        /* ปุ่ม Submit */
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background-color: #D3EE98;
+            color: #212529;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-button:hover {
+            background-color: #c2db86;
+        }
+        
+        /* ส่วนแสดงข้อความผิดพลาด */
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* 3. โค้ดสำหรับปรับปรุงการแสดงผลบนมือถือ */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 25px; /* ลด padding ด้านข้างลงเมื่อจอมือถือ */
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <!-- 4. เพิ่มโครงสร้าง HTML สำหรับโลโก้ -->
+        <div class="login-header">
+            <div class="logo-icon-wrapper">
+                <i class="bi bi-grid-3x3-gap-fill"></i>
+            </div>
+            <h1>MESUK</h1>
+        </div>
+
+        <p>กรุณาเข้าสู่ระบบเพื่อจัดการระบบ</p>
+
+        <?php if (isset($_GET['error'])): ?>
+            <div class="error-message">
+                ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง
+            </div>
+        <?php endif; ?>
+
+        <form action="login" method="POST">
+            <div class="form-group">
+                <label for="username">ชื่อผู้ใช้</label>
+                <input type="text" id="username" name="username" autocomplete="off" value="mesuk" required>
+            </div>
+            <div class="form-group">
+                <label for="password">รหัสผ่าน</label>
+                <input type="password" id="password" name="password" value="123456" required>
+            </div>
+            <button type="submit" class="login-button">เข้าสู่ระบบ</button>
+        </form>
+    </div>
+
+</body>
+</html>

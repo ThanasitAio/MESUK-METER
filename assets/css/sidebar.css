@@ -1,0 +1,951 @@
+.sidebar {
+    width: 280px;
+
+    position: fixed;
+    left: 0;
+top: 70px; /* ความสูง navbar ของคุณ */
+height: calc(100vh - 70px); /* ลบความสูง navbar ออก */
+z-index: 999; /* ให้ต่ำกว่า navbar */
+
+    background: #ffffff;
+    border-right: 1px solid #e9ecef;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* เมื่อ sidebar ถูกปิด */
+.sidebar.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* เมื่อ sidebar ถูกปิด main-content จะขยายเต็ม */
+.sidebar.hidden ~ .main-content {
+    margin-left: 0;
+}
+
+/* Sidebar Content */
+.sidebar-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Sidebar Header */
+.sidebar-header {
+    padding: 1.5rem 1rem;
+    border-bottom: 1px solid #e9ecef;
+    background: #ffffff;
+    flex-shrink: 0;
+    text-align: center;
+}
+
+.brand-logo {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #D3EE98 0%, #b8d47a 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem auto;
+    transition: all 0.5s ease;
+}
+
+.sidebar-header h5 {
+    color: #1a1a1a;
+    font-weight: 700;
+    margin: 0;
+    font-size: 1.1rem;
+    transition: all 0.5s ease;
+}
+
+.sidebar-header small {
+    color: #6c757d;
+    font-size: 0.75rem;
+    transition: all 0.5s ease;
+}
+
+/* Navigation Container */
+.sidebar-nav-container {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0.5rem 0;
+}
+
+/* Navigation Styles */
+.sidebar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    min-height: min-content;
+}
+
+.nav-item {
+    margin: 0.25rem 0.75rem;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: #495057;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.4s ease;
+    position: relative;
+    gap: 0.75rem;
+}
+
+.nav-link:hover {
+    background: rgba(211, 238, 152, 0.15);
+    color: #1a531b;
+}
+
+.nav-link.active {
+    background: linear-gradient(135deg, rgba(211, 238, 152, 0.2) 0%, rgba(211, 238, 152, 0.1) 100%);
+    color: #1a531b;
+    font-weight: 600;
+}
+
+.nav-link.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 60%;
+    background: linear-gradient(180deg, #D3EE98, #b8d47a);
+    border-radius: 0 2px 2px 0;
+    transition: all 0.4s ease;
+}
+
+/* Nav Icon */
+.nav-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(211, 238, 152, 0.1);
+    border: 1px solid rgba(211, 238, 152, 0.2);
+    transition: all 0.4s ease;
+    flex-shrink: 0;
+}
+
+.nav-link:hover .nav-icon {
+    background: rgba(211, 238, 152, 0.2);
+    transform: none;
+    border-color: rgba(211, 238, 152, 0.3);
+}
+
+
+.nav-link.active .nav-icon {
+    background: linear-gradient(135deg, #D3EE98 0%, #b8d47a 100%);
+    border-color: transparent;
+}
+
+.nav-icon i {
+    color: #5a6d57;
+    font-size: 1.1rem;
+    transition: all 0.4s ease;
+}
+
+.nav-link.active .nav-icon i {
+    color: #1a1a1a;
+}
+
+/* Nav Text */
+.nav-text {
+    flex: 1;
+    font-weight: 500;
+    transition: all 0.4s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size:  0.9rem;
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+    padding: 1rem;
+    border-top: 1px solid #e9ecef;
+    background: #ffffff;
+    flex-shrink: 0;
+    text-align: center;
+    transition: all 0.5s ease;
+}
+
+.sidebar-footer .small {
+    color: #6c757d;
+    font-size: 0.75rem;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 280px;
+    margin-top: 56px; /* ✅ เลื่อนลงจาก navbar */
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: calc(100vh - 56px);
+    background: #f8f9fa;
+}
+
+
+/* Scrollbar Styles */
+.sidebar-nav-container::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar-nav-container::-webkit-scrollbar-track {
+    background: rgba(211, 238, 152, 0.1);
+    border-radius: 2px;
+}
+
+.sidebar-nav-container::-webkit-scrollbar-thumb {
+    background: #D3EE98;
+    border-radius: 2px;
+}
+
+.sidebar-nav-container::-webkit-scrollbar-thumb:hover {
+    background: #b8d47a;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 280px;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+       
+    .main-content {
+        margin-left: 0 !important;
+        transition: margin-left 0.4s ease;
+    }
+    
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        transition: opacity 0.4s ease;
+        opacity: 0;
+    }
+    
+    .sidebar-overlay.show {
+        display: block;
+        opacity: 1;
+    }
+    
+    /* ปุ่มเปิด sidebar สำหรับมือถือ */
+    #sidebarOpen {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 1001;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 1px solid #dee2e6;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+    
+    #sidebarOpen:hover {
+        background: #f8f9fa;
+        transform: scale(1.05);
+    }
+    
+    /* ซ่อนปุ่ม toggle ใน navbar บนมือถือ */
+    #sidebarToggle {
+        display: none !important;
+    }
+}
+
+/* Desktop Styles */
+@media (min-width: 769px) {
+    .sidebar-overlay {
+        display: none !important;
+    }
+    
+    #sidebarOpen {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 999;
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        background: #ffffff;
+        border: 1px solid #dee2e6;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.4s ease;
+    }
+    
+    .sidebar.hidden ~ #sidebarOpen {
+        display: flex;
+    }
+    
+    #sidebarOpen:hover {
+        background: #f8f9fa;
+        transform: scale(1.05);
+        border-color: #D3EE98;
+    }
+}
+
+/* Toggle Button */
+#sidebarToggle {
+    display: block !important;
+    border: 1px solid #dee2e6;
+    transition: all 0.4s ease;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#sidebarToggle:hover {
+    background-color: #f8f9fa;
+    border-color: #D3EE98;
+    transform: scale(1.05);
+}
+
+
+/* ============================= */
+/* Submenu Styles */
+/* ============================= */
+
+.has-submenu .submenu-toggle {
+    justify-content: space-between;
+}
+
+.submenu-arrow {
+    font-size: 0.9rem;
+    color: #6c757d;
+    transition: transform 0.6s ease, color 0.4s ease;
+}
+
+
+/* ซ่อนเมนูย่อยเริ่มต้น */
+/* Submenu ปกติ (ซ่อน) */
+.submenu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    background: #f8f9fa;
+    border-left: 2px solid #D3EE98;
+    border-radius: 0 0 6px 6px;
+    transition:
+        max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.6s ease,
+        visibility 0.6s ease,
+        padding 0.6s ease;
+}
+
+/* แสดงเมื่อเปิด */
+.has-submenu.open .submenu {
+    max-height: 600px; /* เพิ่มความสูงเพื่อให้เลื่อนนุ่มขึ้น */
+    opacity: 1;
+    visibility: visible;
+    padding: 0.25rem 0;
+}
+
+
+.submenu li a {
+    display: block;
+    padding: 0.5rem 2.5rem;
+    color: #495057;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+}
+
+.submenu li a:hover {
+    background: rgba(211, 238, 152, 0.2);
+    color: #1a531b;
+}
+
+/* หมุนลูกศรเมื่อเปิด */
+.has-submenu.open .submenu-arrow {
+    transform: rotate(180deg);
+    color: #1a531b;
+}
+
+/* ปุ่ม toggle sidebar */
+.navbar-toggler.custom-toggler,
+.navbar-toggler.custom-toggler:focus,
+.navbar-toggler.custom-toggler:active {
+    outline: none;
+    box-shadow: none;
+}
+
+/* ลิงก์ใน sidebar ทุกตัว */
+.sidebar a,
+.sidebar a:focus,
+.sidebar a:active {
+    outline: none;
+    box-shadow: none;
+    text-decoration: none; /* เอาเส้นขีดเวลา focus ถ้าไม่อยากได้ */
+}
+
+/* เพิ่มความแน่ใจสำหรับ submenu toggle */
+.sidebar .submenu-toggle,
+.sidebar .submenu-toggle:focus,
+.sidebar .submenu-toggle:active {
+    outline: none;
+    box-shadow: none;
+}
+
+/* โทรศัพพ์ */
+/* ============================= */
+/* Mobile Bottom Navigation */
+/* ============================= */
+.mobile-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border-top: 1px solid #e9ecef;
+    z-index: 1000;
+    padding: 0.5rem 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-nav-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #6c757d;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+    flex: 1;
+    max-width: 80px;
+}
+
+.mobile-nav-item i {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.mobile-nav-item:hover,
+.mobile-nav-item.active {
+    color: #1a531b;
+    background: rgba(211, 238, 152, 0.1);
+}
+
+.mobile-badge {
+    position: absolute;
+    top: -2px;
+    right: 8px;
+    background: #ff4757;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ============================= */
+/* Mobile Notifications Panel */
+/* ============================= */
+.mobile-notifications-panel {
+    position: fixed;
+    bottom: -100%;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+    transition: bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 70vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-notifications-panel.show {
+    bottom: 0;
+}
+
+.mobile-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+    background: #ffffff;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.mobile-panel-header h5 {
+    margin: 0;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.mobile-panel-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.mobile-panel-close:hover {
+    background: #f8f9fa;
+    color: #1a1a1a;
+}
+
+.mobile-panel-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.5rem 0;
+}
+
+.mobile-notification-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #f1f3f4;
+    transition: background 0.3s ease;
+}
+
+.mobile-notification-item:last-child {
+    border-bottom: none;
+}
+
+.mobile-notification-item:hover {
+    background: #f8f9fa;
+}
+
+.notification-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(211, 238, 152, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.notification-icon i {
+    color: #5a6d57;
+    font-size: 1.1rem;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-text {
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 0.25rem;
+}
+
+.notification-time {
+    color: #6c757d;
+    font-size: 0.8rem;
+}
+
+/* ============================= */
+/* Mobile Bottom Navigation */
+/* ============================= */
+.mobile-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border-top: 1px solid #e9ecef;
+    z-index: 1000;
+    padding: 0.5rem 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-nav-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #6c757d;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+    flex: 1;
+    max-width: 80px;
+}
+
+.mobile-nav-item i {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.mobile-nav-item:hover,
+.mobile-nav-item.active {
+    color: #1a531b;
+    background: rgba(211, 238, 152, 0.1);
+}
+
+.mobile-badge {
+    position: absolute;
+    top: -2px;
+    right: 8px;
+    background: #ff4757;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ============================= */
+/* Mobile Notifications Panel */
+/* ============================= */
+.mobile-notifications-panel {
+    position: fixed;
+    bottom: -100%;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+    transition: bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 70vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-notifications-panel.show {
+    bottom: 0;
+}
+
+.mobile-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+    background: #ffffff;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.mobile-panel-header h5 {
+    margin: 0;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.mobile-panel-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.mobile-panel-close:hover {
+    background: #f8f9fa;
+    color: #1a1a1a;
+}
+
+.mobile-panel-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.5rem 0;
+}
+
+.mobile-notification-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #f1f3f4;
+    transition: background 0.3s ease;
+}
+
+.mobile-notification-item:last-child {
+    border-bottom: none;
+}
+
+.mobile-notification-item:hover {
+    background: #f8f9fa;
+}
+
+.notification-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(211, 238, 152, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.notification-icon i {
+    color: #5a6d57;
+    font-size: 1.1rem;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-text {
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 0.25rem;
+}
+
+.notification-time {
+    color: #6c757d;
+    font-size: 0.8rem;
+}
+
+/* ============================= */
+/* Mobile Page Title */
+/* ============================= */
+.mobile-page-title {
+    flex: 1;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #1a1a1a;
+}
+
+/* ============================= */
+/* Mobile Sidebar Styles */
+/* ============================= */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 85%;
+        max-width: 300px;
+        transform: translateX(-100%);
+        top: 0;
+        height: 100vh;
+        z-index: 1002;
+        box-shadow: 2px 0 15px rgba(0, 0, 0, 0.2);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .sidebar.show {
+        transform: translateX(0);
+    }
+    
+    .sidebar.hidden {
+        transform: translateX(-100%);
+        opacity: 1;
+        pointer-events: none;
+    }
+    
+    .main-content {
+        margin-left: 0 !important;
+        padding-bottom: 70px; /* เพิ่มพื้นที่ด้านล่างสำหรับ bottom nav */
+    }
+    
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1001;
+        transition: opacity 0.4s ease;
+        opacity: 0;
+        visibility: hidden;
+    }
+    
+    .sidebar-overlay.show {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    /* ปรับปรุง Navbar สำหรับมือถือ */
+    .navbar-brand .d-none.d-sm-block {
+        display: block !important;
+    }
+    
+    /* ซ่อนปุ่ม toggle ใน navbar บนมือถือ */
+    #sidebarToggle {
+        display: none !important;
+    }
+    
+    /* ปุ่มเปิด sidebar สำหรับมือถือ */
+    #sidebarOpen {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 1001;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 1px solid #dee2e6;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+    
+    #sidebarOpen:hover {
+        background: #f8f9fa;
+        transform: scale(1.05);
+    }
+}
+
+/* ============================= */
+/* Mobile Submenu Styles */
+/* ============================= */
+@media (max-width: 768px) {
+    /* Submenu บนมือถือ */
+    .has-submenu .submenu {
+        margin-left: 1rem;
+        border-left: 2px solid rgba(211, 238, 152, 0.3);
+        background: rgba(248, 249, 250, 0.5);
+    }
+    
+    .submenu li a {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.95rem;
+        border-radius: 6px;
+        margin: 0.1rem 0.5rem;
+    }
+    
+    /* ปรับปรุงการแสดงผล submenu บนมือถือ */
+    .has-submenu.open .submenu {
+        max-height: 500px;
+        opacity: 1;
+        visibility: visible;
+        padding: 0.5rem 0;
+    }
+    
+    /* ปรับปรุงลูกศร submenu บนมือถือ */
+    .submenu-arrow {
+        transition: transform 0.4s ease;
+    }
+    
+    .has-submenu.open .submenu-arrow {
+        transform: rotate(180deg);
+        color: #1a531b;
+    }
+    
+    /* เพิ่มเอฟเฟกต์เมื่อแตะ submenu บนมือถือ */
+    .submenu-toggle:active {
+        background: rgba(211, 238, 152, 0.2);
+    }
+}
+
+/* Desktop Styles */
+@media (min-width: 769px) {
+    .mobile-bottom-nav,
+    .mobile-page-title,
+    .mobile-notifications-panel {
+        display: none !important;
+    }
+    
+    .sidebar-overlay {
+        display: none !important;
+    }
+    
+    #sidebarOpen {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 999;
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        background: #ffffff;
+        border: 1px solid #dee2e6;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.4s ease;
+    }
+    
+    .sidebar.hidden ~ #sidebarOpen {
+        display: flex;
+    }
+    
+    #sidebarOpen:hover {
+        background: #f8f9fa;
+        transform: scale(1.05);
+        border-color: #D3EE98;
+    }
+}
+

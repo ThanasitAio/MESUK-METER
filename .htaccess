@@ -1,0 +1,9 @@
+# เปิดใช้งาน Rewrite Engine
+RewriteEngine On
+
+# ป้องกันการวนลูปซ้ำ
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# ส่งทุก request ที่ไม่ใช่ไฟล์หรือโฟลเดอร์จริง ไปที่ index.php
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
