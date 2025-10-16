@@ -82,6 +82,12 @@ DB_PASSWORD=your_password
 MESUK-METER/
 ├── app/
 │   ├── controllers/    # Controllers
+│   │   ├── AuthController.php
+│   │   ├── HomeController.php
+│   │   ├── UserManagementController.php  # 🆕 จัดการผู้ใช้
+│   │   └── ...
+│   ├── models/        # 🆕 Models
+│   │   └── User.php   # 🆕 Model สำหรับจัดการข้อมูลผู้ใช้
 │   ├── core/          # Core classes
 │   └── utils/         # Utilities
 ├── assets/
@@ -89,9 +95,53 @@ MESUK-METER/
 │   └── js/           # JavaScript files
 ├── config/           # Configuration files
 ├── views/            # View templates
+│   └── pages/
+│       ├── user-management/  # 🆕 หน้าจัดการผู้ใช้
+│       │   ├── index.php     # 🆕 รายการผู้ใช้
+│       │   └── form.php      # 🆕 ฟอร์มเพิ่ม/แก้ไข
+│       └── ...
+├── public/
+│   └── uploads/
+│       └── users/    # 🆕 รูปภาพผู้ใช้
 ├── index.php         # Entry point
 └── .env              # Environment variables
 ```
+
+---
+
+## 🆕 ระบบจัดการผู้ใช้ (User Management System)
+
+### ฟีเจอร์หลัก
+- ✅ แสดงรายการผู้ใช้ทั้งหมดในรูปแบบตาราง
+- ✅ เพิ่มผู้ใช้ใหม่ (พร้อมอัพโหลดรูปภาพ)
+- ✅ แก้ไขข้อมูลผู้ใช้
+- ✅ ลบผู้ใช้
+- ✅ เปลี่ยนสถานะผู้ใช้ (ใช้งาน/ระงับ)
+- ✅ จัดการ Role (Admin, Agent, User)
+- ✅ แสดงสถิติผู้ใช้
+
+### เริ่มใช้งาน
+1. **อัพเดทฐานข้อมูล:**
+   ```sql
+   source update_me_users_table.sql;
+   ```
+
+2. **ตรวจสอบความพร้อม:**
+   ```
+   http://localhost:8000/check_user_system.php
+   ```
+
+3. **เข้าสู่ระบบ:**
+   - URL: `http://localhost:8000/users`
+   - Username: `0000999`
+   - Password: `999`
+   - Role: `admin`
+
+### 📚 เอกสารเพิ่มเติม
+- [Quick Start Guide](QUICKSTART_USER_MANAGEMENT.md) - เริ่มใช้งานใน 3 ขั้นตอน
+- [User Management Guide](USER_MANAGEMENT_GUIDE.md) - คู่มือใช้งานฉบับเต็ม
+- [Summary](USER_MANAGEMENT_SUMMARY.md) - สรุประบบแบบย่อ
+- [File List](USER_MANAGEMENT_FILES.md) - รายการไฟล์ทั้งหมด
 
 ---
 

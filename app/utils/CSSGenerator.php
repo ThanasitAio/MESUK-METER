@@ -64,7 +64,7 @@ class CSSGenerator
     public static function getColor($colorName)
     {
         $themeConfig = require __DIR__ . '/../../config/theme.php';
-        return $themeConfig['colors'][$colorName] ?? '#000000';
+        return isset($themeConfig['colors'][$colorName]) ? $themeConfig['colors'][$colorName] : '#000000';
     }
     
     public static function updateColors($newColors)

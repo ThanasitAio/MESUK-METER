@@ -32,7 +32,8 @@
                 <?php
                 $viewFile = __DIR__ . '/../' . $view . '.php';
                 if (file_exists($viewFile)) {
-                    require_once $viewFile;
+                    // ใช้ require แทน require_once เพื่อให้ตัวแปรจาก extract() ทำงานได้
+                    require $viewFile;
                 } else {
                     echo "View file not found: " . $view;
                 }

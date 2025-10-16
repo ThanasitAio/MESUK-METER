@@ -127,9 +127,9 @@ class ImportUsersController extends Controller {
                         
                         // Insert เข้า me_users
                         $sqlInsert = "INSERT INTO me_users 
-                                    (id, code, username, password, name, tel, birthday, facebook_name, line_id, role, created_by) 
+                                    (id, code, username, password, name, tel, birthday, facebook_name, line_id, role, created_by, status) 
                                     VALUES 
-                                    (UUID(), :code, :username, :password, :name, :tel, :birthday, :facebook_name, :line_id, 'agent', 'import')";
+                                    (UUID(), :code, :username, :password, :name, :tel, :birthday, :facebook_name, :line_id, 'agent', 'import', 'active')";
                         
                         $stmtInsert = $db->prepare($sqlInsert);
                         $password = !empty($user['sv_code']) ? md5($user['sv_code']) : md5('123456');

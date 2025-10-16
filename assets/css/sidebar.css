@@ -113,7 +113,6 @@ z-index: 999; /* ให้ต่ำกว่า navbar */
     font-weight: 700;
     transform: translateX(5px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    border: 1px solid var(--sidebar-nav-active-border-color);
 }
 
 .nav-link.active::before {
@@ -125,7 +124,7 @@ z-index: 999; /* ให้ต่ำกว่า navbar */
     width: 5px;
     height: 80%;
     background: var(--sidebar-nav-active-border);
-    border-radius: 0 3px 3px 0;
+   
     transition: all 0.4s ease;
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2);
 }

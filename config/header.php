@@ -16,7 +16,11 @@ return [
         'page_subtitle' => 'font-size: 0.9rem; color: #858796; margin-top: 0.25rem;',
         'card_title' => 'font-size: 0.95rem; font-weight: 600;',
         'table_header' => 'font-size: 0.8rem; font-weight: 600;',
-        'badge' => 'font-size: 0.65rem;'
+        'badge' => 'font-size: 0.65rem;',
+        
+        // --- สไตล์สำหรับตาราง ---
+        'table_responsive' => 'max-height: 50vh; overflow-y: auto; overflow-x: auto;',
+        'table_container' => 'overflow-x: auto; -webkit-overflow-scrolling: touch;'
     ],
     'classes' => [
         'page_header' => 'd-flex justify-content-between align-items-center mb-2 mt-2',
