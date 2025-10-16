@@ -1,53 +1,74 @@
 :root {
-    /* Primary Colors - เปลี่ยนเป็นสีฟ้า */
-    --color-primary: #007bff;
-    --color-primary-dark: #0056b3;
-    --color-primary-light: #3395ff;
+    /* Primary Colors - กลับมาเป็นสีเขียว */
+    --color-primary: #086337;
+    --color-primary-dark: #064c28;
+    --color-primary-light: #0a7a46;
     
-    /* Accent Colors - เปลี่ยนเป็นสีฟ้าอ่อน */
-    --color-accent: #e3f2fd;
-    --color-accent-dark: #90caf9;
-    --color-accent-light: #f3f9ff;
+    /* Accent Colors - กลับมาเป็นสีเขียวอ่อน */
+    --color-accent: #D3EE98;
+    --color-accent-dark: #b8d47a;
+    --color-accent-light: #e5f5c3;
     
     /* Status Colors */
     --color-success: #28a745;
-    --color-info: #17a2b8;
-    --color-warning: #ffc107;
-    --color-danger: #dc3545;
+    --color-info: #36b9cc;
+    --color-warning: #f6c23e;
+    --color-danger: #e74a3b;
     
     /* Neutral Colors */
     --color-dark: #5a5c69;
     --color-light: #f8f9fa;
     
-    /* Text Colors - ปรับให้เข้ากับสีฟ้า */
+    /* Text Colors - กลับมาเป็นสีเขียว */
     --text-primary: #1a1a1a;
     --text-secondary: #6c757d;
-    --text-muted: #0056b3;
-    --text-accent: #004085;
+    --text-muted: #6B7A00;
+    --text-accent: #405000;
     
-    /* Component Colors - เปลี่ยนเป็นสีฟ้า */
+    /* Component Colors - กลับมาเป็นสีเขียว */
     --sidebar-bg: #ffffff;
-    --sidebar-brand-bg: linear-gradient(135deg, #e3f2fd 0%, #90caf9 100%);
+    --sidebar-border: #e9ecef;
+    --sidebar-shadow: rgba(0, 0, 0, 0.1);
+    --sidebar-text: #495057;
+    --sidebar-brand-bg: linear-gradient(135deg, #D3EE98 0%, #b8d47a 100%);
+    
+    /* Sidebar Navigation Colors - กลับมาเป็นสีเขียว */
+    --sidebar-nav-hover-bg: rgba(211, 238, 152, 0.15);
+    --sidebar-nav-hover-text: #1a531b;
+    --sidebar-nav-active-bg: linear-gradient(135deg, rgba(211, 238, 152, 0.2) 0%, rgba(211, 238, 152, 0.1) 100%);
+    --sidebar-nav-active-text: #1a531b;
+    --sidebar-nav-active-border: #D3EE98;
+    --sidebar-nav-active-border-color: rgba(211, 238, 152, 0.3);
+    
+    /* Sidebar Nav Icon Colors - กลับมาเป็นสีเขียว */
+    --sidebar-nav-icon-bg: rgba(211, 238, 152, 0.1);
+    --sidebar-nav-icon-border: rgba(211, 238, 152, 0.2);
+    --sidebar-nav-icon-hover-bg: rgba(211, 238, 152, 0.2);
+    --sidebar-nav-icon-hover-border: rgba(211, 238, 152, 0.3);
+    --sidebar-nav-icon-active-bg: linear-gradient(135deg, #D3EE98 0%, #b8d47a 100%);
+    --sidebar-nav-icon-color: #5a6d57;
+    --sidebar-nav-icon-active-color: #1a1a1a;
+    
     --navbar-bg: #ffffff;
     --card-bg: #ffffff;
-    --card-header-bg: #e3f2fd;
-    --card-header-text: #004085;
-    --card-border: #90caf9;
-    --card-shadow: rgba(0, 123, 255, 0.1);
+    --card-header-bg: #D3EE98;
+    --card-header-text: #405000;
+    --card-border: #A9D654;
+    --card-shadow: rgba(64,80,0,0.1);
     --body-bg: #f8f9fa;
     
-    /* Table Colors - เปลี่ยนเป็นสีฟ้า */
-    --table-header-bg: #007bff;
+    /* Table Colors - กลับมาเป็นสีเขียว */
+    --table-header-bg: #A9D654;
     --table-header-text: #ffffff;
-    --table-row-even: #f3f9ff;
-    --table-row-odd: #e3f2fd;
-    --table-row-hover: #bbdefb;
-    --table-text: #004085;
-    --table-shadow: rgba(0, 123, 255, 0.15);
+    --table-row-even: #F3F9D9;
+    --table-row-odd: #E6F5B7;
+    --table-row-hover: #D3EE98;
+    --table-text: #405000;
+    --table-shadow: rgba(64,80,0,0.15);
     
-    /* Form Colors - เปลี่ยนเป็นสีฟ้า */
-    --form-input-border: #90caf9;
-    --form-checkbox-accent: #004085;
+    /* Form Colors - กลับมาเป็นสีเขียว */
+    --form-input-border: #A9D654;
+    --form-checkbox-accent: #405000;
     
     /* Layout */
     --card-radius: 1rem;

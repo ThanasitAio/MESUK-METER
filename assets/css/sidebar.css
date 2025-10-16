@@ -7,9 +7,7 @@ top: 70px; /* ความสูง navbar ของคุณ */
 height: calc(100vh - 70px); /* ลบความสูง navbar ออก */
 z-index: 999; /* ให้ต่ำกว่า navbar */
 
-    background: #ffffff;
-    border-right: 1px solid #e9ecef;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
     overflow: hidden;
     display: flex;
@@ -38,8 +36,8 @@ z-index: 999; /* ให้ต่ำกว่า navbar */
 /* Sidebar Header */
 .sidebar-header {
     padding: 1.5rem 1rem;
-    border-bottom: 1px solid #e9ecef;
-    background: #ffffff;
+    border-bottom: 1px solid var(--sidebar-border);
+    background: var(--sidebar-bg);
     flex-shrink: 0;
     text-align: center;
 }
@@ -57,7 +55,7 @@ z-index: 999; /* ให้ต่ำกว่า navbar */
 }
 
 .sidebar-header h5 {
-    color: #1a1a1a;
+    color: var(--sidebar-text);
     font-weight: 700;
     margin: 0;
     font-size: 1.1rem;
@@ -65,7 +63,7 @@ z-index: 999; /* ให้ต่ำกว่า navbar */
 }
 
 .sidebar-header small {
-    color: #6c757d;
+    color: var(--text-secondary);
     font-size: 0.75rem;
     transition: all 0.5s ease;
 }
@@ -94,36 +92,56 @@ z-index: 999; /* ให้ต่ำกว่า navbar */
     display: flex;
     align-items: center;
     padding: 0.75rem 1rem;
-    color: #495057;
+    color: var(--sidebar-text);
     text-decoration: none;
     border-radius: 8px;
-    transition: all 0.4s ease;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     position: relative;
     gap: 0.75rem;
+    margin-bottom: 2px;
 }
 
 .nav-link:hover {
-    background: rgba(211, 238, 152, 0.15);
-    color: #1a531b;
+    background: var(--sidebar-nav-hover-bg);
+    color: var(--sidebar-nav-hover-text);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .nav-link.active {
-    background: linear-gradient(135deg, rgba(211, 238, 152, 0.2) 0%, rgba(211, 238, 152, 0.1) 100%);
-    color: #1a531b;
-    font-weight: 600;
+    background: var(--sidebar-nav-active-bg);
+    color: var(--sidebar-nav-active-text);
+    font-weight: 700;
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--sidebar-nav-active-border-color);
 }
 
 .nav-link.active::before {
     content: '';
     position: absolute;
-    left: 0;
+    left: -1rem;
     top: 50%;
     transform: translateY(-50%);
-    width: 4px;
-    height: 60%;
-    background: linear-gradient(180deg, #D3EE98, #b8d47a);
-    border-radius: 0 2px 2px 0;
+    width: 5px;
+    height: 80%;
+    background: var(--sidebar-nav-active-border);
+    border-radius: 0 3px 3px 0;
     transition: all 0.4s ease;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2);
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid var(--sidebar-nav-active-text);
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    opacity: 0.7;
 }
 
 /* Nav Icon */
@@ -134,32 +152,32 @@ z-index: 999; /* ให้ต่ำกว่า navbar */
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(211, 238, 152, 0.1);
-    border: 1px solid rgba(211, 238, 152, 0.2);
+    background: var(--sidebar-nav-icon-bg);
+    border: 1px solid var(--sidebar-nav-icon-border);
     transition: all 0.4s ease;
     flex-shrink: 0;
 }
 
 .nav-link:hover .nav-icon {
-    background: rgba(211, 238, 152, 0.2);
+    background: var(--sidebar-nav-icon-hover-bg);
     transform: none;
-    border-color: rgba(211, 238, 152, 0.3);
+    border-color: var(--sidebar-nav-icon-hover-border);
 }
 
 
 .nav-link.active .nav-icon {
-    background: linear-gradient(135deg, #D3EE98 0%, #b8d47a 100%);
+    background: var(--sidebar-nav-icon-active-bg);
     border-color: transparent;
 }
 
 .nav-icon i {
-    color: #5a6d57;
+    color: var(--sidebar-nav-icon-color);
     font-size: 1.1rem;
     transition: all 0.4s ease;
 }
 
 .nav-link.active .nav-icon i {
-    color: #1a1a1a;
+    color: var(--sidebar-nav-icon-active-color);
 }
 
 /* Nav Text */
@@ -175,15 +193,15 @@ z-index: 999; /* ให้ต่ำกว่า navbar */
 /* Sidebar Footer */
 .sidebar-footer {
     padding: 1rem;
-    border-top: 1px solid #e9ecef;
-    background: #ffffff;
+    border-top: 1px solid var(--sidebar-border);
+    background: var(--sidebar-bg);
     flex-shrink: 0;
     text-align: center;
     transition: all 0.5s ease;
 }
 
 .sidebar-footer .small {
-    color: #6c757d;
+    color: var(--text-secondary);
     font-size: 0.75rem;
 }
 
@@ -193,7 +211,7 @@ z-index: 999; /* ให้ต่ำกว่า navbar */
     margin-top: 56px; /* ✅ เลื่อนลงจาก navbar */
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     min-height: calc(100vh - 56px);
-    background: #f8f9fa;
+    background: var(--body-bg);
 }
 
 

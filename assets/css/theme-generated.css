@@ -7,6 +7,7 @@
 
 :root {
     /* ========== PRIMARY COLORS ========== */
+     /* ========== PRIMARY COLORS ========== */
     --color-primary: #086337;
     --color-primary-dark: #064c28;
     --color-primary-light: #0a7a46;
@@ -17,7 +18,6 @@
     --color-accent-dark: #b8d47a;
     --color-accent-light: #e5f5c3;
     --color-accent-hover: #A9D654;
-
     /* ========== STATUS COLORS ========== */
     --color-success: #28a745;
     --color-success-light: #d4edda;
@@ -39,7 +39,7 @@
     /* ========== TEXT COLORS ========== */
     --text-primary: #1a1a1a;
     --text-secondary: #6c757d;
-    --text-muted: #6B7A00;
+    --text-muted: #1a1a1a;
     --text-accent: #405000;
 
     /* ========== BORDER COLORS ========== */
@@ -58,6 +58,23 @@
     --sidebar-border: #e9ecef;
     --sidebar-shadow: rgba(0, 0, 0, 0.1);
     --sidebar-brand-bg: linear-gradient(135deg, #D3EE98 0%, #b8d47a 100%);
+
+    /* ========== SIDEBAR NAVIGATION COLORS ========== */
+    --sidebar-nav-hover-bg: rgba(211, 238, 152, 0.15);
+    --sidebar-nav-hover-text: #1a531b;
+    --sidebar-nav-active-bg: linear-gradient(135deg, rgba(211, 238, 152, 0.2) 0%, rgba(211, 238, 152, 0.1) 100%);
+    --sidebar-nav-active-text: #1a531b;
+    --sidebar-nav-active-border: #D3EE98;
+    --sidebar-nav-active-border-color: rgba(211, 238, 152, 0.3);
+    
+    /* ========== SIDEBAR NAV ICON COLORS ========== */
+    --sidebar-nav-icon-bg: rgba(211, 238, 152, 0.1);
+    --sidebar-nav-icon-border: rgba(211, 238, 152, 0.2);
+    --sidebar-nav-icon-hover-bg: rgba(211, 238, 152, 0.2);
+    --sidebar-nav-icon-hover-border: rgba(211, 238, 152, 0.3);
+    --sidebar-nav-icon-active-bg: linear-gradient(135deg, #D3EE98 0%, #b8d47a 100%);
+    --sidebar-nav-icon-color: #5a6d57;
+    --sidebar-nav-icon-active-color: #1a1a1a;
 
     --body-bg: #f8f9fa;
     --body-text: #1a1a1a;

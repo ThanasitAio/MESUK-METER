@@ -52,7 +52,7 @@ return array(
         'import_selected' => 'นำเข้าผู้ใช้ที่เลือก',
         'waiting' => 'รอนำเข้า',
         'in_system' => 'มีในระบบ',
-        'search_member' => 'ค้นหารหัสสมาชิก (Mcode)',
+        'search_member' => 'ค้นหารหัสสมาชิก (mcode)',
         'placeholder_search' => 'พิมพ์รหัสสมาชิก...',
         'select_users_alert' => 'กรุณาเลือกผู้ใช้ที่ต้องการนำเข้า',
         'confirm_import' => 'คุณต้องการนำเข้าผู้ใช้ {count} รายการใช่หรือไม่?',
