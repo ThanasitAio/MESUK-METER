@@ -1,0 +1,246 @@
+/* ==============================================
+   Theme CSS - Generated Dynamically
+   Theme: MESUK-METER Default
+   Version: 1.0.0
+   Generated: 2025-10-16 Auto-Generated
+   ============================================== */
+
+:root {
+    /* ========== PRIMARY COLORS ========== */
+    --color-primary: #086337;
+    --color-primary-dark: #064c28;
+    --color-primary-light: #0a7a46;
+    --color-primary-hover: #0a7a46;
+
+    /* ========== ACCENT COLORS ========== */
+    --color-accent: #D3EE98;
+    --color-accent-dark: #b8d47a;
+    --color-accent-light: #e5f5c3;
+    --color-accent-hover: #A9D654;
+
+    /* ========== STATUS COLORS ========== */
+    --color-success: #28a745;
+    --color-success-light: #d4edda;
+    --color-info: #36b9cc;
+    --color-info-light: #d1ecf1;
+    --color-warning: #f6c23e;
+    --color-warning-light: #fff3cd;
+    --color-danger: #e74a3b;
+    --color-danger-light: #f8d7da;
+
+    /* ========== NEUTRAL COLORS ========== */
+    --color-dark: #1a1a1a;
+    --color-dark-light: #495057;
+    --color-gray: #6c757d;
+    --color-gray-light: #adb5bd;
+    --color-light: #f8f9fa;
+    --color-white: #ffffff;
+
+    /* ========== TEXT COLORS ========== */
+    --text-primary: #1a1a1a;
+    --text-secondary: #6c757d;
+    --text-muted: #6B7A00;
+    --text-accent: #405000;
+
+    /* ========== BORDER COLORS ========== */
+    --border-primary: #e9ecef;
+    --border-accent: #A9D654;
+    --border-light: #dee2e6;
+
+    /* ========== COMPONENT COLORS ========== */
+    --navbar-bg: #ffffff;
+    --navbar-text: #1a1a1a;
+    --navbar-border: #e9ecef;
+    --navbar-shadow: rgba(0, 0, 0, 0.1);
+
+    --sidebar-bg: #ffffff;
+    --sidebar-text: #495057;
+    --sidebar-border: #e9ecef;
+    --sidebar-shadow: rgba(0, 0, 0, 0.1);
+    --sidebar-brand-bg: linear-gradient(135deg, #D3EE98 0%, #b8d47a 100%);
+
+    --body-bg: #f8f9fa;
+    --body-text: #1a1a1a;
+
+    --card-bg: #ffffff;
+    --card-header-bg: #D3EE98;
+    --card-header-text: #405000;
+    --card-border: #A9D654;
+    --card-shadow: rgba(64,80,0,0.1);
+
+    --table-header-bg: #A9D654;
+    --table-header-text: #ffffff;
+    --table-row-even: #F3F9D9;
+    --table-row-odd: #E6F5B7;
+    --table-row-hover: #D3EE98;
+    --table-text: #405000;
+    --table-shadow: rgba(64,80,0,0.15);
+
+    --form-input-border: #A9D654;
+    --form-input-focus: #086337;
+    --form-checkbox-accent: #405000;
+
+    --btn-primary-bg: #086337;
+    --btn-primary-text: #ffffff;
+    --btn-primary-hover: #0a7a46;
+    --btn-secondary-bg: #6c757d;
+    --btn-secondary-text: #ffffff;
+    --btn-success-bg: #28a745;
+    --btn-danger-bg: #e74a3b;
+
+    /* ========== LAYOUT SETTINGS ========== */
+    --sidebar-width: 280px;
+    --navbar-height: 70px;
+    --border-radius: 8px;
+    --card-radius: 1rem;
+
+    /* ========== ANIMATION SETTINGS ========== */
+    --transition-duration: 0.3s;
+    --transition-easing: ease;
+    --sidebar-transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========== UTILITY CLASSES ========== */
+.text-primary { color: var(--text-primary) !important; }
+.text-secondary { color: var(--text-secondary) !important; }
+.text-muted { color: var(--text-muted) !important; }
+.text-accent { color: var(--text-accent) !important; }
+.bg-primary { background-color: var(--color-primary) !important; }
+.bg-accent { background-color: var(--color-accent) !important; }
+.border-primary { border-color: var(--border-primary) !important; }
+.border-accent { border-color: var(--border-accent) !important; }
+
+/* ========== COMPONENT STYLES USING CSS VARIABLES ========== */
+
+/* Body */
+body {
+    background-color: var(--body-bg);
+    color: var(--body-text);
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--navbar-bg);
+    color: var(--navbar-text);
+    border-bottom: 1px solid var(--navbar-border);
+    box-shadow: 0 2px 4px var(--navbar-shadow);
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    border-right: 1px solid var(--sidebar-border);
+    box-shadow: 2px 0 10px var(--sidebar-shadow);
+}
+
+.brand-logo {
+    background: var(--sidebar-brand-bg);
+}
+
+/* Cards */
+.card {
+    background-color: var(--card-bg);
+    border: 2px solid var(--card-border);
+    border-radius: var(--card-radius);
+    box-shadow: 0 8px 20px var(--card-shadow);
+}
+
+.card-header {
+    background-color: var(--card-header-bg);
+    color: var(--card-header-text);
+    border-bottom: 2px solid var(--card-border);
+}
+
+/* Tables */
+.table {
+    background-color: var(--card-bg);
+}
+
+.table thead {
+    background-color: var(--table-header-bg);
+    color: var(--table-header-text);
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: var(--table-row-even);
+}
+
+.table tbody tr:nth-child(odd) {
+    background-color: var(--table-row-odd);
+}
+
+.table tbody tr:hover {
+    background-color: var(--table-row-hover);
+}
+
+.table td {
+    color: var(--table-text);
+}
+
+.table-responsive {
+    box-shadow: 0 8px 20px var(--table-shadow);
+}
+
+/* Forms */
+.form-control {
+    border-color: var(--form-input-border);
+}
+
+.form-control:focus {
+    border-color: var(--form-input-focus);
+    box-shadow: 0 0 0 0.2rem rgba(8, 99, 55, 0.25);
+}
+
+.form-check-input {
+    accent-color: var(--form-checkbox-accent);
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border-color: var(--btn-primary-bg);
+}
+
+.btn-primary:hover {
+    background-color: var(--btn-primary-hover);
+    border-color: var(--btn-primary-hover);
+}
+
+.btn-secondary {
+    background-color: var(--btn-secondary-bg);
+    color: var(--btn-secondary-text);
+}
+
+.btn-success {
+    background-color: var(--btn-success-bg);
+}
+
+.btn-danger {
+    background-color: var(--btn-danger-bg);
+}
+
+/* Animations */
+.sidebar,
+.nav-link,
+.card,
+.btn {
+    transition: all var(--transition-duration) var(--transition-easing);
+}
+
+.sidebar {
+    transition: transform var(--sidebar-transition), opacity var(--transition-duration) var(--transition-easing);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.show {
+        transform: translateX(0);
+    }
+}
