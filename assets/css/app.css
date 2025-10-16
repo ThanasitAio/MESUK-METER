@@ -7,7 +7,7 @@
 .table-responsive {
     border-radius: 1rem;
     overflow: hidden;
-    box-shadow: 0 8px 20px rgba(64,80,0,0.15);
+    box-shadow: 0 8px 20px var(--table-shadow);
     padding: 0;
 }
 
@@ -15,13 +15,13 @@
 .table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #fff;
+    background-color: var(--card-bg);
 }
 
 /* Table Header */
 .table thead {
-    background-color: #A9D654;
-    color: #fff;
+    background-color: var(--table-header-bg);
+    color: var(--table-header-text);
     text-transform: uppercase;
     font-weight: 700;
     letter-spacing: 0.5px;
@@ -39,33 +39,33 @@
 }
 
 .table tbody tr:nth-child(even) {
-    background-color: #F3F9D9;
+    background-color: var(--table-row-even);
 }
 
 .table tbody tr:nth-child(odd) {
-    background-color: #E6F5B7;
+    background-color: var(--table-row-odd);
 }
 
 .table tbody tr:hover {
-    background-color: #D3EE98;
-    box-shadow: 0 4px 10px rgba(64,80,0,0.2);
+    background-color: var(--table-row-hover);
+    box-shadow: 0 4px 10px var(--table-shadow);
 }
 
 /* Table Cells */
 .table td {
     padding: 0.75rem 1rem;
     vertical-align: middle;
-    color: #405000;
+    color: var(--table-text);
 }
 
 .table td .text-muted {
-    color: #6B7A00;
+    color: var(--text-muted);
 }
 
 /* Checkbox */
 .form-check-input {
     cursor: pointer;
-    accent-color: #405000;
+    accent-color: var(--form-checkbox-accent);
     width: 1.25rem;
     height: 1.25rem;
 }
@@ -74,28 +74,28 @@
 /* Card Styling */
 .card {
     border: none;
-    border-radius: 1rem;
-    box-shadow: 0 8px 20px rgba(64,80,0,0.1);
+    border-radius: var(--card-radius);
+    box-shadow: 0 8px 20px var(--card-shadow);
     margin-bottom: 1rem;
 }
 
 /* Card Header */
 .card .card-header {
-    background-color: #D3EE98;
-    color: #405000;
+    background-color: var(--card-header-bg);
+    color: var(--card-header-text);
     font-weight: 700;
     font-size: 1rem;
-    border-bottom: 2px solid #A9D654;
+    border-bottom: 2px solid var(--card-border);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-radius: 1rem 1rem 0 0;
+    border-radius: var(--card-radius) var(--card-radius) 0 0;
 }
 
 /* Input & Buttons */
 .input-group .form-control {
     border-radius: 0.5rem;
-    border: 1px solid #A9D654;
+    border: 1px solid var(--form-input-border);
 }
 
 /* Responsive Adjustments */

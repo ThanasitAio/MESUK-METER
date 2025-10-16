@@ -21,7 +21,7 @@ return [
         
         // Accent Colors (สีเสริม)
         'accent' => '#D3EE98',
-        'accent-dark' => '#b8                                                                                   d47a',
+        'accent-dark' => '#b8d47a',
         'accent-light' => '#e5f5c3',
         'accent-hover' => '#A9D654',
         

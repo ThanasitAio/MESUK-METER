@@ -1,27 +1,54 @@
 :root {
-    /* Primary Colors */
-    --color-primary: #086337;
-    --color-primary-dark: #064c28;
-    --color-primary-light: #0a7a46;
+    /* Primary Colors - เปลี่ยนเป็นสีฟ้า */
+    --color-primary: #007bff;
+    --color-primary-dark: #0056b3;
+    --color-primary-light: #3395ff;
     
-    /* Accent Colors */
-    --color-accent: #D3EE98;
-    --color-accent-dark: #b8d47a;
-    --color-accent-light: #e5f5c3;
+    /* Accent Colors - เปลี่ยนเป็นสีฟ้าอ่อน */
+    --color-accent: #e3f2fd;
+    --color-accent-dark: #90caf9;
+    --color-accent-light: #f3f9ff;
     
     /* Status Colors */
     --color-success: #28a745;
-    --color-info: #36b9cc;
-    --color-warning: #f6c23e;
-    --color-danger: #e74a3b;
+    --color-info: #17a2b8;
+    --color-warning: #ffc107;
+    --color-danger: #dc3545;
     
     /* Neutral Colors */
     --color-dark: #5a5c69;
     --color-light: #f8f9fa;
     
-    /* Component Colors */
-    --sidebar-bg: #2c3e50;
+    /* Text Colors - ปรับให้เข้ากับสีฟ้า */
+    --text-primary: #1a1a1a;
+    --text-secondary: #6c757d;
+    --text-muted: #0056b3;
+    --text-accent: #004085;
+    
+    /* Component Colors - เปลี่ยนเป็นสีฟ้า */
+    --sidebar-bg: #ffffff;
+    --sidebar-brand-bg: linear-gradient(135deg, #e3f2fd 0%, #90caf9 100%);
     --navbar-bg: #ffffff;
     --card-bg: #ffffff;
+    --card-header-bg: #e3f2fd;
+    --card-header-text: #004085;
+    --card-border: #90caf9;
+    --card-shadow: rgba(0, 123, 255, 0.1);
     --body-bg: #f8f9fa;
+    
+    /* Table Colors - เปลี่ยนเป็นสีฟ้า */
+    --table-header-bg: #007bff;
+    --table-header-text: #ffffff;
+    --table-row-even: #f3f9ff;
+    --table-row-odd: #e3f2fd;
+    --table-row-hover: #bbdefb;
+    --table-text: #004085;
+    --table-shadow: rgba(0, 123, 255, 0.15);
+    
+    /* Form Colors - เปลี่ยนเป็นสีฟ้า */
+    --form-input-border: #90caf9;
+    --form-checkbox-accent: #004085;
+    
+    /* Layout */
+    --card-radius: 1rem;
 }

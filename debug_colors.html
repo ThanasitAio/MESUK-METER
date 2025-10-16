@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔧 Debug Theme Colors</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Theme CSS - ลำดับสำคัญ -->
+    <link href="assets/css/theme-generated.css" rel="stylesheet">
+    <link href="assets/css/app.css" rel="stylesheet">
+    <link href="assets/css/sidebar.css" rel="stylesheet">
+    
+    <style>
+        .debug-box {
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+        .color-test {
+            width: 50px;
+            height: 30px;
+            display: inline-block;
+            margin: 2px;
+            border: 1px solid #000;
+            text-align: center;
+            line-height: 30px;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-4">
+    <h1>🔧 Debug Theme Colors</h1>
+    
+    <!-- แสดงค่า CSS Variables -->
+    <div class="debug-box">
+        <h3>📊 CSS Variables Values</h3>
+        <div id="css-vars-display"></div>
+    </div>
+
+    <!-- ทดสอบ Sidebar Brand -->
+    <div class="debug-box">
+        <h3>🎨 Sidebar Brand Test</h3>
+        <div class="brand-logo" style="width: 100px; height: 60px; margin: 10px;">
+            Brand Logo
+        </div>
+        <p>Background: <code>var(--sidebar-brand-bg)</code></p>
+    </div>
+
+    <!-- ทดสอบ Table -->
+    <div class="debug-box">
+        <h3>📋 Table Test</h3>
+        <div class="table-responsive" style="max-width: 500px;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Header 1</th>
+                        <th>Header 2</th>
+                        <th>Header 3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Row 1 (Odd)</td>
+                        <td>Data A</td>
+                        <td>Test</td>
+                    </tr>
+                    <tr>
+                        <td>Row 2 (Even)</td>
+                        <td>Data B</td>
+                        <td>Test</td>
+                    </tr>
+                    <tr>
+                        <td>Row 3 (Hover me)</td>
+                        <td>Data C</td>
+                        <td>Test</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ทดสอบ Card -->
+    <div class="debug-box">
+        <h3>🃏 Card Test</h3>
+        <div class="card" style="max-width: 300px;">
+            <div class="card-header">
+                Card Header Test
+            </div>
+            <div class="card-body">
+                <p>Card body content</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ทดสอบปุ่มเปลี่ยนสี -->
+    <div class="debug-box">
+        <h3>🎛️ Color Switcher</h3>
+        <button class="btn btn-success me-2" onclick="switchToGreen()">🌿 Green</button>
+        <button class="btn btn-primary me-2" onclick="switchToBlue()">💙 Blue</button>
+        <button class="btn btn-danger" onclick="switchToRed()">❤️ Red</button>
+        <br><br>
+        <small>กดปุ่มเพื่อเปลี่ยนสีแบบ real-time</small>
+    </div>
+
+</div>
+
+<script>
+// แสดงค่า CSS Variables
+function displayCSSVars() {
+    const vars = [
+        '--color-primary',
+        '--color-accent', 
+        '--table-header-bg',
+        '--sidebar-brand-bg',
+        '--card-header-bg',
+        '--table-row-even',
+        '--table-row-odd',
+        '--table-row-hover'
+    ];
+    
+    let html = '<table class="table table-sm"><thead><tr><th>Variable</th><th>Value</th><th>Color</th></tr></thead><tbody>';
+    
+    vars.forEach(varName => {
+        const value = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+        const isColor = value.startsWith('#') || value.startsWith('rgb') || value.startsWith('linear-gradient');
+        const colorBox = isColor ? `<div class="color-test" style="background: ${value};"></div>` : 'N/A';
+        
+        html += `<tr>
+            <td><code>${varName}</code></td>
+            <td>${value}</td>
+            <td>${colorBox}</td>
+        </tr>`;
+    });
+    
+    html += '</tbody></table>';
+    document.getElementById('css-vars-display').innerHTML = html;
+}
+
+// เปลี่ยนสี
+function switchToGreen() {
+    document.documentElement.style.setProperty('--color-primary', '#086337');
+    document.documentElement.style.setProperty('--color-accent', '#D3EE98');
+    document.documentElement.style.setProperty('--table-header-bg', '#A9D654');
+    document.documentElement.style.setProperty('--table-row-even', '#F3F9D9');
+    document.documentElement.style.setProperty('--table-row-odd', '#E6F5B7');
+    document.documentElement.style.setProperty('--table-row-hover', '#D3EE98');
+    document.documentElement.style.setProperty('--card-header-bg', '#D3EE98');
+    document.documentElement.style.setProperty('--sidebar-brand-bg', 'linear-gradient(135deg, #D3EE98 0%, #b8d47a 100%)');
+    
+    setTimeout(displayCSSVars, 100);
+    alert('🌿 เปลี่ยนเป็นสีเขียวแล้ว!');
+}
+
+function switchToBlue() {
+    document.documentElement.style.setProperty('--color-primary', '#007bff');
+    document.documentElement.style.setProperty('--color-accent', '#e3f2fd');
+    document.documentElement.style.setProperty('--table-header-bg', '#007bff');
+    document.documentElement.style.setProperty('--table-row-even', '#f3f9ff');
+    document.documentElement.style.setProperty('--table-row-odd', '#e3f2fd');
+    document.documentElement.style.setProperty('--table-row-hover', '#bbdefb');
+    document.documentElement.style.setProperty('--card-header-bg', '#e3f2fd');
+    document.documentElement.style.setProperty('--sidebar-brand-bg', 'linear-gradient(135deg, #e3f2fd 0%, #90caf9 100%)');
+    
+    setTimeout(displayCSSVars, 100);
+    alert('💙 เปลี่ยนเป็นสีฟ้าแล้ว!');
+}
+
+function switchToRed() {
+    document.documentElement.style.setProperty('--color-primary', '#dc3545');
+    document.documentElement.style.setProperty('--color-accent', '#f8d7da');
+    document.documentElement.style.setProperty('--table-header-bg', '#dc3545');
+    document.documentElement.style.setProperty('--table-row-even', '#fff5f5');
+    document.documentElement.style.setProperty('--table-row-odd', '#f8d7da');
+    document.documentElement.style.setProperty('--table-row-hover', '#f5c6cb');
+    document.documentElement.style.setProperty('--card-header-bg', '#f8d7da');
+    document.documentElement.style.setProperty('--sidebar-brand-bg', 'linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%)');
+    
+    setTimeout(displayCSSVars, 100);
+    alert('❤️ เปลี่ยนเป็นสีแดงแล้ว!');
+}
+
+// โหลดหน้า
+window.addEventListener('load', function() {
+    displayCSSVars();
+    console.log('🔧 Debug page loaded');
+    console.log('Using theme-generated.css');
+});
+</script>
+
+</body>
+</html>
