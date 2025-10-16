@@ -83,7 +83,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-lg-4 mt-2 mt-md-0">
+                        <div class="col-md-6 col-lg-2 mt-2 mt-md-0">
                             <div class="mb-0">
                                 <label for="filterRole" class="form-label fw-bold small">
                                     <i class="fas fa-user-tag"></i> <?php echo t('user_management.role'); ?>
@@ -95,7 +95,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-6 col-lg-4 mt-2 mt-lg-0">
+                        <div class="col-md-6 col-lg-2 mt-2 mt-lg-0">
                             <div class="mb-0">
                                 <label for="filterStatus" class="form-label fw-bold small">
                                     <i class="fas fa-check-circle"></i> <?php echo t('user_management.status'); ?>
