@@ -1,4 +1,90 @@
 <?php
+// Handle static files when running with PHP built-in server
+if (php_sapi_name() === 'cli-server') {
+    $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    
+    // ตรวจสอบและให้บริการ static files จาก public folder
+    $publicFiles = array('/uploads/', '/assets/', '/css/', '/js/');
+    foreach ($publicFiles as $publicPath) {
+        if (strpos($uri, $publicPath) === 0) {
+            $file = __DIR__ . '/public' . $uri;
+            if (is_file($file)) {
+                return false; // Let PHP serve the static file
+            }
+        }
+    }
+    
+    // ตรวจสอบ static files จาก root folders
+    $rootFiles = array('/uploads/', '/assets/', '/css/', '/js/');
+    foreach ($rootFiles as $rootPath) {
+        if (strpos($uri, $rootPath) === 0) {
+            $file = __DIR__ . $uri;
+            if (is_file($file)) {
+                return false; // Let PHP serve the static file
+            }
+        }
+    }
+}
+
+// สำหรับ Apache - จัดการ static files
+if (php_sapi_name() !== 'cli-server') {
+    $uri = $_SERVER['REQUEST_URI'];
+    
+    // ตรวจสอบ path ที่ขึ้นต้นด้วย /uploads/, /assets/, /css/, /js/
+    if (preg_match('#^/(uploads|assets|css|js)/#', $uri)) {
+        
+        // ลบ query string ออกถ้ามี
+        $uri = parse_url($uri, PHP_URL_PATH);
+        
+        $filePath = __DIR__ . '/public' . $uri;
+        
+        // ถ้าไฟล์มีอยู่ใน public folder
+        if (file_exists($filePath) && is_file($filePath)) {
+            $mimeTypes = array(
+                'jpg' => 'image/jpeg',
+                'jpeg' => 'image/jpeg',
+                'png' => 'image/png',
+                'gif' => 'image/gif',
+                'css' => 'text/css',
+                'js' => 'application/javascript',
+                'pdf' => 'application/pdf',
+                'ico' => 'image/x-icon'
+            );
+            
+            $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+            $mimeType = isset($mimeTypes[$extension]) ? $mimeTypes[$extension] : 'application/octet-stream';
+            
+            header('Content-Type: ' . $mimeType);
+            header('Content-Length: ' . filesize($filePath));
+            readfile($filePath);
+            exit;
+        }
+        
+        // ถ้าไฟล์มีอยู่ใน root folder (backward compatibility)
+        $rootFilePath = __DIR__ . $uri;
+        if (file_exists($rootFilePath) && is_file($rootFilePath)) {
+            $mimeTypes = array(
+                'jpg' => 'image/jpeg',
+                'jpeg' => 'image/jpeg',
+                'png' => 'image/png',
+                'gif' => 'image/gif',
+                'css' => 'text/css',
+                'js' => 'application/javascript',
+                'pdf' => 'application/pdf',
+                'ico' => 'image/x-icon'
+            );
+            
+            $extension = strtolower(pathinfo($rootFilePath, PATHINFO_EXTENSION));
+            $mimeType = isset($mimeTypes[$extension]) ? $mimeTypes[$extension] : 'application/octet-stream';
+            
+            header('Content-Type: ' . $mimeType);
+            header('Content-Length: ' . filesize($rootFilePath));
+            readfile($rootFilePath);
+            exit;
+        }
+    }
+}
+
 session_start();
 
 // Set timezone for PHP
