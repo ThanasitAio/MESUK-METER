@@ -199,15 +199,7 @@ body {
     box-shadow: 0 8px 20px var(--table-shadow);
 }
 
-/* Forms */
-.form-control {
-    border-color: var(--form-input-border);
-}
 
-.form-control:focus {
-    border-color: var(--form-input-focus);
-    box-shadow: 0 0 0 0.2rem rgba(8, 99, 55, 0.25);
-}
 
 .form-check-input {
     accent-color: var(--form-checkbox-accent);

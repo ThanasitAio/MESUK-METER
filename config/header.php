@@ -17,6 +17,7 @@ return [
         'card_title' => 'font-size: 0.95rem; font-weight: 600;',
         'table_header' => 'font-size: 0.8rem; font-weight: 600;',
         'badge' => 'font-size: 0.65rem;',
+        'card_count' => 'font-size: 0.65rem;color: #3a3b45;',
         
         // --- สไตล์สำหรับตาราง ---
         'table_responsive' => 'max-height: 50vh; overflow-y: auto; overflow-x: auto;',

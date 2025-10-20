@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ทดสอบ jQuery Loading</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-card {
+            background: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .test-item {
+            padding: 10px;
+            margin: 5px 0;
+            border-left: 4px solid #007bff;
+            background: #f8f9fa;
+        }
+        .code {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 ทดสอบการโหลด jQuery และ Libraries</h1>
+
+    <div class="test-card">
+        <h2>📊 สถานะการโหลด</h2>
+        <div class="test-item">
+            <strong>1. jQuery:</strong>
+            <span id="jqueryStatus" class="status info">กำลังตรวจสอบ...</span>
+            <div id="jqueryVersion"></div>
+        </div>
+        <div class="test-item">
+            <strong>2. Bootstrap:</strong>
+            <span id="bootstrapStatus" class="status info">กำลังตรวจสอบ...</span>
+        </div>
+        <div class="test-item">
+            <strong>3. Bootstrap-select:</strong>
+            <span id="selectpickerStatus" class="status info">กำลังตรวจสอบ...</span>
+        </div>
+        <div class="test-item">
+            <strong>4. SweetAlert2:</strong>
+            <span id="swalStatus" class="status info">กำลังตรวจสอบ...</span>
+        </div>
+    </div>
+
+    <div class="test-card">
+        <h2>🧪 ผลการทดสอบ</h2>
+        <div id="testResults"></div>
+    </div>
+
+    <div class="test-card">
+        <h2>📝 Console Logs</h2>
+        <div class="code" id="consoleLogs"></div>
+    </div>
+
+    <div class="test-card">
+        <h2>🎯 คำแนะนำ</h2>
+        <ul>
+            <li>ถ้าทุกอย่างเป็นสีเขียว ✅ = ระบบทำงานสมบูรณ์</li>
+            <li>ถ้ามีสีแดง ❌ = ตรวจสอบ Console (F12) เพื่อดู errors</li>
+            <li>ถ้ารอนาน = อาจมีปัญหาการเชื่อมต่ออินเทอร์เน็ต</li>
+            <li>ลอง Hard Refresh: Ctrl + Shift + R (Windows) หรือ Cmd + Shift + R (Mac)</li>
+        </ul>
+    </div>
+
+    <!-- jQuery พร้อม Fallback -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="/assets/js/jquery.min.js"><\/script>');</script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Bootstrap-select (Dynamic Loading) -->
+    <script>
+        const logs = [];
+        
+        function addLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString('th-TH');
+            logs.push(`[${timestamp}] ${type.toUpperCase()}: ${message}`);
+            updateConsole();
+        }
+
+        function updateConsole() {
+            document.getElementById('consoleLogs').innerHTML = logs.join('<br>');
+        }
+
+        function updateStatus(elementId, status, message = '') {
+            const el = document.getElementById(elementId);
+            el.className = 'status ' + (status ? 'success' : 'error');
+            el.textContent = status ? '✅ โหลดสำเร็จ' : '❌ โหลดล้มเหลว';
+            if (message) {
+                el.textContent += ' - ' + message;
+            }
+        }
+
+        function runTests() {
+            addLog('เริ่มต้นการทดสอบ...', 'info');
+            
+            // Test 1: jQuery
+            setTimeout(function() {
+                if (typeof jQuery !== 'undefined') {
+                    const version = $.fn.jquery;
+                    updateStatus('jqueryStatus', true, 'v' + version);
+                    document.getElementById('jqueryVersion').innerHTML = `<small>Version: ${version}</small>`;
+                    addLog('jQuery โหลดสำเร็จ: v' + version, 'success');
+                    
+                    // Test jQuery functionality
+                    try {
+                        $('body').css('test', 'test');
+                        addLog('jQuery สามารถใช้งานได้', 'success');
+                    } catch(e) {
+                        addLog('jQuery ใช้งานไม่ได้: ' + e.message, 'error');
+                    }
+                } else {
+                    updateStatus('jqueryStatus', false);
+                    addLog('jQuery ไม่ได้โหลด', 'error');
+                }
+            }, 100);
+
+            // Test 2: Bootstrap
+            setTimeout(function() {
+                if (typeof bootstrap !== 'undefined') {
+                    updateStatus('bootstrapStatus', true);
+                    addLog('Bootstrap โหลดสำเร็จ', 'success');
+                } else {
+                    updateStatus('bootstrapStatus', false);
+                    addLog('Bootstrap ไม่ได้โหลด', 'error');
+                }
+            }, 200);
+
+            // Test 3: SweetAlert2
+            setTimeout(function() {
+                if (typeof Swal !== 'undefined') {
+                    updateStatus('swalStatus', true);
+                    addLog('SweetAlert2 โหลดสำเร็จ', 'success');
+                } else {
+                    updateStatus('swalStatus', false);
+                    addLog('SweetAlert2 ไม่ได้โหลด', 'error');
+                }
+            }, 300);
+
+            // Test 4: Load Bootstrap-select dynamically
+            setTimeout(function() {
+                if (typeof jQuery !== 'undefined') {
+                    addLog('เริ่มโหลด Bootstrap-select...', 'info');
+                    var script1 = document.createElement('script');
+                    script1.src = 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js';
+                    script1.onload = function() {
+                        addLog('Bootstrap-select script โหลดสำเร็จ', 'success');
+                        
+                        // Check if selectpicker is available
+                        setTimeout(function() {
+                            if (typeof $.fn.selectpicker !== 'undefined') {
+                                updateStatus('selectpickerStatus', true);
+                                addLog('Bootstrap-select plugin พร้อมใช้งาน', 'success');
+                                
+                                // Run final tests
+                                runFinalTests();
+                            } else {
+                                updateStatus('selectpickerStatus', false);
+                                addLog('Bootstrap-select plugin ไม่พร้อมใช้งาน', 'error');
+                            }
+                        }, 100);
+                    };
+                    script1.onerror = function() {
+                        updateStatus('selectpickerStatus', false);
+                        addLog('Bootstrap-select โหลดล้มเหลว', 'error');
+                    };
+                    document.head.appendChild(script1);
+                } else {
+                    updateStatus('selectpickerStatus', false);
+                    addLog('ไม่สามารถโหลด Bootstrap-select (jQuery ไม่พร้อม)', 'error');
+                }
+            }, 400);
+        }
+
+        function runFinalTests() {
+            const resultsDiv = document.getElementById('testResults');
+            let html = '<h3>ผลการทดสอบฟังก์ชัน:</h3>';
+
+            // Test 1: $ is defined
+            html += '<div class="test-item">';
+            html += '<strong>Test 1:</strong> ตรวจสอบ $ (jQuery shorthand)<br>';
+            if (typeof $ !== 'undefined') {
+                html += '<span class="status success">✅ PASS</span> - $ is defined';
+            } else {
+                html += '<span class="status error">❌ FAIL</span> - $ is not defined';
+            }
+            html += '</div>';
+
+            // Test 2: $.fn.selectpicker exists
+            html += '<div class="test-item">';
+            html += '<strong>Test 2:</strong> ตรวจสอบ $.fn.selectpicker<br>';
+            if (typeof $.fn.selectpicker !== 'undefined') {
+                html += '<span class="status success">✅ PASS</span> - selectpicker plugin loaded';
+            } else {
+                html += '<span class="status error">❌ FAIL</span> - selectpicker plugin not found';
+            }
+            html += '</div>';
+
+            // Test 3: Create and test selectpicker
+            html += '<div class="test-item">';
+            html += '<strong>Test 3:</strong> ทดสอบสร้าง selectpicker<br>';
+            try {
+                const testSelect = $('<select class="selectpicker"><option>Test</option></select>');
+                $('body').append(testSelect);
+                testSelect.selectpicker();
+                html += '<span class="status success">✅ PASS</span> - selectpicker can be initialized';
+                testSelect.selectpicker('destroy');
+                testSelect.remove();
+            } catch(e) {
+                html += '<span class="status error">❌ FAIL</span> - ' + e.message;
+            }
+            html += '</div>';
+
+            // Test 4: Console errors
+            html += '<div class="test-item">';
+            html += '<strong>Test 4:</strong> ตรวจสอบ Console Errors<br>';
+            html += '<span class="status info">ℹ️ INFO</span> - กรุณาเปิด Console (F12) เพื่อดู errors (ถ้ามี)';
+            html += '</div>';
+
+            resultsDiv.innerHTML = html;
+            addLog('การทดสอบเสร็จสมบูรณ์', 'success');
+            
+            // Final summary
+            addLog('='.repeat(50), 'info');
+            addLog('สรุป: ระบบพร้อมใช้งาน!', 'success');
+            addLog('หากไม่มี errors ในขั้นตอนข้างต้น แสดงว่าทุกอย่างทำงานถูกต้อง', 'info');
+        }
+
+        // Start tests when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', runTests);
+        } else {
+            runTests();
+        }
+    </script>
+</body>
+</html>

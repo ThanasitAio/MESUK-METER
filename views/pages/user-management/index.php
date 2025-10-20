@@ -1,5 +1,4 @@
 <?php
-// views/pages/user-management/index.php
 
 // โหลด config
 $headerConfig = require BASE_PATH . '/config/header.php';
@@ -66,9 +65,9 @@ $headerConfig = require BASE_PATH . '/config/header.php';
             </div>
 
             <!-- ตัวกรองข้อมูล -->
-            <div class="card <?php echo $headerConfig['classes']['filter_card']; ?>">
-                <div class="card-body py-2">
-                    <div class="row align-items-end">
+            <div class="card <?php echo $headerConfig['classes']['filter_card']; ?>" style="position: relative; z-index: 100; overflow: visible;">
+                <div class="card-body py-2" style="overflow: visible;">
+                    <div class="row align-items-end" style="overflow: visible;">
                         <div class="col-md-6 col-lg-4">
                             <div class="mb-0">
                                 <label for="searchUser" class="form-label fw-bold small">
@@ -83,25 +82,25 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-lg-2 mt-2 mt-md-0">
+                        <div class="col-md-6 col-lg-3 mt-2 mt-md-0">
                             <div class="mb-0">
                                 <label for="filterRole" class="form-label fw-bold small">
                                     <i class="fas fa-user-tag"></i> <?php echo t('user_management.role'); ?>
                                 </label>
-                                <select class="form-select form-select-sm" id="filterRole">
-                                    <option value="">ทั้งหมด</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="agent">Agent</option>
+                                <select class="select-beast form-select form-select-sm" id="filterRole">
+                                    <option value="" selected><?php echo t('selection.all'); ?></option>
+                                    <option value="admin"><?php echo t('user_management.admin'); ?></option>
+                                    <option value="agent"><?php echo t('user_management.agent'); ?></option>
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-6 col-lg-2 mt-2 mt-lg-0">
+                        <div class="col-md-6 col-lg-3 mt-2 mt-lg-0" style="position: relative; overflow: visible;">
                             <div class="mb-0">
                                 <label for="filterStatus" class="form-label fw-bold small">
                                     <i class="fas fa-check-circle"></i> <?php echo t('user_management.status'); ?>
                                 </label>
-                                <select class="form-select form-select-sm" id="filterStatus">
-                                    <option value="">ทั้งหมด</option>
+                                <select class="select-beast form-select form-select-sm"  id="filterStatus">
+                                    <option value="" selected><?php echo t('selection.all'); ?></option>
                                     <option value="active"><?php echo t('user_management.active'); ?></option>
                                     <option value="suspended"><?php echo t('user_management.suspended'); ?></option>
                                 </select>
@@ -112,7 +111,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
             </div>
 
             <!-- ตารางผู้ใช้ -->
-            <div class="card">
+            <div class="card" style="position: relative; z-index: 1;">
                 <?php 
                 $userCount = isset($users) && is_array($users) ? count($users) : 0;
                 echo cardHeader(
@@ -124,9 +123,9 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                 
                 <div class="card-body p-0">
                     <?php if (isset($users) && !empty($users)): ?>
-                        <div class="table-responsive" style="<?php echo $headerConfig['styles']['table_responsive']; ?>">
+                        <div class="table-responsive" style="<?php echo $headerConfig['styles']['table_responsive']; ?>; position: relative; z-index: 1;">
                             <table class="table table-sm table-hover mb-0" id="usersTable">
-                                <thead class="table-light sticky-top">
+                                <thead class="table-light" >
                                     <tr>
                                         <th width="40" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>">#</th>
                                         <th width="80" class="text-center d-none d-md-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>">
@@ -148,10 +147,11 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                                             <td class="text-center text-muted small"><?php echo $index + 1; ?></td>
                                             <td class="text-center d-none d-md-table-cell">
                                                 <?php if (!empty($user['img'])): ?>
-                                                    <img src="<?php echo htmlspecialchars($user['img']); ?>" 
-                                                         alt="Avatar" 
-                                                         class="rounded-circle" 
-                                                         style="width: 40px; height: 40px; object-fit: cover;">
+                                          <img src="<?php echo htmlspecialchars($user['img']); ?>" 
+                                              alt="Avatar" 
+                                              class="rounded-circle preview-clickable" 
+                                              style="width: 40px; height: 40px; object-fit: cover; cursor:pointer;" 
+                                              onclick="openImageModal(this.src)">
                                                 <?php else: ?>
                                                     <div class="rounded-circle bg-secondary text-white d-inline-flex align-items-center justify-content-center" 
                                                          style="width: 40px; height: 40px;">
@@ -221,20 +221,33 @@ $headerConfig = require BASE_PATH . '/config/header.php';
     </div>
 </div>
 
-<!-- SweetAlert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <script>
+// รอให้ DOM โหลดเสร็จ
 document.addEventListener('DOMContentLoaded', function() {
     const searchUser = document.getElementById('searchUser');
     const resetSearch = document.getElementById('resetSearch');
     const filterRole = document.getElementById('filterRole');
     const filterStatus = document.getElementById('filterStatus');
+    
+    // เก็บ TomSelect instances
+    let tomSelectRoleInstance = null;
+    let tomSelectStatusInstance = null;
+    
+    // รอให้ TomSelect initialize เสร็จ
+    setTimeout(function() {
+        if (filterRole.tomselect) {
+            tomSelectRoleInstance = filterRole.tomselect;
+        }
+        if (filterStatus.tomselect) {
+            tomSelectStatusInstance = filterStatus.tomselect;
+        }
+    }, 100);
 
     function filterTable() {
         const searchValue = searchUser.value.toLowerCase().trim();
-        const roleValue = filterRole.value.toLowerCase();
-        const statusValue = filterStatus.value.toLowerCase();
+        // ดึงค่าจาก TomSelect
+        const roleValue = tomSelectRoleInstance ? tomSelectRoleInstance.getValue() : filterRole.value;
+        const statusValue = tomSelectStatusInstance ? tomSelectStatusInstance.getValue().toLowerCase() : filterStatus.value.toLowerCase();
 
         document.querySelectorAll('#usersTable tbody tr').forEach(function(row) {
             const code = row.getAttribute('data-code').toLowerCase();
@@ -253,15 +266,31 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     searchUser.addEventListener('input', filterTable);
-    filterRole.addEventListener('change', filterTable);
+    
+    // Listen for TomSelect change event
+    if (filterRole) {
+        filterRole.addEventListener('change', filterTable);
+    }
+    
     filterStatus.addEventListener('change', filterTable);
 
     resetSearch.addEventListener('click', function() {
-        searchUser.value = '';
-        filterRole.value = '';
-        filterStatus.value = '';
-        filterTable();
-    });
+    searchUser.value = '';
+    
+    // รีเซตโดยตรงที่ DOM element
+    filterRole.value = '';
+    filterStatus.value = '';
+    
+    // สั่งให้ TomSelect sync กับค่าใหม่
+    if (filterRole.tomselect) {
+        filterRole.tomselect.setValue('');
+    }
+    if (filterStatus.tomselect) {
+        filterStatus.tomselect.setValue('');
+    }
+    
+    filterTable();
+});
 });
 
 function toggleStatus(userId) {
@@ -346,3 +375,27 @@ function deleteUser(userId, userName) {
     });
 }
 </script>
+
+<!-- Image Modal Popup: วางไว้หลังตารางผู้ใช้ เพื่อให้แน่ใจว่าอยู่ใน DOM -->
+<div id="imageModal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7);">
+    <span style="position:absolute; top:20px; right:30px; color:#fff; font-size:2em; cursor:pointer;" onclick="closeImageModal()">&times;</span>
+    <img id="modalImage" src="" style="max-width:90vw; max-height:90vh; border-radius:1em; box-shadow:0 0 20px #000; display:block; margin:auto;">
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    window.openImageModal = function(src) {
+        var modal = document.getElementById('imageModal');
+        var modalImg = document.getElementById('modalImage');
+        modalImg.src = src;
+        modal.style.display = 'flex';
+    }
+    window.closeImageModal = function() {
+        var modal = document.getElementById('imageModal');
+        modal.style.display = 'none';
+    }
+    document.getElementById('imageModal').addEventListener('click', function(e) {
+        if (e.target === this) window.closeImageModal();
+    });
+});
+</script>
+

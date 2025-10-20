@@ -87,7 +87,7 @@ function cardHeader($title, $badge = '', $icon = '') {
         if (is_array($badge)) {
             $badge = count($badge); // ถ้าเป็น array ให้นับจำนวน
         }
-        $html .= '<span class="badge" style="' . $config['styles']['badge'] . '">' . $badge . '</span>';
+        $html .= '<span class="badge" style="' . $config['styles']['card_count'] . '">' . $badge . '</span>';
     }
     
     $html .= '</div>';

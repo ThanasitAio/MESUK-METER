@@ -93,9 +93,80 @@
 }
 
 /* Input & Buttons */
-.input-group .form-control {
-    border-radius: 0.5rem;
-    border: 1px solid var(--form-input-border);
+
+/* TomSelect Custom Styles */
+.ts-wrapper {
+    position: relative !important;
+    width: 100% !important;
+}
+
+
+.ts-wrapper .ts-control {
+    height: 31px !important;
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.875rem !important;
+    border: 1px solid #dee2e6 !important;
+    border-radius: 0.25rem !important;
+    background-color: #fff !important;
+    line-height: 1.5 !important;
+    cursor: pointer !important;
+}
+
+.ts-wrapper.single .ts-control {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.ts-wrapper .ts-control input {
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+}
+
+.ts-wrapper .ts-dropdown {
+    position: absolute !important;
+    z-index: 10000 !important;
+    top: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin-top: 2px !important;
+    background: white !important;
+    border: 1px solid #dee2e6 !important;
+    border-radius: 0.25rem !important;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    max-height: 250px !important;
+    overflow-y: auto !important;
+}
+
+.ts-dropdown .ts-dropdown-content {
+    max-height: 250px !important;
+    overflow-y: auto !important;
+}
+
+.ts-wrapper.dropdown-active .ts-dropdown {
+    display: block !important;
+}
+
+.ts-dropdown .option {
+    padding: 0.5rem 0.75rem !important;
+    cursor: pointer !important;
+}
+
+.ts-dropdown .option:hover,
+.ts-dropdown .option.active {
+    background-color: #f8f9fa !important;
+}
+
+/* Fix card overflow for dropdowns */
+.card-body {
+    position: relative;
+}
+
+.card.filter-card,
+.card[style*="z-index: 100"] {
+    overflow: visible !important;
 }
 
 /* Responsive Adjustments */

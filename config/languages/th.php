@@ -76,8 +76,8 @@ return array(
         'full_name' => 'ชื่อ-นามสกุล',
         'phone' => 'เบอร์โทร',
         'birthday' => 'วันเกิด',
-        'facebook' => 'Facebook',
-        'line_id' => 'LINE ID',
+        'facebook' => 'เฟสบุ๊ค',
+        'line_id' => 'ไลน์ไอดี',
         'image' => 'รูปภาพ',
         'status' => 'สถานะ',
         'role' => 'บทบาท',
@@ -98,10 +98,9 @@ return array(
         'total_users' => 'ผู้ใช้ทั้งหมด',
         'active_users' => 'ใช้งาน',
         'suspended_users' => 'ระงับ',
-        'admin_count' => 'Admin',
-        'agent_count' => 'Agent',
-        'user_count' => 'User',
-        
+        'admin_count' => 'ผู้ดูแลระบบ',
+        'agent_count' => 'ตัวแทน',
+        'user_count' => 'ผู้ใช้',
         // Form
         'required_field' => 'ฟิลด์ที่จำเป็น',
         'user_code_placeholder' => 'รหัสประจำตัวผู้ใช้',
@@ -140,5 +139,10 @@ return array(
         'yes' => 'ใช่',
         'no' => 'ไม่',
         'confirm' => 'ยืนยัน',
+    ),
+
+    'selection' => array(
+        'all' => 'ทั้งหมด',
+
     ),
 );

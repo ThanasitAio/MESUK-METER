@@ -77,7 +77,7 @@ return array(
         'phone' => 'Phone',
         'birthday' => 'Birthday',
         'facebook' => 'Facebook',
-        'line_id' => 'LINE ID',
+        'line_id' => 'Line ID',
         'image' => 'Image',
         'status' => 'Status',
         'role' => 'Role',
@@ -140,5 +140,10 @@ return array(
         'yes' => 'Yes',
         'no' => 'No',
         'confirm' => 'Confirm',
+    ),
+
+    'selection' => array(
+        'all' => 'All',
+
     ),
 );

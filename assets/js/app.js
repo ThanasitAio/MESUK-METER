@@ -12,15 +12,18 @@ class UniversalApp {
         this.loadInitialData();
     }
     setupAjax() {
-        $.ajaxSetup({
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN': this.csrfToken
-            },
-            error: (xhr, status, error) => {
-                this.handleAjaxError(xhr, status, error);
-            }
-        });
+        // ตรวจสอบว่า jQuery โหลดแล้วหรือยัง
+        if (typeof $ !== 'undefined' && $.ajaxSetup) {
+            $.ajaxSetup({
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': this.csrfToken
+                },
+                error: (xhr, status, error) => {
+                    this.handleAjaxError(xhr, status, error);
+                }
+            });
+        }
     }
 
     async apiCall(url, method = 'GET', data = null) {
@@ -235,8 +238,53 @@ class UniversalApp {
     }
 }
 
-// Initialize app
-const app = new UniversalApp();
+// Initialize app - รอให้ DOM โหลดเสร็จก่อน
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+        const app = new UniversalApp();
+    });
+} else {
+    const app = new UniversalApp();
+}
+
+// Initialize bootstrap-select for all .selectpicker elements - รอให้ jQuery และ selectpicker โหลดเสร็จ
+(function initSelectpicker() {
+    if (typeof jQuery === 'undefined') {
+        setTimeout(initSelectpicker, 50);
+        return;
+    }
+    
+    $(document).ready(function() {
+        function tryInitSelectpicker() {
+            if (typeof $.fn.selectpicker !== 'undefined' && $('.selectpicker').length) {
+                $('.selectpicker').selectpicker();
+            } else if ($('.selectpicker').length) {
+                setTimeout(tryInitSelectpicker, 100);
+            }
+        }
+        tryInitSelectpicker();
+    });
+
+    // Re-initialize selectpicker after AJAX content load (if needed)
+    $(document).on('content:updated', function() {
+        if (typeof $.fn.selectpicker !== 'undefined' && $('.selectpicker').length) {
+            $('.selectpicker').selectpicker('refresh');
+        }
+    });
+
+    // Initialize TomSelect for .select-beast elements
+   document.querySelectorAll('.select-beast').forEach(function(el) {
+    if (!el.tomselect) {
+        new TomSelect(el, {
+            create: false,
+            sortField: null,
+            dropdownParent: 'body',
+
+            allowEmptyOption: true
+        });
+    }
+});
+})();
 
 
 
