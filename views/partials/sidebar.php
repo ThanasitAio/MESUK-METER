@@ -27,6 +27,14 @@
                     </a>
                 </li>
 
+                <!-- สินค้า -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/products">
+                        <div class="nav-icon"><i class="fa-solid fa-warehouse"></i></div>
+                        <span class="nav-text"><?php echo t('sidebar.product_data'); ?></span>
+                    </a>
+                </li>
+
                 <!-- อีกตัวอย่างของ submenu -->
                 <li class="nav-item has-submenu">
                     <a href="#" class="nav-link submenu-toggle">

@@ -20,7 +20,7 @@ return [
         'card_count' => 'font-size: 0.65rem;color: #3a3b45;',
         
         // --- สไตล์สำหรับตาราง ---
-        'table_responsive' => 'max-height: 50vh; overflow-y: auto; overflow-x: auto;',
+        'table_responsive' => 'max-height: 49vh; overflow-y: auto; overflow-x: auto;',
         'table_container' => 'overflow-x: auto; -webkit-overflow-scrolling: touch;'
     ],
     'classes' => [

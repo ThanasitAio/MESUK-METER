@@ -23,6 +23,7 @@ return array(
         'notifications' => 'Notifications',
         'user_management' => 'User Management',
         'import_user_data' => 'Import Users',
+        'product_data' => 'Products',
         'reports' => 'Reports',
         'sales_report' => 'Sales Report',
         'user_report' => 'User Report',
@@ -140,6 +141,19 @@ return array(
         'yes' => 'Yes',
         'no' => 'No',
         'confirm' => 'Confirm',
+    ),
+
+    'product_management' => array(
+        'title' => 'Product Management',
+        'edit_product' => 'Edit Product',
+        'total_products' => 'Total Products',
+        'search' => 'Search',
+        'product_code' => 'Product Code',
+        'product_list' => 'Product List',
+        'description' => 'Description',
+        'group' => 'Group',
+        'category' => 'Category',
+        'actions' => 'Actions',
     ),
 
     'selection' => array(

@@ -23,6 +23,7 @@ return array(
         'notifications' => 'การแจ้งเตือน',
         'user_management' => 'จัดการผู้ใช้',
         'import_user_data' => 'นำข้อมูลผู้ใช้เข้า',
+        'product_data' => 'ข้อมูลสินค้า',
         'reports' => 'รายงาน',
         'sales_report' => 'รายงานการขาย',
         'user_report' => 'รายงานผู้ใช้',
@@ -139,6 +140,19 @@ return array(
         'yes' => 'ใช่',
         'no' => 'ไม่',
         'confirm' => 'ยืนยัน',
+    ),
+
+    'product_management' => array(
+        'title' => 'จัดการสินค้า',
+        'edit_product' => 'แก้ไขสินค้า',
+        'total_products' => 'สินค้าทั้งหมด',
+        'search' => 'ค้นหา',
+        'product_code' => 'รหัสสินค้า',
+        'product_list' => 'รายการสินค้า',
+        'description' => 'คำอธิบาย',
+        'group' => 'กลุ่ม',
+        'category' => 'หมวดหมู่',
+        'actions' => 'การจัดการ',
     ),
 
     'selection' => array(

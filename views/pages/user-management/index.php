@@ -3,7 +3,14 @@
 // โหลด config
 $headerConfig = require BASE_PATH . '/config/header.php';
 ?>
-
+<style>
+#usersTable thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #f8f9fa; /* หรือใช้ theme สีที่ต้องการ */
+}
+</style>
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">

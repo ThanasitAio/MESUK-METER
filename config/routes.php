@@ -13,6 +13,10 @@ return array(
         '/users' => 'UserManagementController@index',
         '/users/create' => 'UserManagementController@create',
         '/users/edit/{id}' => 'UserManagementController@edit',
+
+        // Product Management Routes
+        '/products' => 'ProductManagementController@index',
+        '/products/edit/{id}' => 'ProductManagementController@edit',
     ),
     'POST' => array(
         '/login' => 'AuthController@login',
@@ -24,5 +28,9 @@ return array(
         '/users/update/{id}' => 'UserManagementController@update',
         '/users/delete/{id}' => 'UserManagementController@delete',
         '/users/change-status/{id}' => 'UserManagementController@changeStatus',
+
+        // Product Management Routes
+        '/products/store' => 'ProductManagementController@store',
+        '/products/update/{id}' => 'ProductManagementController@update',
     )
 );
