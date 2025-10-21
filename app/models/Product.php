@@ -4,12 +4,21 @@ class Product extends Model {
     protected $table = 'ali_product';
     
     /**
-     * ดึงข้อมูลสินค้าทั้งหมด
+     * ดึงข้อมูลสินค้าทั้งหมด (แบบมี JOIN ตาราง)
      */
     public function getAllProducts() {
         try {
-            // ใช้ SELECT * เพื่อดึงทุก field
-            $sql = "SELECT * FROM {$this->table} ORDER BY pcode ASC";
+            $sql = "SELECT 
+                    p.pcode,
+                    p.pdesc,
+                    pc.cate_name,
+                    COALESCE(pg1.groupname, pg2.groupname) as groupname
+                FROM ali_productcategory pc
+                LEFT JOIN ali_productgroup pg1 ON pc.id = pg1.id_cate
+                LEFT JOIN ali_product p ON pg1.id = p.group_id
+                LEFT JOIN ali_productgroup pg2 ON p.group_id = pg2.id
+                WHERE (pc.id = 34 OR pc.id = 54) AND p.sh = 1
+                ORDER BY pc.cate_name, groupname, p.pcode";
             
             $stmt = $this->db->prepare($sql);
             $result = $stmt->execute();
@@ -20,16 +29,15 @@ class Product extends Model {
             }
             
             $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            error_log("getAllProducts: Found " . count($products) . " products from table {$this->table}");
+            error_log("getAllProducts: Found " . count($products) . " products with category and group");
 
             if (count($products) > 0) {
-                error_log("getAllProducts: First product keys: " . implode(', ', array_keys($products[0])));
+                error_log("getAllProducts: First product - " . $products[0]['pcode']);
             }
             
             return $products;
         } catch (PDOException $e) {
-            error_log("Error getting all products: " . $e->getMessage());
-            error_log("Table name: " . $this->table);
+            error_log("Error getting all products with joins: " . $e->getMessage());
             return array();
         } catch (Exception $e) {
             error_log("Unexpected error in getAllProducts: " . $e->getMessage());
@@ -38,56 +46,70 @@ class Product extends Model {
     }
     
     /**
-     * ดึงข้อมูลผู้ใช้ตาม ID
+     * ดึงข้อมูลสินค้าตาม ID
      */
-    public function getUserById($id) {
+    public function getProductById($id) {
         try {
-            error_log("getUserById called with ID: " . $id);
-            error_log("Table name: " . $this->table);
+            error_log("getProductById called with ID: " . $id);
             
-            $sql = "SELECT * FROM {$this->table} WHERE id = ?";
+            $sql = "SELECT 
+                    p.*,
+                    pc.cate_name,
+                    COALESCE(pg1.groupname, pg2.groupname) as groupname
+                FROM ali_product p
+                LEFT JOIN ali_productgroup pg1 ON p.group_id = pg1.id
+                LEFT JOIN ali_productcategory pc ON pg1.id_cate = pc.id
+                LEFT JOIN ali_productgroup pg2 ON p.group_id = pg2.id
+                WHERE p.id = ? AND p.sh = 1";
             
             $stmt = $this->db->prepare($sql);
             $result = $stmt->execute(array($id));
             
             if (!$result) {
-                error_log("getUserById: Execute failed - " . print_r($stmt->errorInfo(), true));
+                error_log("getProductById: Execute failed - " . print_r($stmt->errorInfo(), true));
                 return null;
             }
             
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            $product = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            if ($user) {
-                error_log("getUserById: Found user - " . $user['username']);
+            if ($product) {
+                error_log("getProductById: Found product - " . $product['pcode']);
             } else {
-                error_log("getUserById: User not found for ID: " . $id);
+                error_log("getProductById: Product not found for ID: " . $id);
                 
-                // ลองค้นหาด้วย code แทน (เผื่อส่ง code มาแทน id)
-                $sql2 = "SELECT * FROM {$this->table} WHERE code = ?";
+                // ลองค้นหาด้วย pcode แทน
+                $sql2 = "SELECT 
+                        p.*,
+                        pc.cate_name,
+                        COALESCE(pg1.groupname, pg2.groupname) as groupname
+                    FROM ali_product p
+                    LEFT JOIN ali_productgroup pg1 ON p.group_id = pg1.id
+                    LEFT JOIN ali_productcategory pc ON pg1.id_cate = pc.id
+                    LEFT JOIN ali_productgroup pg2 ON p.group_id = pg2.id
+                    WHERE p.pcode = ? AND p.sh = 1";
                 $stmt2 = $this->db->prepare($sql2);
                 $stmt2->execute(array($id));
-                $user = $stmt2->fetch(PDO::FETCH_ASSOC);
+                $product = $stmt2->fetch(PDO::FETCH_ASSOC);
                 
-                if ($user) {
-                    error_log("getUserById: Found user by code - " . $user['username']);
+                if ($product) {
+                    error_log("getProductById: Found product by pcode - " . $product['pcode']);
                 }
             }
             
-            return $user;
+            return $product;
         } catch (PDOException $e) {
-            error_log("Error getting user by ID: " . $e->getMessage());
-            error_log("SQL: SELECT * FROM {$this->table} WHERE id = " . $id);
+            error_log("Error getting product by ID: " . $e->getMessage());
             return null;
         }
     }
     
     /**
-     * ตรวจสอบว่า code ซ้ำหรือไม่
+     * ตรวจสอบว่า pcode ซ้ำหรือไม่
      */
-    public function isCodeExists($code, $excludeId = null) {
+    public function isPcodeExists($pcode, $excludeId = null) {
         try {
-            $sql = "SELECT COUNT(*) FROM {$this->table} WHERE code = ?";
-            $params = [$code];
+            $sql = "SELECT COUNT(*) FROM {$this->table} WHERE pcode = ? AND sh = 1";
+            $params = array($pcode);
             
             if ($excludeId) {
                 $sql .= " AND id != ?";
@@ -98,198 +120,204 @@ class Product extends Model {
             $stmt->execute($params);
             return $stmt->fetchColumn() > 0;
         } catch (PDOException $e) {
-            error_log("Error checking code exists: " . $e->getMessage());
+            error_log("Error checking pcode exists: " . $e->getMessage());
             return false;
         }
     }
     
     /**
-     * ตรวจสอบว่า username ซ้ำหรือไม่
+     * สร้างสินค้าใหม่
      */
-    public function isUsernameExists($username, $excludeId = null) {
-        try {
-            $sql = "SELECT COUNT(*) FROM {$this->table} WHERE username = ?";
-            $params = [$username];
-            
-            if ($excludeId) {
-                $sql .= " AND id != ?";
-                $params[] = $excludeId;
-            }
-            
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute($params);
-            return $stmt->fetchColumn() > 0;
-        } catch (PDOException $e) {
-            error_log("Error checking username exists: " . $e->getMessage());
-            return false;
-        }
-    }
-    
-    /**
-     * สร้างผู้ใช้ใหม่
-     */
-    public function createUser($data) {
+    public function createProduct($data) {
         try {
             $sql = "INSERT INTO {$this->table} 
-                    (id, code, username, password, name, tel, birthday, 
-                    facebook_name, line_id, img, status, role, created_by) 
-                    VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    (pcode, pdesc, group_id, price, unit, sh, created_date) 
+                    VALUES (?, ?, ?, ?, ?, 1, NOW())";
             
             $stmt = $this->db->prepare($sql);
-            $result = $stmt->execute([
-                $data['code'],
-                $data['username'],
-                md5($data['password']), // ใช้ MD5 ตามโครงสร้างเดิม
-                isset($data['name']) ? $data['name'] : null,
-                isset($data['tel']) ? $data['tel'] : null,
-                isset($data['birthday']) ? $data['birthday'] : null,
-                isset($data['facebook_name']) ? $data['facebook_name'] : null,
-                isset($data['line_id']) ? $data['line_id'] : null,
-                isset($data['img']) ? $data['img'] : null,
-                isset($data['status']) ? $data['status'] : 'active',
-                isset($data['role']) ? $data['role'] : 'user',
-                isset($data['created_by']) ? $data['created_by'] : null
-            ]);
+            $result = $stmt->execute(array(
+                $data['pcode'],
+                isset($data['pdesc']) ? $data['pdesc'] : null,
+                isset($data['group_id']) ? $data['group_id'] : null,
+                isset($data['price']) ? $data['price'] : 0,
+                isset($data['unit']) ? $data['unit'] : null
+            ));
             
             return $result;
         } catch (PDOException $e) {
-            error_log("Error creating user: " . $e->getMessage());
+            error_log("Error creating product: " . $e->getMessage());
             return false;
         }
     }
     
     /**
-     * อัพเดทข้อมูลผู้ใช้
+     * อัพเดทข้อมูลสินค้า
      */
-    public function updateUser($id, $data) {
+    public function updateProduct($id, $data) {
         try {
             $sql = "UPDATE {$this->table} SET 
-                    code = ?, 
-                    username = ?, 
-                    name = ?, 
-                    tel = ?, 
-                    birthday = ?, 
-                    facebook_name = ?, 
-                    line_id = ?, 
-                    img = ?, 
-                    status = ?, 
-                    role = ?, 
-                    updated_by = ?,
-                    updated_date = NOW()";
+                    pcode = ?, 
+                    pdesc = ?, 
+                    group_id = ?, 
+                    price = ?, 
+                    unit = ?,
+                    updated_date = NOW() 
+                    WHERE id = ? AND sh = 1";
             
-            $params = [
-                $data['code'],
-                $data['username'],
-                isset($data['name']) ? $data['name'] : null,
-                isset($data['tel']) ? $data['tel'] : null,
-                isset($data['birthday']) ? $data['birthday'] : null,
-                isset($data['facebook_name']) ? $data['facebook_name'] : null,
-                isset($data['line_id']) ? $data['line_id'] : null,
-                isset($data['img']) ? $data['img'] : null,
-                isset($data['status']) ? $data['status'] : 'active',
-                isset($data['role']) ? $data['role'] : 'user',
-                isset($data['updated_by']) ? $data['updated_by'] : null
-            ];
-            
-            // อัพเดทรหัสผ่านถ้ามีการส่งมา
-            if (!empty($data['password'])) {
-                $sql .= ", password = ?";
-                $params[] = md5($data['password']);
-            }
-            
-            $sql .= " WHERE id = ?";
-            $params[] = $id;
+            $params = array(
+                $data['pcode'],
+                isset($data['pdesc']) ? $data['pdesc'] : null,
+                isset($data['group_id']) ? $data['group_id'] : null,
+                isset($data['price']) ? $data['price'] : 0,
+                isset($data['unit']) ? $data['unit'] : null,
+                $id
+            );
             
             $stmt = $this->db->prepare($sql);
             return $stmt->execute($params);
         } catch (PDOException $e) {
-            error_log("Error updating user: " . $e->getMessage());
+            error_log("Error updating product: " . $e->getMessage());
             return false;
         }
     }
     
     /**
-     * ลบผู้ใช้
+     * ลบสินค้า (soft delete)
      */
-    public function deleteUser($id) {
+    public function deleteProduct($id) {
         try {
-            $sql = "DELETE FROM {$this->table} WHERE id = ?";
+            $sql = "UPDATE {$this->table} SET sh = 0 WHERE id = ?";
             $stmt = $this->db->prepare($sql);
-            return $stmt->execute([$id]);
+            return $stmt->execute(array($id));
         } catch (PDOException $e) {
-            error_log("Error deleting user: " . $e->getMessage());
+            error_log("Error deleting product: " . $e->getMessage());
             return false;
         }
     }
     
     /**
-     * เปลี่ยนสถานะผู้ใช้
+     * นับจำนวนสินค้า
      */
-    public function changeStatus($id, $status, $updatedBy = null) {
+    public function countProducts($filters = array()) {
         try {
-            $sql = "UPDATE {$this->table} SET 
-                    status = ?, 
-                    updated_by = ?,
-                    updated_date = NOW()
-                    WHERE id = ?";
+            $sql = "SELECT COUNT(*) 
+                    FROM ali_productcategory pc
+                    LEFT JOIN ali_productgroup pg1 ON pc.id = pg1.id_cate
+                    LEFT JOIN ali_product p ON pg1.id = p.group_id
+                    LEFT JOIN ali_productgroup pg2 ON p.group_id = pg2.id
+                    WHERE (pc.id = 34 OR pc.id = 54) AND p.sh = 1";
             
-            $stmt = $this->db->prepare($sql);
-            return $stmt->execute([$status, $updatedBy, $id]);
-        } catch (PDOException $e) {
-            error_log("Error changing user status: " . $e->getMessage());
-            return false;
-        }
-    }
-    
-    /**
-     * นับจำนวนผู้ใช้
-     */
-    public function countProducts($filters = []) {
-        try {
-            $sql = "SELECT COUNT(*) FROM {$this->table} WHERE 1=1";
-            $params = [];
+            $params = array();
             
-            if (!empty($filters['status'])) {
-                $sql .= " AND status = ?";
-                $params[] = $filters['status'];
-            }
-            
-            if (!empty($filters['role'])) {
-                $sql .= " AND role = ?";
-                $params[] = $filters['role'];
+            if (!empty($filters['group_id'])) {
+                $sql .= " AND p.group_id = ?";
+                $params[] = $filters['group_id'];
             }
             
             $stmt = $this->db->prepare($sql);
             $stmt->execute($params);
             return $stmt->fetchColumn();
         } catch (PDOException $e) {
-            error_log("Error counting users: " . $e->getMessage());
+            error_log("Error counting products: " . $e->getMessage());
             return 0;
         }
     }
     
     /**
-     * ค้นหาผู้ใช้
+     * ค้นหาสินค้า - รองรับการค้นหาด้วย pcode, pdesc และ category
      */
-    public function searchUsers($keyword) {
+    public function searchProducts($keyword, $filters = array()) {
         try {
-            $sql = "SELECT id, code, username, name, tel, birthday, 
-                    facebook_name, line_id, img, status, role, 
-                    created_date, created_by, updated_date, updated_by 
-                    FROM {$this->table} 
-                    WHERE code LIKE ? 
-                    OR username LIKE ? 
-                    OR name LIKE ? 
-                    OR tel LIKE ?
-                    ORDER BY created_date DESC";
+            $sql = "SELECT 
+                    p.pcode,
+                    p.pdesc,
+                    pc.cate_name,
+                    COALESCE(pg1.groupname, pg2.groupname) as groupname
+                FROM ali_productcategory pc
+                LEFT JOIN ali_productgroup pg1 ON pc.id = pg1.id_cate
+                LEFT JOIN ali_product p ON pg1.id = p.group_id
+                LEFT JOIN ali_productgroup pg2 ON p.group_id = pg2.id
+                WHERE (pc.id = 34 OR pc.id = 54) AND p.sh = 1";
             
-            $searchTerm = "%{$keyword}%";
+            $params = array();
+            
+            // ค้นหาด้วย keyword
+            if (!empty($keyword)) {
+                $sql .= " AND (p.pcode LIKE ? OR p.pdesc LIKE ?)";
+                $searchTerm = "%{$keyword}%";
+                $params[] = $searchTerm;
+                $params[] = $searchTerm;
+            }
+            
+            // กรองตาม group_id
+            if (!empty($filters['group_id'])) {
+                $sql .= " AND p.group_id = ?";
+                $params[] = $filters['group_id'];
+            }
+            
+            // กรองตาม category
+            if (!empty($filters['category_id'])) {
+                $sql .= " AND pc.id = ?";
+                $params[] = $filters['category_id'];
+            }
+            
+            $sql .= " ORDER BY pc.cate_name, groupname, p.pcode";
+            
             $stmt = $this->db->prepare($sql);
-            $stmt->execute([$searchTerm, $searchTerm, $searchTerm, $searchTerm]);
+            $stmt->execute($params);
+            
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            error_log("searchProducts: Found " . count($results) . " products for keyword: " . $keyword);
+            
+            return $results;
+        } catch (PDOException $e) {
+            error_log("Error searching products: " . $e->getMessage());
+            return array();
+        }
+    }
+    
+    /**
+     * ดึงข้อมูลกลุ่มสินค้า
+     */
+    public function getProductGroups() {
+        try {
+            $sql = "SELECT id, groupname FROM ali_productgroup WHERE sh = 1 ORDER BY groupname";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log("Error searching users: " . $e->getMessage());
-            return [];
+            error_log("Error getting product groups: " . $e->getMessage());
+            return array();
+        }
+    }
+    
+    /**
+     * ดึงข้อมูลหมวดหมู่สินค้า
+     */
+    public function getProductCategories() {
+        try {
+            $sql = "SELECT id, cate_name FROM ali_productcategory WHERE sh = 1 ORDER BY cate_name";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error getting product categories: " . $e->getMessage());
+            return array();
+        }
+    }
+    
+    /**
+     * ดึงข้อมูลสินค้าตามกลุ่ม
+     */
+    public function getProductsByGroup($group_id) {
+        try {
+            $sql = "SELECT * FROM {$this->table} WHERE group_id = ? AND sh = 1 ORDER BY pcode ASC";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute(array($group_id));
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error getting products by group: " . $e->getMessage());
+            return array();
         }
     }
 }

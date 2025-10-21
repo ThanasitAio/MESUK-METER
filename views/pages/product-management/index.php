@@ -76,31 +76,31 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                                     <tr>
                                         <th width="40" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>">#</th>
                                         <th style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('product_management.product_code'); ?></th>
-                                        <th class="d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('product_management.description'); ?></th>
-                                        <th width="100" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('product_management.group'); ?></th>
-                                        <th width="100" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('product_management.category'); ?></th>
-                                        <th width="150" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('product_management.actions'); ?></th>
+                                        <th class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('product_management.description'); ?></th>
+                                        <th width="300" class="d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('product_management.group'); ?></th>
+                                        <th width="300" class="d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('product_management.category'); ?></th>
+                                        <th width="100" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('product_management.actions'); ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($products as $index => $product): ?>
-                                        <tr data-code="<?php echo htmlspecialchars($product['code']); ?>" 
-                                            data-name="<?php echo htmlspecialchars(!empty($product['name']) ? $product['name'] : ''); ?>"
-                                            data-role="<?php echo htmlspecialchars($product['role']); ?>"
-                                            data-status="<?php echo htmlspecialchars($product['status']); ?>">
+                                        <tr data-pcode="<?php echo htmlspecialchars($product['pcode']); ?>" 
+                                            data-pdesc="<?php echo htmlspecialchars(!empty($product['pdesc']) ? $product['pdesc'] : ''); ?>"
+                                            data-category="<?php echo htmlspecialchars(!empty($product['cate_name']) ? $product['cate_name'] : ''); ?>"
+                                            data-group="<?php echo htmlspecialchars(!empty($product['groupname']) ? $product['groupname'] : ''); ?>">
                                             <td class="text-center text-muted small"><?php echo $index + 1; ?></td>
                                          
                                             <td>
                                                 <div class="fw-bold small"><?php echo htmlspecialchars($product['pcode']); ?></div>
                                             </td>
-                                            <td class="d-none d-lg-table-cell">
+                                            <td>
                                                 <div class="small"><?php echo htmlspecialchars(!empty($product['pdesc']) ? $product['pdesc'] : '-'); ?></div>
                                             </td>
                                             <td class="d-none d-lg-table-cell">
-                                                <div class="small"><?php echo htmlspecialchars(!empty($product['group_id']) ? $product['group_id'] : '-'); ?></div>
+                                                <div class="small"><?php echo htmlspecialchars(!empty($product['cate_name']) ? $product['cate_name'] : '-'); ?></div>
                                             </td>
                                             <td class="d-none d-lg-table-cell">
-                                                <div class="small"><?php echo htmlspecialchars(!empty($product['unit']) ? $product['unit'] : '-'); ?></div>
+                                                <div class="small"><?php echo htmlspecialchars(!empty($product['groupname']) ? $product['groupname'] : '-'); ?></div>
                                             </td>
                                          
                                          
@@ -135,159 +135,42 @@ $headerConfig = require BASE_PATH . '/config/header.php';
 document.addEventListener('DOMContentLoaded', function() {
     const searchUser = document.getElementById('searchUser');
     const resetSearch = document.getElementById('resetSearch');
-    const filterRole = document.getElementById('filterRole');
-    const filterStatus = document.getElementById('filterStatus');
-
-    // เก็บ TomSelect instances
-    let tomSelectRoleInstance = null;
-    let tomSelectStatusInstance = null;
-
-    // รอให้ TomSelect initialize เสร็จ
-    setTimeout(function() {
-        if (filterRole && filterRole.tomselect) {
-            tomSelectRoleInstance = filterRole.tomselect;
-        }
-        if (filterStatus && filterStatus.tomselect) {
-            tomSelectStatusInstance = filterStatus.tomselect;
-        }
-    }, 100);
 
     function filterTable() {
         const searchValue = searchUser ? searchUser.value.toLowerCase().trim() : '';
-        // ดึงค่าจาก TomSelect
-        const roleValue = tomSelectRoleInstance ? tomSelectRoleInstance.getValue() : (filterRole ? filterRole.value : '');
-        const statusValue = tomSelectStatusInstance ? tomSelectStatusInstance.getValue().toLowerCase() : (filterStatus ? filterStatus.value.toLowerCase() : '');
 
         document.querySelectorAll('#productsTable tbody tr').forEach(function(row) {
-            const code = (row.getAttribute('data-code') || '').toLowerCase();
-            const name = (row.getAttribute('data-name') || '').toLowerCase();
-            const role = (row.getAttribute('data-role') || '').toLowerCase();
-            const status = (row.getAttribute('data-status') || '').toLowerCase();
+            const pcode = (row.getAttribute('data-pcode') || '').toLowerCase();
+            const pdesc = (row.getAttribute('data-pdesc') || '').toLowerCase();
+            const category = (row.getAttribute('data-category') || '').toLowerCase();
+            const group = (row.getAttribute('data-group') || '').toLowerCase();
 
+            // ค้นหาจาก pcode, pdesc, category หรือ group
             const matchSearch = !searchValue || 
-                              code.includes(searchValue) || 
-                              name.includes(searchValue);
-            const matchRole = !roleValue || role === roleValue;
-            const matchStatus = !statusValue || status === statusValue;
+                              pcode.includes(searchValue) || 
+                              pdesc.includes(searchValue) ||
+                              category.includes(searchValue) ||
+                              group.includes(searchValue);
 
-            row.style.display = (matchSearch && matchRole && matchStatus) ? '' : 'none';
+            row.style.display = matchSearch ? '' : 'none';
         });
+
+        // นับจำนวนแถวที่แสดง
+        const visibleRows = document.querySelectorAll('#productsTable tbody tr:not([style*="display: none"])').length;
+        console.log('Products found:', visibleRows);
     }
 
     if (searchUser) {
         searchUser.addEventListener('input', filterTable);
     }
 
-    // Listen for TomSelect change event
-    if (filterRole) {
-        filterRole.addEventListener('change', filterTable);
-    }
-
-    if (filterStatus) {
-        filterStatus.addEventListener('change', filterTable);
-    }
-
     if (resetSearch) {
         resetSearch.addEventListener('click', function() {
             if (searchUser) searchUser.value = '';
-
-            // รีเซตโดยตรงที่ DOM element
-            if (filterRole) filterRole.value = '';
-            if (filterStatus) filterStatus.value = '';
-
-            // สั่งให้ TomSelect sync กับค่าใหม่
-            if (filterRole && filterRole.tomselect) {
-                filterRole.tomselect.setValue('');
-            }
-            if (filterStatus && filterStatus.tomselect) {
-                filterStatus.tomselect.setValue('');
-            }
-
             filterTable();
         });
     }
 });
-
-function toggleStatus(userId) {
-    Swal.fire({
-        title: '<?php echo t('user_management.confirm_status_title'); ?>',
-        text: '<?php echo t('user_management.confirm_status_text'); ?>',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '<?php echo t('user_management.confirm'); ?>',
-        cancelButtonText: '<?php echo t('user_management.cancel'); ?>'
-    }).then(function(result) {
-        if (result.isConfirmed) {
-            fetch('/users/change-status/' + userId, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(function(response) { return response.json(); })
-            .then(function(data) {
-                if (data.success) {
-                    Swal.fire({
-                        title: '<?php echo t('user_management.status_change_success'); ?>',
-                        text: data.message,
-                        icon: 'success'
-                    }).then(function() { 
-                        location.reload(); 
-                    });
-                } else {
-                    Swal.fire('<?php echo t('user_management.operation_failed'); ?>', data.message, 'error');
-                }
-            })
-            .catch(function(error) {
-                Swal.fire('<?php echo t('user_management.operation_failed'); ?>', '<?php echo t('user_management.operation_failed'); ?>', 'error');
-            });
-        }
-    });
-}
-
-function deleteUser(userId, userName) {
-    var confirmText = '<?php echo t('user_management.confirm_delete_text'); ?>';
-    confirmText = confirmText.replace('{name}', userName);
-    
-    Swal.fire({
-        title: '<?php echo t('user_management.confirm_delete_title'); ?>',
-        text: confirmText,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: '<?php echo t('user_management.delete'); ?>',
-        cancelButtonText: '<?php echo t('user_management.cancel'); ?>'
-    }).then(function(result) {
-        if (result.isConfirmed) {
-            fetch('/users/delete/' + userId, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(function(response) { return response.json(); })
-            .then(function(data) {
-                if (data.success) {
-                    Swal.fire({
-                        title: 'สำเร็จ!',
-                        text: data.message,
-                        icon: 'success'
-                    }).then(function() { 
-                        location.reload(); 
-                    });
-                } else {
-                    var errorMsg = data.errors ? data.errors.join('<br>') : data.message;
-                    Swal.fire('<?php echo t('user_management.operation_failed'); ?>', errorMsg, 'error');
-                }
-            })
-            .catch(function(error) {
-                Swal.fire('<?php echo t('user_management.operation_failed'); ?>', 'เกิดข้อผิดพลาดในการเชื่อมต่อ', 'error');
-            });
-        }
-    });
-}
 </script>
+
 

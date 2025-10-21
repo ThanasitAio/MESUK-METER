@@ -154,4 +154,37 @@ class ProductManagementController extends Controller {
         exit;
     }
     
+    /**
+     * ค้นหาสินค้า (AJAX)
+     */
+    public function search() {
+        header('Content-Type: application/json');
+        
+        if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+            http_response_code(405);
+            echo json_encode(array('success' => false, 'message' => 'Method not allowed'));
+            exit;
+        }
+        
+        $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
+        $filters = array();
+        
+        if (isset($_GET['group_id']) && !empty($_GET['group_id'])) {
+            $filters['group_id'] = $_GET['group_id'];
+        }
+        
+        if (isset($_GET['category_id']) && !empty($_GET['category_id'])) {
+            $filters['category_id'] = $_GET['category_id'];
+        }
+        
+        $products = $this->productModel->searchProducts($keyword, $filters);
+        
+        echo json_encode(array(
+            'success' => true,
+            'data' => $products,
+            'count' => count($products)
+        ));
+        exit;
+    }
+    
 }
