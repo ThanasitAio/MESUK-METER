@@ -9,7 +9,21 @@
                     </a>
                 </li>
 
+                <!-- มิเตอร์ -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/meters">
+                        <div class="nav-icon"><i class="fa-solid fa-jug-detergent"></i></div>
+                        <span class="nav-text"><?php echo t('sidebar.meter_data'); ?></span>
+                    </a>
+                </li>
                 
+                <!-- สินค้า -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/products">
+                        <div class="nav-icon"><i class="fa-solid fa-warehouse"></i></div>
+                        <span class="nav-text"><?php echo t('sidebar.product_data'); ?></span>
+                    </a>
+                </li>
 
                 <!-- ตัวอย่างเมนูหลักปกติ -->
                 <li class="nav-item">
@@ -27,16 +41,10 @@
                     </a>
                 </li>
 
-                <!-- สินค้า -->
-                <li class="nav-item">
-                    <a class="nav-link" href="/products">
-                        <div class="nav-icon"><i class="fa-solid fa-warehouse"></i></div>
-                        <span class="nav-text"><?php echo t('sidebar.product_data'); ?></span>
-                    </a>
-                </li>
+                
 
                 <!-- อีกตัวอย่างของ submenu -->
-                <li class="nav-item has-submenu">
+                <!-- <li class="nav-item has-submenu">
                     <a href="#" class="nav-link submenu-toggle">
                         <div class="nav-icon"><i class="bi bi-graph-up"></i></div>
                         <span class="nav-text"><?php echo t('sidebar.reports'); ?></span>
@@ -47,10 +55,10 @@
                         <li><a href="/reports/users"><?php echo t('sidebar.user_report'); ?></a></li>
                         <li><a href="/reports/system"><?php echo t('sidebar.system_logs'); ?></a></li>
                     </ul>
-                </li>
+                </li> -->
 
                 <!-- ✅ ตัวอย่างเมนูหลักที่มี Submenu -->
-                <li class="nav-item has-submenu">
+                <!-- <li class="nav-item has-submenu">
                     <a href="#" class="nav-link submenu-toggle">
                         <div class="nav-icon"><i class="bi bi-gear"></i></div>
                         <span class="nav-text"><?php echo t('sidebar.settings'); ?></span>
@@ -61,7 +69,7 @@
                         <li><a href="/settings/appearance"><?php echo t('sidebar.appearance'); ?></a></li>
                         <li><a href="/settings/notifications"><?php echo t('sidebar.notifications'); ?></a></li>
                     </ul>
-                </li>
+                </li> -->
 
                 
             </ul>

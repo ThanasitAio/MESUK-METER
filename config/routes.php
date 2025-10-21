@@ -17,6 +17,10 @@ return array(
         // Product Management Routes
         '/products' => 'ProductManagementController@index',
         '/products/edit/{id}' => 'ProductManagementController@edit',
+        
+        // Meter Management Routes
+        '/meters' => 'MeterManagementController@index',
+        '/meters/edit/{id}' => 'MeterManagementController@edit',
     ),
     'POST' => array(
         '/login' => 'AuthController@login',
@@ -32,5 +36,9 @@ return array(
         // Product Management Routes
         '/products/store' => 'ProductManagementController@store',
         '/products/update/{id}' => 'ProductManagementController@update',
+
+        // Meter Management Routes
+        '/meters/store' => 'MeterManagementController@store',
+        '/meters/update/{id}' => 'MeterManagementController@update',
     )
 );

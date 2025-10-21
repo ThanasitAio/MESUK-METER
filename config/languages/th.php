@@ -27,7 +27,8 @@ return array(
         'reports' => 'รายงาน',
         'sales_report' => 'รายงานการขาย',
         'user_report' => 'รายงานผู้ใช้',
-        'system_logs' => 'บันทึกระบบ'
+        'system_logs' => 'บันทึกระบบ',
+        'meter_data' => 'มิเตอร์',
     ),
     'mobile' => array(
         'menu' => 'เมนู',

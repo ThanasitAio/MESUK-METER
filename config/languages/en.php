@@ -27,7 +27,8 @@ return array(
         'reports' => 'Reports',
         'sales_report' => 'Sales Report',
         'user_report' => 'User Report',
-        'system_logs' => 'System Logs'
+        'system_logs' => 'System Logs',
+        'meter_data' => 'มิเตอร์',
     ),
     'mobile' => array(
         'menu' => 'Menu',
