@@ -49,36 +49,27 @@ class Product extends Model {
      * ดึงข้อมูลสินค้าตาม ID
      */
     public function getProductById($id) {
+
         try {
-            error_log("getProductById called with ID: " . $id);
-            
-            $sql = "SELECT 
-                    p.*,
-                    pc.cate_name,
-                    COALESCE(pg1.groupname, pg2.groupname) as groupname
-                FROM ali_product p
-                LEFT JOIN ali_productgroup pg1 ON p.group_id = pg1.id
-                LEFT JOIN ali_productcategory pc ON pg1.id_cate = pc.id
-                LEFT JOIN ali_productgroup pg2 ON p.group_id = pg2.id
-                WHERE p.id = ? AND p.sh = 1";
-            
-            $stmt = $this->db->prepare($sql);
-            $result = $stmt->execute(array($id));
-            
-            if (!$result) {
-                error_log("getProductById: Execute failed - " . print_r($stmt->errorInfo(), true));
-                return null;
-            }
-            
-            $product = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            if ($product) {
-                error_log("getProductById: Found product - " . $product['pcode']);
+            error_log("getProductById called with param: " . $id);
+            $product = null;
+            // ถ้า $id เป็นตัวเลข ให้ค้นหาด้วย id
+            if (is_numeric($id)) {
+                $sql = "SELECT 
+                        p.*,
+                        pc.cate_name,
+                        COALESCE(pg1.groupname, pg2.groupname) as groupname
+                    FROM ali_product p
+                    LEFT JOIN ali_productgroup pg1 ON p.group_id = pg1.id
+                    LEFT JOIN ali_productcategory pc ON pg1.id_cate = pc.id
+                    LEFT JOIN ali_productgroup pg2 ON p.group_id = pg2.id
+                    WHERE p.id = ? AND p.sh = 1";
+                $stmt = $this->db->prepare($sql);
+                $stmt->execute(array($id));
+                $product = $stmt->fetch(PDO::FETCH_ASSOC);
             } else {
-                error_log("getProductById: Product not found for ID: " . $id);
-                
-                // ลองค้นหาด้วย pcode แทน
-                $sql2 = "SELECT 
+                // ถ้าไม่ใช่ตัวเลข ให้ค้นหาด้วย pcode
+                $sql = "SELECT 
                         p.*,
                         pc.cate_name,
                         COALESCE(pg1.groupname, pg2.groupname) as groupname
@@ -87,15 +78,15 @@ class Product extends Model {
                     LEFT JOIN ali_productcategory pc ON pg1.id_cate = pc.id
                     LEFT JOIN ali_productgroup pg2 ON p.group_id = pg2.id
                     WHERE p.pcode = ? AND p.sh = 1";
-                $stmt2 = $this->db->prepare($sql2);
-                $stmt2->execute(array($id));
-                $product = $stmt2->fetch(PDO::FETCH_ASSOC);
-                
-                if ($product) {
-                    error_log("getProductById: Found product by pcode - " . $product['pcode']);
-                }
+                $stmt = $this->db->prepare($sql);
+                $stmt->execute(array($id));
+                $product = $stmt->fetch(PDO::FETCH_ASSOC);
             }
-            
+            if ($product) {
+                error_log("getProductById: Found product - " . $product['pcode']);
+            } else {
+                error_log("getProductById: Product not found for param: " . $id);
+            }
             return $product;
         } catch (PDOException $e) {
             error_log("Error getting product by ID: " . $e->getMessage());
@@ -103,73 +94,36 @@ class Product extends Model {
         }
     }
     
-    /**
-     * ตรวจสอบว่า pcode ซ้ำหรือไม่
-     */
-    public function isPcodeExists($pcode, $excludeId = null) {
-        try {
-            $sql = "SELECT COUNT(*) FROM {$this->table} WHERE pcode = ? AND sh = 1";
-            $params = array($pcode);
-            
-            if ($excludeId) {
-                $sql .= " AND id != ?";
-                $params[] = $excludeId;
-            }
-            
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute($params);
-            return $stmt->fetchColumn() > 0;
-        } catch (PDOException $e) {
-            error_log("Error checking pcode exists: " . $e->getMessage());
-            return false;
-        }
-    }
-    
-    /**
-     * สร้างสินค้าใหม่
-     */
-    public function createProduct($data) {
-        try {
-            $sql = "INSERT INTO {$this->table} 
-                    (pcode, pdesc, group_id, price, unit, sh, created_date) 
-                    VALUES (?, ?, ?, ?, ?, 1, NOW())";
-            
-            $stmt = $this->db->prepare($sql);
-            $result = $stmt->execute(array(
-                $data['pcode'],
-                isset($data['pdesc']) ? $data['pdesc'] : null,
-                isset($data['group_id']) ? $data['group_id'] : null,
-                isset($data['price']) ? $data['price'] : 0,
-                isset($data['unit']) ? $data['unit'] : null
-            ));
-            
-            return $result;
-        } catch (PDOException $e) {
-            error_log("Error creating product: " . $e->getMessage());
-            return false;
-        }
-    }
-    
+
     /**
      * อัพเดทข้อมูลสินค้า
      */
     public function updateProduct($id, $data) {
         try {
             $sql = "UPDATE {$this->table} SET 
-                    pcode = ?, 
-                    pdesc = ?, 
-                    group_id = ?, 
-                    price = ?, 
-                    unit = ?,
-                    updated_date = NOW() 
-                    WHERE id = ? AND sh = 1";
+                    investor_owner = ?, 
+                    investor_address = ?, 
+                    investor_phone = ?, 
+                    tenant = ?, 
+                    tenant_phone = ?,
+                    tenant_tax_id = ?,
+                    bank_acc_name = ?,
+                    bank_name = ?,
+                    bank_branch = ?,
+                    bank_acc_no = ?
+                    WHERE pcode = ? AND sh = 1";
             
             $params = array(
-                $data['pcode'],
-                isset($data['pdesc']) ? $data['pdesc'] : null,
-                isset($data['group_id']) ? $data['group_id'] : null,
-                isset($data['price']) ? $data['price'] : 0,
-                isset($data['unit']) ? $data['unit'] : null,
+                isset($data['investor_owner']) ? $data['investor_owner'] : null,
+                isset($data['investor_address']) ? $data['investor_address'] : null,
+                isset($data['investor_phone']) ? $data['investor_phone'] : null,
+                isset($data['tenant']) ? $data['tenant'] : null,
+                isset($data['tenant_phone']) ? $data['tenant_phone'] : null,
+                isset($data['tenant_tax_id']) ? $data['tenant_tax_id'] : null,
+                isset($data['bank_acc_name']) ? $data['bank_acc_name'] : null,
+                isset($data['bank_name']) ? $data['bank_name'] : null,
+                isset($data['bank_branch']) ? $data['bank_branch'] : null,
+                isset($data['bank_acc_no']) ? $data['bank_acc_no'] : null,
                 $id
             );
             
@@ -177,20 +131,6 @@ class Product extends Model {
             return $stmt->execute($params);
         } catch (PDOException $e) {
             error_log("Error updating product: " . $e->getMessage());
-            return false;
-        }
-    }
-    
-    /**
-     * ลบสินค้า (soft delete)
-     */
-    public function deleteProduct($id) {
-        try {
-            $sql = "UPDATE {$this->table} SET sh = 0 WHERE id = ?";
-            $stmt = $this->db->prepare($sql);
-            return $stmt->execute(array($id));
-        } catch (PDOException $e) {
-            error_log("Error deleting product: " . $e->getMessage());
             return false;
         }
     }

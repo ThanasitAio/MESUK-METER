@@ -1,5 +1,4 @@
 <?php
-
 // โหลด config
 $headerConfig = require BASE_PATH . '/config/header.php';
 ?>
@@ -13,120 +12,116 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                         <i class="fas fa-<?php echo $data['action'] === 'create' ? 'plus' : 'edit'; ?>"></i>
                         <h1 class="h4 d-inline-block ms-2 mb-0"><?php echo htmlspecialchars($data['title']); ?></h1>
                     </div>
-                    <form method="POST" id="userForm" action="<?php echo $data['action'] === 'create' ? '/users/store' : '/users/update/' . $data['user']['id']; ?>" enctype="multipart/form-data">
+                    <form id="userForm" action="/products/update/<?php echo htmlspecialchars($data['product']['pcode']); ?>" method="POST">
+                        <input type="hidden" name="pcode" value="<?php echo htmlspecialchars($data['product']['pcode']); ?>">
                         <div class="form-body">
-                        <div class="row">
-                            <div class="col-12 col-sm-6 col-md-2 mb-2">
-                                <div class="form-group">
-                                    <label for="code" class="required"><?php echo t('user_management.user_code'); ?></label>
-                                    <input type="text" autocomplete="off" class="form-control form-control-sm" id="code" name="code" value="<?php echo htmlspecialchars(isset($_SESSION['old']['code']) ? $_SESSION['old']['code'] : (isset($data['user']['code']) ? $data['user']['code'] : '')); ?>" required>                                </div>
-                            </div>
-                            <div class="col-12 col-sm-6 col-md-2 mb-2">
-                                <div class="form-group">
-                                    <label for="username" class="required"><?php echo t('user_management.username'); ?></label>
-                                    <input type="text" autocomplete="off" class="form-control form-control-sm" id="username" name="username" value="<?php echo htmlspecialchars(isset($_SESSION['old']['username']) ? $_SESSION['old']['username'] : (isset($data['user']['username']) ? $data['user']['username'] : '')); ?>" required>
+                            <div class="row">
+                                <div class="col-12 col-md-2 mb-2">
+                                    <div class="form-group">
+                                        <label for="pcode"><?php echo t('product_management.product_code'); ?></label>
+                                        <input type="text" class="form-control form-control-sm" id="pcode" value="<?php echo htmlspecialchars($data['product']['pcode']); ?>" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4 mb-2">
+                                    <div class="form-group">
+                                        <label for="pdesc"><?php echo t('product_management.description'); ?></label>
+                                        <input type="text" class="form-control form-control-sm" id="pdesc" value="<?php echo htmlspecialchars($data['product']['pdesc']); ?>" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3 mb-2">
+                                    <div class="form-group">
+                                        <label for="groupname"><?php echo t('product_management.group'); ?></label>
+                                        <input type="text" class="form-control form-control-sm" id="groupname" value="<?php echo htmlspecialchars($data['product']['groupname']); ?>" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3 mb-2">
+                                    <div class="form-group">
+                                        <label for="category"><?php echo t('product_management.category'); ?></label>
+                                        <input type="text" class="form-control form-control-sm" id="category" value="<?php echo htmlspecialchars($data['product']['cate_name']); ?>" disabled>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-sm-6 col-md-2 mb-2">
-                                <div class="form-group">
-                                    <label for="password" <?php echo $data['action'] === 'create' ? 'class="required"' : ''; ?>><?php echo t('user_management.password'); ?></label>
-                                    <input type="password" autocomplete="off" class="form-control form-control-sm" id="password" name="password" <?php echo $data['action'] === 'create' ? 'required' : ''; ?> >
+                            <hr>
+                            <div class="row">
+                                <div class="col-12 col-md-3 mb-2">
+                                    <div class="form-group">
+                                        <label for="investor_owner"><?php echo t('product_management.investor_owner'); ?></label>
+                                        <input type="text" class="form-control form-control-sm" id="investor_owner" name="investor_owner" value="<?php echo htmlspecialchars(isset($data['product']['investor_owner']) ? $data['product']['investor_owner'] : ''); ?>" autocomplete="off">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12 col-sm-6 col-md-4 mb-2">
-                                <div class="form-group">
-                                    <label for="name"><?php echo t('user_management.full_name'); ?></label>
-                                    <input type="text" autocomplete="off" class="form-control form-control-sm" id="name" name="name" value="<?php echo htmlspecialchars(isset($_SESSION['old']['name']) ? $_SESSION['old']['name'] : (isset($data['user']['name']) ? $data['user']['name'] : '')); ?>">
+                                <div class="col-12 col-md-6 mb-2">
+                                    <div class="form-group">
+                                        <label for="investor_address"><?php echo t('product_management.investor_address'); ?></label>
+                                        <textarea class="form-control form-control-sm" id="investor_address" name="investor_address"><?php echo htmlspecialchars(isset($data['product']['investor_address']) ? $data['product']['investor_address'] : ''); ?></textarea>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12 col-sm-6 col-md-2 mb-2">
-                                <div class="form-group">
-                                    <label for="tel"><?php echo t('user_management.phone'); ?></label>
-                                    <input type="text" autocomplete="off" class="form-control form-control-sm" id="tel" name="tel" value="<?php echo htmlspecialchars(isset($_SESSION['old']['tel']) ? $_SESSION['old']['tel'] : (isset($data['user']['tel']) ? $data['user']['tel'] : '')); ?>">
+                                <div class="col-12 col-md-3 mb-2">
+                                    <div class="form-group">
+                                        <label for="investor_phone"><?php echo t('product_management.investor_phone'); ?></label>
+                                        <input type="text" class="form-control form-control-sm" id="investor_phone" name="investor_phone" value="<?php echo htmlspecialchars(isset($data['product']['investor_phone']) ? $data['product']['investor_phone'] : ''); ?>" autocomplete="off">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12 col-sm-6 col-md-2 mb-2">
-                                <div class="form-group">
-                                    <label for="birthday"><?php echo t('user_management.birthday'); ?></label>
-                                    <input type="date" autocomplete="off" class="form-control form-control-sm" id="birthday" name="birthday" value="<?php echo htmlspecialchars(isset($_SESSION['old']['birthday']) ? $_SESSION['old']['birthday'] : (isset($data['user']['birthday']) ? $data['user']['birthday'] : '')); ?>">
+                                <div class="col-12 col-md-3 mb-2">
+                                    <div class="form-group">
+                                        <label for="tenant"><?php echo t('product_management.tenant'); ?></label>
+                                        <input type="text" class="form-control form-control-sm" id="tenant" name="tenant" value="<?php echo htmlspecialchars(isset($data['product']['tenant']) ? $data['product']['tenant'] : ''); ?>" autocomplete="off">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12 col-sm-6 col-md-4 mb-2">
-                                <div class="form-group">
-                                    <label for="facebook_name"><?php echo t('user_management.facebook'); ?></label>
-                                    <input type="text" autocomplete="off" class="form-control form-control-sm" id="facebook_name" name="facebook_name" value="<?php echo htmlspecialchars(isset($_SESSION['old']['facebook_name']) ? $_SESSION['old']['facebook_name'] : (isset($data['user']['facebook_name']) ? $data['user']['facebook_name'] : '')); ?>">
+                                <div class="col-12 col-md-3 mb-2">
+                                    <div class="form-group">
+                                        <label for="tenant_phone"><?php echo t('product_management.tenant_phone'); ?></label>
+                                        <input type="text" class="form-control form-control-sm" id="tenant_phone" name="tenant_phone" value="<?php echo htmlspecialchars(isset($data['product']['tenant_phone']) ? $data['product']['tenant_phone'] : ''); ?>" autocomplete="off">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12 col-sm-6 col-md-2 mb-2">
-                                <div class="form-group">
-                                    <label for="line_id"><?php echo t('user_management.line_id'); ?></label>
-                                    <input type="text" autocomplete="off" class="form-control form-control-sm" id="line_id" name="line_id" value="<?php echo htmlspecialchars(isset($_SESSION['old']['line_id']) ? $_SESSION['old']['line_id'] : (isset($data['user']['line_id']) ? $data['user']['line_id'] : '')); ?>">
+                                <div class="col-12 col-md-3 mb-2">
+                                    <div class="form-group">
+                                        <label for="tenant_tax_id"><?php echo t('product_management.tenant_tax_id'); ?></label>
+                                        <input type="text" class="form-control form-control-sm" id="tenant_tax_id" name="tenant_tax_id" value="<?php echo htmlspecialchars(isset($data['product']['tenant_tax_id']) ? $data['product']['tenant_tax_id'] : ''); ?>" autocomplete="off">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12 col-sm-6 col-md-2 mb-2">
-                                <div class="form-group">
-                                    <label for="role" class="required"><?php echo t('user_management.role'); ?></label>
-                                    <?php $currentRole = isset($_SESSION['old']['role']) ? $_SESSION['old']['role'] : (isset($data['user']['role']) ? $data['user']['role'] : 'agent'); ?>
-                                    <select class="select-beast form-select form-select-sm" id="role" name="role" required>
-                                        <option value="agent" <?php echo $currentRole === 'agent' ? 'selected' : ''; ?>><?php echo t('user_management.agent'); ?></option>
-                                        <option value="admin" <?php echo $currentRole === 'admin' ? 'selected' : ''; ?>><?php echo t('user_management.admin'); ?></option>
-                                    </select>
+                                <div class="col-12 col-md-3 mb-2">
+                                    <div class="form-group">
+                                        <label for="bank_acc_name"><?php echo t('product_management.bank_acc_name'); ?></label>
+                                        <input type="text" class="form-control form-control-sm" id="bank_acc_name" name="bank_acc_name" value="<?php echo htmlspecialchars(isset($data['product']['bank_acc_name']) ? $data['product']['bank_acc_name'] : ''); ?>" autocomplete="off">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12 col-sm-6 col-md-2 mb-2">
-                                <div class="form-group">
-                                    <label for="status" class="required"><?php echo t('user_management.status'); ?></label>
-                                    <?php $currentStatus = isset($_SESSION['old']['status']) ? $_SESSION['old']['status'] : (isset($data['user']['status']) ? $data['user']['status'] : 'active'); ?>
-                                    <select class="select-beast form-select form-select-sm" id="status" name="status" required>
-                                        <option value="active" <?php echo $currentStatus === 'active' ? 'selected' : ''; ?>><?php echo t('user_management.active'); ?></option>
-                                        <option value="suspended" <?php echo $currentStatus === 'suspended' ? 'selected' : ''; ?>><?php echo t('user_management.suspended'); ?></option>
-                                    </select>
+                                <div class="col-12 col-md-3 mb-2">
+                                    <div class="form-group">
+                                        <label for="bank_name"><?php echo t('product_management.bank_name'); ?></label>
+                                        <input type="text" class="form-control form-control-sm" id="bank_name" name="bank_name" value="<?php echo htmlspecialchars(isset($data['product']['bank_name']) ? $data['product']['bank_name'] : ''); ?>" autocomplete="off">
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6 mb-2">
-                                <div class="form-group">
-                                    <label for="img" ><?php echo t('user_management.image'); ?></label>
-                                    <div class="d-flex align-items-center gap-3">
-                                        <div class="image-preview-container flex-shrink-0" style="width: 90px; height: 90px; border: 1px solid #dee2e6; border-radius: 0.5rem; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
-                                            <div class="image-preview w-100 h-100 d-flex align-items-center justify-content-center" id="imagePreview">
-                                                <?php if (isset($data['user']['img']) && !empty($data['user']['img'])): ?>
-                                                    <img src="<?php echo htmlspecialchars($data['user']['img']); ?>" alt="Preview" class="img-fluid rounded preview-clickable" style="max-width: 80px; max-height: 80px; cursor:pointer;" onclick="openImageModal(this.src)">
-                                                <?php else: ?>
-                                                    <div class="placeholder text-center text-muted">
-                                                        <i class="fas fa-image fa-2x mb-1"></i>
-                                                        <div style="font-size: 0.9em;"><?php echo t('user_management.image_preview'); ?></div>
-                                                    </div>
-                                                <?php endif; ?>
-                                            </div>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <input type="file" class="form-control form-control-sm mb-1" id="img" name="img" accept="image/*" onchange="previewImage(event)">
-                                            <div class="help-text small text-muted"><?php echo t('user_management.image_help'); ?></div>
-                                        </div>
+                                <div class="col-12 col-md-3 mb-2">
+                                    <div class="form-group">
+                                        <label for="bank_branch"><?php echo t('product_management.bank_branch'); ?></label>
+                                        <input type="text" class="form-control form-control-sm" id="bank_branch" name="bank_branch" value="<?php echo htmlspecialchars(isset($data['product']['bank_branch']) ? $data['product']['bank_branch'] : ''); ?>" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3 mb-2">
+                                    <div class="form-group">
+                                        <label for="bank_acc_no"><?php echo t('product_management.bank_acc_no'); ?></label>
+                                        <input type="text" class="form-control form-control-sm" id="bank_acc_no" name="bank_acc_no" value="<?php echo htmlspecialchars(isset($data['product']['bank_acc_no']) ? $data['product']['bank_acc_no'] : ''); ?>" autocomplete="off">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <hr>
-                    <div class="form-footer">
-                        <a href="/users" class="btn btn-secondary">
-                            <i class="fas fa-times"></i> <?php echo t('user_management.cancel'); ?>
-                        </a>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> <?php echo t('user_management.save'); ?>
-                        </button>
-                    </div>
-                </form>
+                        <hr>
+                        <div class="form-footer">
+                            <a href="/products" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> <?php echo t('user_management.cancel'); ?>
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> <?php echo t('user_management.save'); ?>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+</div>
 
-
-    <?php unset($_SESSION['old']); ?>
-
+<?php unset($_SESSION['old']); ?>
 
 <script>
     // Handle form submission
@@ -138,7 +133,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
         const originalText = submitBtn.innerHTML;
         
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + <?php echo json_encode(t('user_management.save')); ?> + '...';
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + <?php echo json_encode(t('product_management.save')); ?> + '...';
         
         fetch(this.action, {
             method: 'POST',
@@ -149,20 +144,14 @@ $headerConfig = require BASE_PATH . '/config/header.php';
         })
         .then(function(data) {
             if (data.success) {
-                // ตรวจสอบว่าเป็น action อะไร
-                const isCreate = <?php echo $data['action'] === 'create' ? 'true' : 'false'; ?>;
-                const successTitle = isCreate ? 
-                    <?php echo json_encode(t('user_management.add_success')); ?> : 
-                    <?php echo json_encode(t('user_management.update_success')); ?>;
-                
                 Swal.fire({
-                    title: successTitle,
+                    title: <?php echo json_encode(t('product_management.update_success')); ?>,
                     text: data.message,
                     icon: 'success',
                     timer: 1200,
                     showConfirmButton: false
                 }).then(function() {
-                    window.location.replace('/users');
+                    window.location.replace('/products');
                 });
             } else {
                 var errorMsg = data.errors ? data.errors.join('<br>') : data.message;
@@ -186,37 +175,4 @@ $headerConfig = require BASE_PATH . '/config/header.php';
             });
         });
     });
-    
-    function previewImage(event) {
-
-        const file = event.target.files[0];
-        const preview = document.getElementById('imagePreview');
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                preview.innerHTML = '<img src="' + e.target.result + '" alt="Preview" class="img-fluid rounded preview-clickable" style="max-width: 80px; max-height: 80px; cursor:pointer;" onclick="openImageModal(this.src)">';
-            }
-            reader.readAsDataURL(file);
-        }
-    }
-
-    // Modal popup functions
-    function openImageModal(src) {
-        var modal = document.getElementById('imageModal');
-        var modalImg = document.getElementById('modalImage');
-        modalImg.src = src;
-        modal.style.display = 'flex';
-    }
-    function closeImageModal() {
-        var modal = document.getElementById('imageModal');
-        modal.style.display = 'none';
-    }
-    document.getElementById('imageModal').addEventListener('click', function(e) {
-        if (e.target === this) closeImageModal();
-    });
 </script>
-
-<div id="imageModal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); align-items:center; justify-content:center;">
-    <span style="position:absolute; top:20px; right:30px; color:#fff; font-size:2em; cursor:pointer;" onclick="closeImageModal()">&times;</span>
-    <img id="modalImage" src="" style="max-width:90vw; max-height:90vh; border-radius:1em; box-shadow:0 0 20px #000; display:block; margin:auto;">
-</div>

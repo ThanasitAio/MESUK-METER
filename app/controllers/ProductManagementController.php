@@ -33,11 +33,7 @@ class ProductManagementController extends Controller {
     public function index() {
         $products = $this->productModel->getAllProducts();
         $stats = array(
-            'total' => $this->productModel->countProducts(),
-            'active' => $this->productModel->countProducts(array('status' => 'active')),
-            'suspended' => $this->productModel->countProducts(array('status' => 'suspended')),
-            'admin' => $this->productModel->countProducts(array('role' => 'admin')),
-            'agent' => $this->productModel->countProducts(array('role' => 'agent'))
+            'total' => $this->productModel->countProducts()
         );
         
         $data = array(
@@ -50,27 +46,27 @@ class ProductManagementController extends Controller {
     }
     
     /**
-     * แสดงฟอร์มแก้ไขผู้ใช้
+     * แสดงฟอร์มแก้ไขสินค้า
      */
     public function edit($id) {
-        $user = $this->userModel->getUserById($id);
+        $product = $this->productModel->getProductById($id);
         
-        if (!$user) {
+        if (!$product) {
             http_response_code(404);
-            die(t('user_management.user_not_found'));
+            die(t('product_management.product_not_found'));
         }
         
         $data = array(
-            'title' => t('user_management.edit_user'),
+            'title' => t('product_management.edit_product'),
             'action' => 'edit',
-            'user' => $user
+            'product' => $product
         );
         
-        $this->view('pages/user-management/form', $data);
+        $this->view('pages/product-management/form', $data);
     }
     
     /**
-     * อัพเดทข้อมูลผู้ใช้
+     * อัพเดทข้อมูลสินค้า (AJAX)
      */
     public function update($id) {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -78,78 +74,34 @@ class ProductManagementController extends Controller {
             echo json_encode(array('success' => false, 'message' => 'Method not allowed'));
             exit;
         }
-        
-        $user = $this->userModel->getUserById($id);
-        if (!$user) {
+
+        $ProductId = $this->productModel->getProductById($id);
+        if (!$ProductId) {
             http_response_code(404);
-            echo json_encode(array('success' => false, 'errors' => array(t('user_management.user_not_found'))));
+            echo json_encode(array('success' => false, 'errors' => array(t('product_management.product_not_found'))));
             exit;
         }
+
         
-        $errors = array();
-        
-        // Validation
-        if (empty($_POST['code'])) {
-            $errors[] = t('user_management.code_required');
-        } elseif ($this->userModel->isCodeExists($_POST['code'], $id)) {
-            $errors[] = t('user_management.code_exists');
-        }
-        
-        if (empty($_POST['username'])) {
-            $errors[] = t('user_management.username_required');
-        } elseif ($this->userModel->isUsernameExists($_POST['username'], $id)) {
-            $errors[] = t('user_management.username_exists');
-        }
-        
-        if (!empty($_POST['password']) && strlen($_POST['password']) < 3) {
-            $errors[] = t('user_management.password_min_length');
-        }
-        
-        if (!empty($errors)) {
-            http_response_code(400);
-            echo json_encode(array('success' => false, 'errors' => $errors));
-            exit;
-        }
-        
-        // จัดการอัพโหลดรูปภาพ
-        $imagePath = $user['img']; // ใช้รูปเดิม
-        if (!empty($_FILES['img']['name'])) {
-            $newImagePath = $this->handleImageUpload($_FILES['img']);
-            if ($newImagePath !== false) {
-                // ลบรูปเก่า
-                if ($user['img'] && file_exists(__DIR__ . '/../../public' . $user['img'])) {
-                    unlink(__DIR__ . '/../../public' . $user['img']);
-                }
-                $imagePath = $newImagePath;
-            }
-        }
-        
-        // เตรียมข้อมูล
-        $userData = array(
-            'code' => $_POST['code'],
-            'username' => $_POST['username'],
-            'name' => isset($_POST['name']) ? $_POST['name'] : null,
-            'tel' => isset($_POST['tel']) ? $_POST['tel'] : null,
-            'birthday' => !empty($_POST['birthday']) ? $_POST['birthday'] : null,
-            'facebook_name' => isset($_POST['facebook_name']) ? $_POST['facebook_name'] : null,
-            'line_id' => isset($_POST['line_id']) ? $_POST['line_id'] : null,
-            'img' => $imagePath,
-            'status' => isset($_POST['status']) ? $_POST['status'] : 'active',
-            'role' => isset($_POST['role']) ? $_POST['role'] : 'user',
-            'updated_by' => Auth::user()['username']
+        // เตรียมข้อมูลสินค้า
+        $productData = array(
+            'investor_owner' => isset($_POST['investor_owner']) ? $_POST['investor_owner'] : null,
+            'investor_address' => isset($_POST['investor_address']) ? $_POST['investor_address'] : null,
+            'investor_phone' => isset($_POST['investor_phone']) ? $_POST['investor_phone'] : null,
+            'tenant' => isset($_POST['tenant']) ? $_POST['tenant'] : null,
+            'tenant_phone' => isset($_POST['tenant_phone']) ? $_POST['tenant_phone'] : null,
+            'tenant_tax_id' => isset($_POST['tenant_tax_id']) ? $_POST['tenant_tax_id'] : null,
+            'bank_acc_name' => isset($_POST['bank_acc_name']) ? $_POST['bank_acc_name'] : null,
+            'bank_name' => isset($_POST['bank_name']) ? $_POST['bank_name'] : null,
+            'bank_branch' => isset($_POST['bank_branch']) ? $_POST['bank_branch'] : null,
+            'bank_acc_no' => isset($_POST['bank_acc_no']) ? $_POST['bank_acc_no'] : null
         );
-        
-        // อัพเดทรหัสผ่านถ้ามีการกรอก
-        if (!empty($_POST['password'])) {
-            $userData['password'] = $_POST['password'];
-        }
-        
-        // อัพเดทข้อมูล
-        if ($this->userModel->updateUser($id, $userData)) {
-            echo json_encode(array('success' => true, 'message' => t('user_management.update_success')));
+        // อัพเดทข้อมูลสินค้า
+        if ($this->productModel->updateProduct($id, $productData)) {
+            echo json_encode(array('success' => true, 'message' => t('product_management.update_success')));
         } else {
             http_response_code(500);
-            echo json_encode(array('success' => false, 'errors' => array(t('user_management.operation_failed'))));
+            echo json_encode(array('success' => false, 'errors' => array(t('product_management.operation_failed'))));
         }
         exit;
     }

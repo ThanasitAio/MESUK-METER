@@ -75,7 +75,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                                 <thead class="table-light" >
                                     <tr>
                                         <th width="40" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>">#</th>
-                                        <th style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('product_management.product_code'); ?></th>
+                                        <th width="120" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('product_management.product_code'); ?></th>
                                         <th class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('product_management.description'); ?></th>
                                         <th width="300" class="d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('product_management.group'); ?></th>
                                         <th width="300" class="d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('product_management.category'); ?></th>
@@ -106,9 +106,9 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                                          
                                             <td class="text-center">
                                                 <div class="btn-group btn-group-sm" role="group">
-                                                    <a href="/users/edit/<?php echo $user['id']; ?>" 
+                                                    <a href="/products/edit/<?php echo $product['pcode']; ?>" 
                                                        class="btn btn-warning btn-sm" 
-                                                       title="<?php echo t('user_management.edit'); ?>">
+                                                       title="<?php echo t('product_management.edit'); ?>">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                 </div>

@@ -148,12 +148,24 @@ return array(
         'edit_product' => 'Edit Product',
         'total_products' => 'Total Products',
         'search' => 'Search',
-        'product_code' => 'Product Code',
-        'product_list' => 'Product List',
-        'description' => 'Description',
-        'group' => 'Group',
-        'category' => 'Category',
-        'actions' => 'Actions',
+    'product_code' => 'Code',
+    'product_list' => 'Product List',
+    'description' => 'Product Description',
+    'group' => 'Product Group',
+    'category' => 'Product Category',
+    'actions' => 'Actions',
+    'product_not_found' => 'Product not found',
+    'investor_owner' => 'Investor/Owner',
+    'investor_address' => 'Investor/Owner Address',
+    'investor_phone' => 'Investor/Owner Phone',
+    'tenant' => 'Tenant/Contractor',
+    'tenant_phone' => 'Tenant Phone',
+    'tenant_tax_id' => 'Tenant Tax ID',
+    'bank_acc_name' => 'Account Name',
+    'bank_name' => 'Bank',
+    'bank_branch' => 'Branch',
+    'bank_acc_no' => 'Account Number',
+    'save' => 'Save',
     ),
 
     'selection' => array(
@@ -161,3 +173,5 @@ return array(
 
     ),
 );
+
+
