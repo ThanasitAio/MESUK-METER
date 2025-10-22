@@ -191,6 +191,9 @@ return array(
         'water' => 'Water',
         'garbage' => 'Garbage',
         'total' => 'Total',
+        'product_code' => 'Product Code',
+        'actions' => 'Actions',
+        'edit' => 'Edit',
     ),
 
     'month' => array(

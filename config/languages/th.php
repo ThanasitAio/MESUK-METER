@@ -177,7 +177,7 @@ return array(
         'title' => 'จัดการมิเตอร์',
         'total_meters' => 'มิเตอร์ทั้งหมด',
         'search' => 'ค้นหา',
-        'meter_doc' => 'เลขที่เอกสารณ์มิเตอร์',
+        'meter_doc' => 'รหัสสินค้า',
         'meter_list' => 'รายการมิเตอร์',
         'meter_not_found' => 'ไม่พบข้อมูลมิเตอร์',
         'month' => 'เดือน',
@@ -190,7 +190,10 @@ return array(
         'electricity' => 'ค่าไฟ',
         'water' => 'ค่าน้ำ',
         'garbage' => 'ค่าขยะ',
-        'total' => 'รวม'
+        'total' => 'รวม',
+        'product_code' => 'รหัสสินค้า',
+        'actions' => 'การจัดการ',
+        'edit' => 'แก้ไข',
 
 
     ),
