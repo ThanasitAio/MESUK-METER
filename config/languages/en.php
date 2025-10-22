@@ -167,6 +167,10 @@ return array(
         'bank_branch' => 'Branch',
         'bank_acc_no' => 'Account Number',
         'save' => 'Save',
+        'meter_0_latest' => 'Latest Water Meter Reading',
+        'meter_1_latest' => 'Latest Electricity Meter Reading',
+        'meter_0_ppu' => 'Price Per Unit Water',
+        'meter_1_ppu' => 'Price Per Unit Electricity',
     ),
 
     'meter_management' => array(
