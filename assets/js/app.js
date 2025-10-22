@@ -274,16 +274,36 @@ if (document.readyState === 'loading') {
 
     // Initialize TomSelect for .select-beast elements
    document.querySelectorAll('.select-beast').forEach(function(el) {
-    if (!el.tomselect) {
-        new TomSelect(el, {
-            create: false,
-            sortField: null,
-            dropdownParent: 'body',
-
-            allowEmptyOption: true
-        });
+    // ถ้ามี instance เดิม ให้ทำลายก่อน (ป้องกัน init ซ้ำ)
+    if (el.tomselect) {
+        try { el.tomselect.destroy(); } catch(e) {}
     }
+
+    // สร้าง options จาก DOM ตามลำดับที่เขียนใน HTML
+    const domOptions = Array.from(el.querySelectorAll('option'));
+    const options = domOptions.map(function(opt, idx) {
+        return {
+            value: opt.value,
+            text: opt.textContent.trim(),
+            // เก็บว่าเป็นตัวเลือกที่ถูกเลือกอยู่หรือไม่ (เพื่อให้ TomSelect ตั้ง selected ถูก)
+            selected: opt.selected,
+            order: idx // บังคับลำดับ
+        };
+    });
+
+    // สร้าง TomSelect โดยบอกให้ sort ตามฟิลด์ order (asc)
+    new TomSelect(el, {
+        create: false,
+        options: options,
+        valueField: 'value',
+        labelField: 'text',
+        searchField: ['text', 'value'],
+        sortField: [{ field: 'order', direction: 'asc' }],
+        dropdownParent: 'body',
+        allowEmptyOption: true
+    });
 });
+
 })();
 
 

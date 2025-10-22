@@ -1,6 +1,6 @@
 <?php
 
-class Product extends Model {
+class Meter extends Model {
     protected $table = 'me_meter';
 
 }
