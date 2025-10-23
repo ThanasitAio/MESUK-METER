@@ -46,20 +46,6 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                             <div class="row">
                                 <div class="col-12 col-md-2 mb-2">
                                     <div class="form-group">
-                                        <label for="meter_0_latest"><?php echo t('product_management.meter_0_latest'); ?></label>
-                                        <input type="text" class="form-control form-control-sm text-end" id="meter_0_latest" 
-                                            value="<?php echo htmlspecialchars(isset($data['product']['meter_0_latest']) ? $data['product']['meter_0_latest'] : '0'); ?>" disabled>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-2 mb-2">
-                                    <div class="form-group">
-                                        <label for="meter_1_latest"><?php echo t('product_management.meter_1_latest'); ?></label>
-                                        <input type="text" class="form-control form-control-sm text-end" id="meter_1_latest" 
-                                            value="<?php echo htmlspecialchars(isset($data['product']['meter_1_latest']) ? $data['product']['meter_1_latest'] : '0'); ?>" disabled>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-2 mb-2">
-                                    <div class="form-group">
                                         <label for="meter_0_ppu"><?php echo t('product_management.meter_0_ppu'); ?></label>
                                         <input type="text" class="form-control form-control-sm text-end" id="meter_0_ppu" name="meter_0_ppu" 
                                             value="<?php echo htmlspecialchars(isset($data['product']['meter_0_ppu']) ? $data['product']['meter_0_ppu'] : '0'); ?>" autocomplete="off" OnKeyPress="return chkNumber(this)" onfocus="selectAllText(this)">

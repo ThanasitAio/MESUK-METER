@@ -228,8 +228,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
     </div>
 </div>
 
-<!-- เพิ่มการโหลด Bootstrap JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
 <script>
 // ส่งค่าภาษาจาก PHP ไปยัง JavaScript
 const translations = {
@@ -364,6 +363,8 @@ function renderTable(meters) {
 
 // JavaScript สำหรับการกรองแบบ AJAX
 document.addEventListener('DOMContentLoaded', function() {
+
+    editMeterModal = new bootstrap.Modal(document.getElementById('editMeterModal'));
     const searchUser = document.getElementById('searchUser');
     const resetSearch = document.getElementById('resetSearch');
     const filterMonth = document.getElementById('filterMonth');
@@ -404,8 +405,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadMeters();
 });
 
-// JavaScript สำหรับเปิด Modal และจัดการข้อมูล
-const editMeterModal = new bootstrap.Modal(document.getElementById('editMeterModal'));
+let editMeterModal;
 const editMeterForm = document.getElementById('editMeterForm');
 const saveMeterChanges = document.getElementById('saveMeterChanges');
 
@@ -427,7 +427,6 @@ document.addEventListener('click', function(event) {
             document.getElementById('readingValueGarbage').value = meter.garbage || '';
             document.getElementById('readingValueCommonArea').value = meter.common_area || '';
             document.getElementById('meterRemark').value = meter.remark || '';
-            
             
             // ล้างค่าเดิม
             document.getElementById('readingValueElectricity').value = '';
@@ -467,12 +466,6 @@ saveMeterChanges.addEventListener('click', function() {
     formData.append('water', water || '0');
     formData.append('garbage', garbage || '0');
     formData.append('common_area', common_area || '0');
-
-    // แสดงข้อมูลที่ส่ง (สำหรับ debug)
-    // console.log('Sending data:');
-    // for (let [key, value] of formData.entries()) {
-    //     console.log(key + ': ' + value);
-    // }
 
     // ส่งข้อมูลไปยัง server
     fetch('/meter-management/save-meter', {
