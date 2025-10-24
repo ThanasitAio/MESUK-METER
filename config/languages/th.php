@@ -187,13 +187,15 @@ return array(
         'saved' => 'บันทึกแล้ว',
         'unsaved' => 'ยังไม่บันทึก',
         'common_area' => 'ค่าส่วนกลาง',
-        'electricity' => 'ค่าไฟ',
+        'electricity' => 'ค่าไฟฟ้า',
         'water' => 'ค่าน้ำ',
         'garbage' => 'ค่าขยะ',
         'total' => 'รวม',
         'product_code' => 'รหัสสินค้า',
         'actions' => 'การจัดการ',
         'edit' => 'แก้ไข',
+        'waterData' => 'มิเตอร์น้ำ',
+        'electricityData' => 'มิเตอร์ไฟฟ้า',
 
 
     ),

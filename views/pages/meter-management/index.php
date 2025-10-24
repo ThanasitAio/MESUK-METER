@@ -118,14 +118,16 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                                 <tr>
                                     <th width="40" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>">#</th>
                                     <th width="120" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.product_code'); ?></th>
-                                    <th width="80" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.month'); ?>/<?php echo t('meter_management.year'); ?></th>
+                                    <th width="40" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.month'); ?>/<?php echo t('meter_management.year'); ?></th>
                                     <th width="40" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.status'); ?></th>
+                                    <th width="80" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.electricityData'); ?></th>
+                                    <th width="80" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.waterData'); ?></th>
                                     <th width="80" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.electricity'); ?></th>
                                     <th width="80" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.water'); ?></th>
                                     <th width="80" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.garbage'); ?></th>
                                     <th width="80" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.common_area'); ?></th>
                                     <th width="80" class="text-right" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.total'); ?></th>
-                                    <th width="100" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.actions'); ?></th>
+                                    <th width="60" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.actions'); ?></th>
                                 </tr>
                             </thead>
                             <tbody id="metersTableBody">
@@ -321,7 +323,7 @@ function renderTable(meters) {
     if (!metersTableBody) return;
     
     if (!meters || meters.length === 0) {
-        metersTableBody.innerHTML = '<tr><td colspan="10" class="text-center py-4"><i class="fa-solid fa-circle-exclamation fa-2x text-muted mb-2"></i><br>ไม่พบข้อมูลมิเตอร์</td></tr>';
+        metersTableBody.innerHTML = '<tr><td colspan="12" class="text-center py-4"><i class="fa-solid fa-circle-exclamation fa-2x text-muted mb-2"></i><br>ไม่พบข้อมูลมิเตอร์</td></tr>';
         return;
     }
     
@@ -342,6 +344,8 @@ function renderTable(meters) {
                 <td><div class="fw-bold small">${meter.pcode || ''}</div></td>
                 <td class="text-center"><div class="small">${String(meter.month).padStart(2, '0')}/${meter.year}</div></td>
                 <td class="text-center">${statusBadge}</td>
+                <td class="text-end d-none d-lg-table-cell"><div class="small">${parseFloat(meter.meterelectricity).toFixed(0)}</div></td>
+                <td class="text-end d-none d-lg-table-cell"><div class="small">${parseFloat(meter.meterwater).toFixed(0)}</div></td>
                 <td class="text-end d-none d-lg-table-cell"><div class="small">${parseFloat(meter.electricity).toFixed(2)}</div></td>
                 <td class="text-end d-none d-lg-table-cell"><div class="small">${parseFloat(meter.water).toFixed(2)}</div></td>
                 <td class="text-end d-none d-lg-table-cell"><div class="small">${parseFloat(meter.garbage).toFixed(2)}</div></td>
@@ -422,17 +426,11 @@ document.addEventListener('click', function(event) {
             document.getElementById('meterYear').value = meter.year || '';
             document.getElementById('previousMeterWater').value = meter.waterMeterNumberBefore || '0';
             document.getElementById('previousMeterElectricity').value = meter.electricityMeterNumberBefore || '0';
-            document.getElementById('readingValueElectricity').value = meter.electricity || '';
-            document.getElementById('readingValueWater').value = meter.water || '';
+            document.getElementById('readingValueElectricity').value = meter.meterelectricity || '';
+            document.getElementById('readingValueWater').value = meter.meterwater || '';
             document.getElementById('readingValueGarbage').value = meter.garbage || '';
             document.getElementById('readingValueCommonArea').value = meter.common_area || '';
             document.getElementById('meterRemark').value = meter.remark || '';
-            
-            // ล้างค่าเดิม
-            document.getElementById('readingValueElectricity').value = '';
-            document.getElementById('readingValueWater').value = '';
-            document.getElementById('readingValueGarbage').value = '';
-            document.getElementById('readingValueCommonArea').value = '';
 
             // แสดง Modal
             editMeterModal.show();
@@ -450,6 +448,7 @@ saveMeterChanges.addEventListener('click', function() {
     const water = document.getElementById('readingValueWater').value;
     const garbage = document.getElementById('readingValueGarbage').value;
     const common_area = document.getElementById('readingValueCommonArea').value;
+    const remark = document.getElementById('meterRemark').value;
 
     // ตรวจสอบข้อมูลที่จำเป็น
     if (!pcode || !month || !year) {
@@ -466,6 +465,7 @@ saveMeterChanges.addEventListener('click', function() {
     formData.append('water', water || '0');
     formData.append('garbage', garbage || '0');
     formData.append('common_area', common_area || '0');
+    formData.append('remark', remark || '');
 
     // ส่งข้อมูลไปยัง server
     fetch('/meter-management/save-meter', {

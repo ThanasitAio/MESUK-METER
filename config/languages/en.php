@@ -194,6 +194,8 @@ return array(
         'product_code' => 'Product Code',
         'actions' => 'Actions',
         'edit' => 'Edit',
+        'waterData' => 'Water Meter',
+        'electricityData' => 'Electricity Meter',
     ),
 
     'month' => array(
