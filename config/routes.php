@@ -23,6 +23,14 @@ return array(
         '/meters/edit/{id}' => 'MeterManagementController@edit',
         '/meters/get-by-period' => 'MeterManagementController@getByPeriod',
         '/meter-management/get-meter-images' => 'MeterManagementController@getMeterImages', // เพิ่ม route ใหม่นี้
+
+
+        // Invoice Management Routes
+        '/invoices' => 'InvoiceManagementController@index',
+        '/invoices/create' => 'InvoiceManagementController@create',
+        '/invoices/edit/{id}' => 'InvoiceManagementController@edit',
+        '/invoices/get-by-period' => 'InvoiceManagementController@getByPeriod',
+
     ),
     'POST' => array(
         '/login' => 'AuthController@login',
@@ -43,5 +51,12 @@ return array(
         '/meters/store' => 'MeterManagementController@store',
         '/meters/update/{id}' => 'MeterManagementController@update',
         '/meter-management/save-meter' => 'MeterManagementController@saveMeter',
+
+        // Invoice Management Routes
+        '/invoices/store' => 'InvoiceManagementController@store',
+        '/invoices/update/{id}' => 'InvoiceManagementController@update',
+        '/invoices/delete/{id}' => 'InvoiceManagementController@delete',
+        '/invoices/get-by-period' => 'InvoiceManagementController@getByPeriod',
+
     )
 );

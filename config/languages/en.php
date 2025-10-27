@@ -29,6 +29,7 @@ return array(
         'user_report' => 'User Report',
         'system_logs' => 'System Logs',
         'meter_data' => 'มิเตอร์',
+        'invoice' => 'ใบแจ้งหนี้'
     ),
     'mobile' => array(
         'menu' => 'Menu',
@@ -222,6 +223,25 @@ return array(
             'grand_total' => 'Grand Total'
         )
 
+    ),
+
+    'invoice_management' => array(
+        'title' => 'Invoice Management',
+        'total_invoices' => 'Total Invoices',
+        'open_invoices' => 'Open Invoices',
+        'closed_invoices' => 'Closed Invoices',
+        'open_invoices_price' => 'Open Invoices Price',
+        'search' => 'Search',
+        'invoice_list' => 'Invoice List',
+        'invoice_not_found' => 'Invoice not found',
+        'pcode' => 'Meter Document Number',
+        'month' => 'Month',
+        'year' => 'Year',
+        'status' => 'Status',
+        'all' => 'All',
+        'open' => 'Open',
+        'closed' => 'Closed',
+        
     ),
 
     'month' => array(

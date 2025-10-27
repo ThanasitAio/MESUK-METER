@@ -29,6 +29,7 @@ return array(
         'user_report' => 'รายงานผู้ใช้',
         'system_logs' => 'บันทึกระบบ',
         'meter_data' => 'มิเตอร์',
+        'invoice' => 'ใบแจ้งหนี้'
     ),
     'mobile' => array(
         'menu' => 'เมนู',
@@ -222,8 +223,24 @@ return array(
             'grand_total' => 'รวมทั้งหมด'
         )
 
+    ),
 
-
+    'invoice_management' => array(
+        'title' => 'จัดการใบแจ้งหนี้',
+        'total_invoices' => 'ใบแจ้งหนี้ทั้งหมด',
+        'open_invoices' => 'เปิดใบแจ้งหนี้',
+        'closed_invoices' => 'ยังไม่เปิดใบแจ้งหนี้',
+        'open_invoices_price' => 'ราคาใบแจ้งหนี้ที่เปิด',
+        'search' => 'ค้นหา',
+        'invoice_list' => 'รายการใบแจ้งหนี้',
+        'invoice_not_found' => 'ไม่พบข้อมูลใบแจ้งหนี้',
+        'pcode' => 'รหัสสินค้า',
+        'month' => 'เดือน',
+        'year' => 'ปี',
+        'status' => 'สถานะ',
+        'all' => 'ทั้งหมด',
+        'open' => 'เปิด',
+        'closed' => 'ยังไม่เปิด',
 
     ),
 

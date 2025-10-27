@@ -1,13 +1,27 @@
 <?php
 
-class Meter extends Model {
+class Invoice extends Model {
     protected $table = 'me_meter';
 
+        /**
+         * ดึงข้อมูลทั้งหมดจาก me_invoice (raw)
+         */
+        public function getAllInvoicesRaw() {
+            try {
+                $sql = "SELECT inv_id, inv_no, pcode, month, year, type, price, remark, created_at, created_by, updated_at, updated_by FROM me_invoice WHERE 1";
+                $stmt = $this->db->prepare($sql);
+                $stmt->execute();
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } catch (PDOException $e) {
+                error_log("Error getting all invoices: " . $e->getMessage());
+                return array();
+            }
+        }
     /**
      * ดึงข้อมูลทั้งหมด พร้อมคำนวณค่าใช้จ่ายสำหรับช่วงเวลาที่กำหนด
      * ถ้าไม่ระบุเดือน/ปี จะใช้เดือน/ปีปัจจุบัน
      */
-    public function getAllMeters($month = null, $year = null) {
+    public function getAllInvoices($month = null, $year = null) {
         try {
             // ดึงรายการ pcode ทั้งหมด
             $sql = "SELECT 
@@ -54,6 +68,15 @@ class Meter extends Model {
             // สำหรับแต่ละ pcode (เฉพาะเดือน/ปีที่กำหนด)
             foreach ($products as $product) {
                 $pcode = $product['pcode'];
+
+                // ตรวจสอบสถานะจากข้อมูลที่ดึงแบบ batch
+                $hasMeterData = $this->hasMeterDataBatch($pcode, $allMeterData, $allOtherCosts);
+                $status = $hasMeterData ? 'saved' : 'unsaved';
+              
+                if($status == 'unsaved'){
+                    continue;
+                }
+                
                 
                 // ดึงค่าขยะและค่าส่วนกลางจากข้อมูลที่ดึงแบบ batch
                 $garbage = isset($allOtherCosts[$pcode]['ค่าขยะ']) ? $allOtherCosts[$pcode]['ค่าขยะ'] : 0;
@@ -85,10 +108,6 @@ class Meter extends Model {
                 
                 // คำนวณรวม
                 $total = $electricity + $water + $garbage + $commonArea;
-                
-                // ตรวจสอบสถานะจากข้อมูลที่ดึงแบบ batch
-                $hasMeterData = $this->hasMeterDataBatch($pcode, $allMeterData, $allOtherCosts);
-                $status = $hasMeterData ? 'saved' : 'unsaved';
                 
                 // ดึงหมายเหตุจากข้อมูล batch
                 $remark = isset($allRemarks[$pcode]) ? $allRemarks[$pcode] : '';
@@ -316,74 +335,7 @@ class Meter extends Model {
     }
 
 
-   public function saveOrUpdateMeterWithImage($data) {
-    try {
-        // ดึง user ID ของผู้ใช้ปัจจุบัน
-        $userId = null;
-        if (class_exists('Auth')) {
-            $currentUser = Auth::user();
-            $userId = isset($currentUser['id']) ? $currentUser['id'] : null;
-        }
-        
-        $pcode = $data['pcode'];
-        $month = $data['month'];
-        $year = $data['year'];
-        $remark = isset($data['remark']) ? trim($data['remark']) : '';
-        $img = isset($data['img']) ? $data['img'] : null; // เปลี่ยนจาก image_path เป็น img
-        
-        // ตรวจสอบว่ามีข้อมูลอยู่แล้วหรือไม่
-        $exists = $this->meterRecordExists($data['pcode'], $data['month'], $data['year'], $data['type']);
-       
-        if ($exists) {
-            // Update existing record
-            $sql = "UPDATE me_meter 
-                    SET reading_value = ?, 
-                        remark = ?,
-                        img = ?,  -- เปลี่ยนจาก image_path เป็น img
-                        updated_at = NOW(), 
-                        updated_by = ? 
-                    WHERE pcode = ? AND month = ? AND year = ? AND meter_type = ?";
-            $stmt = $this->db->prepare($sql);
-            $result = $stmt->execute(array(
-                $data['reading_value'],
-                $remark,
-                $img,  // เปลี่ยนจาก imagePath เป็น img
-                $userId,
-                $data['pcode'],
-                $data['month'],
-                $data['year'],
-                $data['type']
-            ));
-            error_log("Updated meter with image: " . $data['type'] . " - pcode=" . $data['pcode'] . ", img=" . $img);
-        } else {
-            // Insert new record
-            $sql = "INSERT INTO me_meter 
-                    (meter_type, pcode, month, year, reading_value, remark, img, reading_date, created_at, created_by, updated_at, updated_by) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), ?, NOW(), ?)";
-            $stmt = $this->db->prepare($sql);
-            $result = $stmt->execute(array(
-                $data['type'],
-                $data['pcode'],
-                $data['month'],
-                $data['year'],
-                $data['reading_value'],
-                $remark,
-                $img,  // เปลี่ยนจาก imagePath เป็น img
-                $userId,
-                $userId
-            ));
-            error_log("Inserted meter with image: " . $data['type'] . " - pcode=" . $data['pcode'] . ", img=" . $img);
-        }
-        return $result;
-    } catch (PDOException $e) {
-        error_log("Error saving or updating meter record with image (" . $data['type'] . "): " . $e->getMessage());
-        if (isset($stmt)) {
-            $errorInfo = $stmt->errorInfo();
-            error_log("SQL Error Info: " . print_r($errorInfo, true));
-        }
-        return false;
-    }
-}
+  
 
     /**
      * บันทึกหรืออัพเดทค่าใช้จ่ายอื่นๆ พร้อมหมายเหตุ
@@ -428,26 +380,6 @@ class Meter extends Model {
             return false;
         }
     }
-
-    // ฟังก์ชันอื่นๆ ที่เหลือให้คงเดิม...
-    private function getOtherCost($pcode, $month, $year, $type) {
-        try {
-            $sql = "SELECT price 
-                    FROM me_meter_ohter 
-                    WHERE pcode = ? AND month = ? AND year = ? AND meter_ohter_type = ?
-                    LIMIT 1";
-            
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute(array($pcode, $month, $year, $type));
-            $price = $stmt->fetchColumn();
-            
-            return $price ? (float)$price : 0;
-            
-        } catch (PDOException $e) {
-            error_log("Error getting other cost: " . $e->getMessage());
-            return 0;
-        }
-    }
     
     private function hasMeterData($pcode, $month, $year) {
         try {
@@ -475,36 +407,6 @@ class Meter extends Model {
         }
     }
 
-    /**
-     * นับจำนวน
-     */
-    public function countMeters($filters = array()) {
-        try {
-            $sql = "SELECT COUNT(DISTINCT p.pcode) 
-                    FROM ali_productcategory pc
-                    LEFT JOIN ali_productgroup pg1 ON pc.id = pg1.id_cate
-                    LEFT JOIN ali_product p ON pg1.id = p.group_id
-                    LEFT JOIN ali_productgroup pg2 ON p.group_id = pg2.id
-                    WHERE (pc.id = 34 OR pc.id = 54) AND p.sh = 1";
-            
-            $params = array();
-            
-            // กรองตามคำค้นหา
-            if (!empty($filters['search'])) {
-                $sql .= " AND (p.pcode LIKE ? OR p.pdesc LIKE ?)";
-                $searchTerm = "%{$filters['search']}%";
-                $params[] = $searchTerm;
-                $params[] = $searchTerm;
-            }
-            
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute($params);
-            return $stmt->fetchColumn();
-        } catch (PDOException $e) {
-            error_log("Error counting meters: " . $e->getMessage());
-            return 0;
-        }
-    }
 
     /**
      * ค้นหา

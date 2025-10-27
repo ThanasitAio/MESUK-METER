@@ -9,6 +9,14 @@
                     </a>
                 </li>
 
+                <!-- ใบแจ้งหนี้ -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/invoices">
+                        <div class="nav-icon"><i class="fa-solid fa-file-invoice"></i></div>
+                        <span class="nav-text"><?php echo t('sidebar.invoice'); ?></span>
+                    </a>
+                </li>
+
                 <!-- มิเตอร์ -->
                 <li class="nav-item">
                     <a class="nav-link" href="/meters">
