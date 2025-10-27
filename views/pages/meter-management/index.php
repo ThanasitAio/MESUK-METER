@@ -151,7 +151,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editMeterModalLabel">แก้ไขข้อมูลมิเตอร์</h5>
+                <h5 class="modal-title" id="editMeterModalLabel"><?php echo t('meter_management.meterData'); ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -159,44 +159,44 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                     <!-- ข้อมูลมิเตอร์ -->
                     <div class="row">
                         <div class="col-4 col-sm-4 col-md-3 mb-3">
-                            <label for="meterPcode" class="form-label">รหัสสินค้า</label>
+                            <label for="meterPcode" class="form-label"><?php echo t('meter_management.productCode'); ?></label>
                             <input type="text" class="form-control form-control-sm" id="meterPcode" name="pcode" readonly disabled>
                         </div>
                         <div class="col-4 col-sm-4 col-md-3 mb-3">
-                            <label for="meterMonth" class="form-label">เดือน</label>
+                            <label for="meterMonth" class="form-label"><?php echo t('meter_management.month'); ?></label>
                             <input type="number" class="form-control form-control-sm" id="meterMonth" name="month" readonly disabled>
                         </div>
                         <div class="col-4 col-sm-4 col-md-3 mb-3">
-                            <label for="meterYear" class="form-label">ปี</label>
+                            <label for="meterYear" class="form-label"><?php echo t('meter_management.year'); ?></label>
                             <input type="number" class="form-control form-control-sm" id="meterYear" name="year" readonly disabled>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col-6 col-sm-6 col-md-3 mb-3">
-                            <label for="previousMeterWater" class="form-label">เลขมิเตอร์ครั้งก่อน - ไฟ</label>
+                            <label for="previousMeterWater" class="form-label"><?php echo t('meter_management.previous_electricity_reading'); ?></label>
                             <input type="text" class="form-control form-control-sm" id="previousMeterElectricity" name="previous_meter_electricity" readonly disabled>
                         </div>
                         <div class="col-6 col-sm-6 col-md-3 mb-3">
-                            <label for="previousMeterElectricity" class="form-label">เลขมิเตอร์ครั้งก่อน - น้ำ</label>
+                            <label for="previousMeterElectricity" class="form-label"><?php echo t('meter_management.previous_water_reading'); ?></label>
                             <input type="text" class="form-control form-control-sm" id="previousMeterWater" name="previous_meter_water" readonly disabled>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6 col-sm-6 col-md-3 mb-3">
-                            <label for="readingValueElectricity" class="form-label">เลขมิเตอร์ล่าสุด - ไฟ</label>
+                            <label for="readingValueElectricity" class="form-label"><?php echo t('meter_management.latest_electricity_reading'); ?></label>
                             <input type="number" class="form-control form-control-sm" id="readingValueElectricity" name="electricity">
                         </div>
                         <div class="col-6 col-sm-6 col-md-3 mb-3">
-                            <label for="readingValueWater" class="form-label">เลขมิเตอร์ล่าสุด - น้ำ</label>
+                            <label for="readingValueWater" class="form-label"><?php echo t('meter_management.latest_water_reading'); ?></label>
                             <input type="number" class="form-control form-control-sm" id="readingValueWater" name="water">
                         </div>
                         <div class="col-6 col-sm-6 col-md-3 mb-3">
-                            <label for="readingValueGarbage" class="form-label">ค่าขยะ</label>
+                            <label for="readingValueGarbage" class="form-label"><?php echo t('meter_management.garbage'); ?></label>
                             <input type="number" class="form-control form-control-sm" id="readingValueGarbage" name="garbage">
                         </div>
                         <div class="col-6 col-sm-6 col-md-3 mb-3">
-                            <label for="readingValueCommonArea" class="form-label">ค่าส่วนกลาง</label>
+                            <label for="readingValueCommonArea" class="form-label"><?php echo t('meter_management.common_area'); ?></label>
                             <input type="number" class="form-control form-control-sm" id="readingValueCommonArea" name="common_area">
                         </div>
                     </div>
@@ -204,12 +204,12 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                     <!-- ส่วนแสดงรูปภาพ -->
                     <div class="row">
                         <div class="col-6 col-sm-6 col-md-3 mb-3">
-                            <label class="form-label">รูปมิเตอร์ - ไฟ</label>
+                            <label class="form-label"><?php echo t('meter_management.img_electricity'); ?></label>
                             <div class="image-preview-container mb-2" style="width: 100%; height: 120px; border: 1px solid #dee2e6; border-radius: 0.5rem; background: #f8f9fa; display: flex; align-items: center; justify-content: center; overflow: hidden;">
                                 <div class="image-preview w-100 h-100 d-flex align-items-center justify-content-center" id="electricityImagePreview">
                                     <div class="placeholder text-center text-muted">
                                         <i class="fas fa-image fa-2x mb-1"></i>
-                                        <div style="font-size: 0.9em;">ไม่มีรูปภาพ</div>
+                                        <div style="font-size: 0.9em;"><?php echo t('meter_management.img_not'); ?></div>
                                     </div>
                                 </div>
                             </div>
@@ -217,17 +217,17 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                             <input type="hidden" id="currentElectricityImage" name="current_electricity_image">
                             <div class="form-text small">
                                 <button type="button" class="btn btn-outline-danger btn-sm mt-1" onclick="clearElectricityImage()" style="display:none;" id="clearElectricityBtn">
-                                    <i class="fas fa-times"></i> ลบรูปภาพ
+                                    <i class="fas fa-times"></i> <?php echo t('meter_management.img_delete'); ?>
                                 </button>
                             </div>
                         </div>
                         <div class="col-6 col-sm-6 col-md-3 mb-3">
-                            <label class="form-label">รูปมิเตอร์ - น้ำ</label>
+                            <label class="form-label"><?php echo t('meter_management.img_water'); ?></label>
                             <div class="image-preview-container mb-2" style="width: 100%; height: 120px; border: 1px solid #dee2e6; border-radius: 0.5rem; background: #f8f9fa; display: flex; align-items: center; justify-content: center; overflow: hidden;">
                                 <div class="image-preview w-100 h-100 d-flex align-items-center justify-content-center" id="waterImagePreview">
                                     <div class="placeholder text-center text-muted">
                                         <i class="fas fa-image fa-2x mb-1"></i>
-                                        <div style="font-size: 0.9em;">ไม่มีรูปภาพ</div>
+                                        <div style="font-size: 0.9em;"><?php echo t('meter_management.img_not'); ?></div>
                                     </div>
                                 </div>
                             </div>
@@ -235,12 +235,12 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                             <input type="hidden" id="currentWaterImage" name="current_water_image">
                             <div class="form-text small">
                                 <button type="button" class="btn btn-outline-danger btn-sm mt-1" onclick="clearWaterImage()" style="display:none;" id="clearWaterBtn">
-                                    <i class="fas fa-times"></i> ลบรูปภาพ
+                                    <i class="fas fa-times"></i> <?php echo t('meter_management.img_delete'); ?>
                                 </button>
                             </div>
                         </div>
-                        <div class="col-6 col-sm-6 col-md-6 mb-3">
-                            <label for="meterRemark" class="form-label">หมายเหตุ</label>
+                        <div class="col-12 col-sm-6 col-md-6 mb-3">
+                            <label for="meterRemark" class="form-label"><?php echo t('meter_management.remark'); ?></label>
                             <textarea class="form-control" id="meterRemark" name="remark" rows="5"></textarea>
                         </div>
                     </div>
@@ -248,8 +248,8 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
-                <button type="button" class="btn btn-primary" id="saveMeterChanges">บันทึก</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php echo t('btns.cancel'); ?></button>
+                <button type="button" class="btn btn-primary" id="saveMeterChanges"><?php echo t('btns.save'); ?></button>
             </div>
         </div>
     </div>

@@ -196,6 +196,19 @@ return array(
         'edit' => 'Edit',
         'waterData' => 'Water Meter',
         'electricityData' => 'Electricity Meter',
+
+        'meterData' => 'Meter Data',
+        'productCode' => 'Product Code',
+        'previous_electricity_reading' => 'Latest Electricity Reading',
+        'previous_water_reading' => 'Latest Water Reading',
+        'latest_electricity_reading' => 'Latest Electricity Reading',
+        'latest_water_reading' => 'Latest Water Reading',
+        'img_electricity' => 'Electricity Meter Image',
+        'img_water' => 'Water Meter Image',
+        'img_not' => 'No Image',
+        'img_delete' => 'Delete Image',
+        'remark' => 'Remark',
+
     ),
 
     'month' => array(
@@ -215,6 +228,12 @@ return array(
 
     'selection' => array(
         'all' => 'All',
+
+    ),
+
+    'btns' => array(
+        'save' => 'Save',
+        'cancel' => 'Cancel',
 
     ),
 );

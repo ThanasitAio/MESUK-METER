@@ -197,6 +197,20 @@ return array(
         'waterData' => 'มิเตอร์น้ำ',
         'electricityData' => 'มิเตอร์ไฟฟ้า',
 
+        'meterData' => 'ข้อมูลมิเตอร์',
+        'productCode' => 'รหัสสินค้า',
+        'previous_electricity_reading' => 'เลขอ่านไฟฟ้าก่อนหน้า',
+        'previous_water_reading' => 'เลขอ่านน้ำก่อนหน้า',
+        'latest_electricity_reading' => 'เลขมิเตอร์ล่าสุด - ไฟฟ้า',
+        'latest_water_reading' => 'เลขมิเตอร์ล่าสุด - น้ำ',
+        'img_electricity' => 'รูปมิเตอร์ - ไฟฟ้า',
+        'img_water' => 'รูปมิเตอร์ - น้ำ',
+        'img_not' => 'ไม่มีรูปภาพ',
+        'img_delete' => 'ลบรูปภาพ',
+        'remark' => 'หมายเหตุ',
+
+
+
 
     ),
 
@@ -219,4 +233,12 @@ return array(
         'all' => 'ทั้งหมด',
 
     ),
+
+    'btns' => array(
+        'save' => 'บันทึก',
+        'cancel' => 'ยกเลิก',
+
+    ),
+
+    
 );
