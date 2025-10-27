@@ -201,13 +201,26 @@ return array(
         'productCode' => 'รหัสสินค้า',
         'previous_electricity_reading' => 'เลขอ่านไฟฟ้าก่อนหน้า',
         'previous_water_reading' => 'เลขอ่านน้ำก่อนหน้า',
-        'latest_electricity_reading' => 'เลขมิเตอร์ล่าสุด - ไฟฟ้า',
-        'latest_water_reading' => 'เลขมิเตอร์ล่าสุด - น้ำ',
-        'img_electricity' => 'รูปมิเตอร์ - ไฟฟ้า',
-        'img_water' => 'รูปมิเตอร์ - น้ำ',
+        'latest_electricity_reading' => 'เลขมิเตอร์ไฟฟ้าล่าสุด',
+        'latest_water_reading' => 'เลขมิเตอร์น้ำล่าสุด',
+        'img_electricity' => 'รูปมิเตอร์ไฟฟ้า',
+        'img_water' => 'รูปมิเตอร์น้ำ',
         'img_not' => 'ไม่มีรูปภาพ',
         'img_delete' => 'ลบรูปภาพ',
         'remark' => 'หมายเหตุ',
+        'electricity_ppu' => 'ราคาต่อหน่วยไฟฟ้า',
+        'water_ppu' => 'ราคาต่อหน่วยน้ำ',
+
+        // เพิ่มสถิติ
+        'stats' => array(
+            'saved_count' => 'บันทึกแล้ว',
+            'unsaved_count' => 'ยังไม่บันทึก',
+            'total_electricity' => 'ค่าไฟฟ้าทั้งหมด',
+            'total_water' => 'ค่าน้ำทั้งหมด',
+            'total_garbage' => 'ค่าขยะทั้งหมด',
+            'total_common_area' => 'ค่าส่วนกลางทั้งหมด',
+            'grand_total' => 'รวมทั้งหมด'
+        )
 
 
 

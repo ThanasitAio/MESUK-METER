@@ -17,6 +17,19 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
   z-index: 2;
   background: #f8f9fa;
 }
+
+.month-year-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 2px 10px;
+    border-radius: 8px;
+    display: inline-block;
+    font-size: 1.1em;
+}
 </style>
 <div class="container-fluid">
     <div class="row">
@@ -27,13 +40,69 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
             echo pageHeader(t('meter_management.title'), '', '', 'fas fa-users-cog'); 
             ?>
 
-            <!-- สถิติ -->
-            <div class="row">
+                        <!-- สถิติ -->
+            <div class="row" id="statsContainer">
                 <div class="col-6 col-md-2 mb-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('meter_management.total_meters'); ?></div>
-                            <h4 class="mb-0 text-primary"><?php echo number_format(isset($stats['total']) ? $stats['total'] : 0); ?></h4>
+                            <h4 class="mb-0 text-primary" id="totalMeters">0</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-2 mb-2">
+                    <div class="card text-center">
+                        <div class="card-body py-2">
+                            <div class="small text-muted"><?php echo t('meter_management.stats.saved_count'); ?></div>
+                            <h4 class="mb-0 text-success" id="savedCount">0</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-2 mb-2">
+                    <div class="card text-center">
+                        <div class="card-body py-2">
+                            <div class="small text-muted"><?php echo t('meter_management.stats.unsaved_count'); ?></div>
+                            <h4 class="mb-0 text-warning" id="unsavedCount">0</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-2 mb-2">
+                    <div class="card text-center">
+                        <div class="card-body py-2">
+                            <div class="small text-muted"><?php echo t('meter_management.stats.total_electricity'); ?></div>
+                            <h4 class="mb-0 text-info" id="totalElectricity">0.00</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-2 mb-2">
+                    <div class="card text-center">
+                        <div class="card-body py-2">
+                            <div class="small text-muted"><?php echo t('meter_management.stats.total_water'); ?></div>
+                            <h4 class="mb-0 text-info" id="totalWater">0.00</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-2 mb-2">
+                    <div class="card text-center">
+                        <div class="card-body py-2">
+                            <div class="small text-muted"><?php echo t('meter_management.stats.total_garbage'); ?></div>
+                            <h4 class="mb-0 text-secondary" id="totalGarbage">0.00</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-2 mb-2">
+                    <div class="card text-center">
+                        <div class="card-body py-2">
+                            <div class="small text-muted"><?php echo t('meter_management.stats.total_common_area'); ?></div>
+                            <h4 class="mb-0 text-secondary" id="totalCommonArea">0.00</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-2 mb-2">
+                    <div class="card text-center">
+                        <div class="card-body py-2">
+                            <div class="small text-muted"><?php echo t('meter_management.stats.grand_total'); ?></div>
+                            <h4 class="mb-0 text-danger" id="grandTotal">0.00</h4>
                         </div>
                     </div>
                 </div>
@@ -112,7 +181,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                 ?>
                 
                 <div class="card-body p-0">
-                    <div class="table-responsive" style="<?php echo $headerConfig['styles']['table_responsive']; ?>; position: relative; z-index: 1;">
+                    <div class="table-responsive" style="<?php echo $headerConfig['styles']['table_responsive_row_2']; ?>; position: relative; z-index: 1;">
                         <table class="table table-sm table-hover mb-0" id="MetersTable">
                             <thead class="table-light" >
                                 <tr>
@@ -132,7 +201,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                             </thead>
                             <tbody id="metersTableBody">
                                 <tr>
-                                    <td colspan="10" class="text-center py-4">
+                                    <td colspan="12" class="text-center py-4">
                                         <i class="fas fa-spinner fa-spin"></i> กำลังโหลดข้อมูล...
                                     </td>
                                 </tr>
@@ -151,7 +220,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editMeterModalLabel"><?php echo t('meter_management.meterData'); ?></h5>
+                <h5 class="modal-title" id="editMeterModalLabel"><?php echo t('meter_management.meterData'); ?><span id="modalMonthYear" class="month-year-gradient"></span></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -162,42 +231,50 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                             <label for="meterPcode" class="form-label"><?php echo t('meter_management.productCode'); ?></label>
                             <input type="text" class="form-control form-control-sm" id="meterPcode" name="pcode" readonly disabled>
                         </div>
-                        <div class="col-4 col-sm-4 col-md-3 mb-3">
+                        <div class="col-4 col-sm-4 col-md-2 mb-3">
                             <label for="meterMonth" class="form-label"><?php echo t('meter_management.month'); ?></label>
                             <input type="number" class="form-control form-control-sm" id="meterMonth" name="month" readonly disabled>
                         </div>
-                        <div class="col-4 col-sm-4 col-md-3 mb-3">
+                        <div class="col-4 col-sm-4 col-md-2 mb-3">
                             <label for="meterYear" class="form-label"><?php echo t('meter_management.year'); ?></label>
                             <input type="number" class="form-control form-control-sm" id="meterYear" name="year" readonly disabled>
+                        </div>
+                        <div class="col-4 col-sm-4 col-md-2 mb-3">
+                            <label for="meterMonth" class="form-label"><?php echo t('meter_management.electricity_ppu'); ?></label>
+                            <input type="number" class="form-control form-control-sm" style="text-align: right;" id="electricity_ppu" name="electricity_ppu" readonly disabled>
+                        </div>
+                        <div class="col-4 col-sm-4 col-md-2 mb-3">
+                            <label for="meterYear" class="form-label"><?php echo t('meter_management.water_ppu'); ?></label>
+                            <input type="number" class="form-control form-control-sm" style="text-align: right;" id="water_ppu" name="water_ppu" readonly disabled>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col-6 col-sm-6 col-md-3 mb-3">
                             <label for="previousMeterWater" class="form-label"><?php echo t('meter_management.previous_electricity_reading'); ?></label>
-                            <input type="text" class="form-control form-control-sm" id="previousMeterElectricity" name="previous_meter_electricity" readonly disabled>
+                            <input type="number" class="form-control form-control-sm" style="text-align: right;" id="previousMeterElectricity" name="previous_meter_electricity" readonly disabled>
                         </div>
                         <div class="col-6 col-sm-6 col-md-3 mb-3">
                             <label for="previousMeterElectricity" class="form-label"><?php echo t('meter_management.previous_water_reading'); ?></label>
-                            <input type="text" class="form-control form-control-sm" id="previousMeterWater" name="previous_meter_water" readonly disabled>
+                            <input type="number" class="form-control form-control-sm" style="text-align: right;" id="previousMeterWater" name="previous_meter_water" readonly disabled>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6 col-sm-6 col-md-3 mb-3">
                             <label for="readingValueElectricity" class="form-label"><?php echo t('meter_management.latest_electricity_reading'); ?></label>
-                            <input type="number" class="form-control form-control-sm" id="readingValueElectricity" name="electricity">
+                            <input type="number" class="form-control form-control-sm" style="text-align: right;" id="readingValueElectricity" name="electricity">
                         </div>
                         <div class="col-6 col-sm-6 col-md-3 mb-3">
                             <label for="readingValueWater" class="form-label"><?php echo t('meter_management.latest_water_reading'); ?></label>
-                            <input type="number" class="form-control form-control-sm" id="readingValueWater" name="water">
+                            <input type="number" class="form-control form-control-sm" style="text-align: right;" id="readingValueWater" name="water">
                         </div>
                         <div class="col-6 col-sm-6 col-md-3 mb-3">
                             <label for="readingValueGarbage" class="form-label"><?php echo t('meter_management.garbage'); ?></label>
-                            <input type="number" class="form-control form-control-sm" id="readingValueGarbage" name="garbage">
+                            <input type="number" class="form-control form-control-sm" style="text-align: right;" id="readingValueGarbage" name="garbage">
                         </div>
                         <div class="col-6 col-sm-6 col-md-3 mb-3">
                             <label for="readingValueCommonArea" class="form-label"><?php echo t('meter_management.common_area'); ?></label>
-                            <input type="number" class="form-control form-control-sm" id="readingValueCommonArea" name="common_area">
+                            <input type="number" class="form-control form-control-sm" style="text-align: right;" id="readingValueCommonArea" name="common_area">
                         </div>
                     </div>
                     
@@ -290,49 +367,60 @@ const translations = {
 // ประกาศตัวแปร allMeters ในระดับ global
 let allMeters = []; // เก็บข้อมูลมิเตอร์ทั้งหมดที่โหลดจาก AJAX
 
-// ประกาศฟังก์ชัน loadMeters เป็น global function
-function loadMeters() {
-    const filterMonth = document.getElementById('filterMonth');
-    const filterYear = document.getElementById('filterYear');
-    const metersTableBody = document.getElementById('metersTableBody');
-    
-    const month = filterMonth ? filterMonth.value : '';
-    const year = filterYear ? filterYear.value : '';
-    
-    if (!month || !year) {
-        console.error('Month and year are required');
+// ฟังก์ชันคำนวณและแสดงสถิติ
+function updateStats(meters) {
+    if (!meters || meters.length === 0) {
+        // รีเซ็ตสถิติทั้งหมดเป็น 0
+        document.getElementById('totalMeters').textContent = '0';
+        document.getElementById('savedCount').textContent = '0';
+        document.getElementById('unsavedCount').textContent = '0';
+        document.getElementById('totalElectricity').textContent = '0.00';
+        document.getElementById('totalWater').textContent = '0.00';
+        document.getElementById('totalGarbage').textContent = '0.00';
+        document.getElementById('totalCommonArea').textContent = '0.00';
+        document.getElementById('grandTotal').textContent = '0.00';
         return;
     }
-    
-    // แสดง loading
-    if (metersTableBody) {
-        metersTableBody.innerHTML = '<tr><td colspan="10" class="text-center py-4"><i class="fas fa-spinner fa-spin"></i> กำลังโหลดข้อมูล...</td></tr>';
-    }
-    
-    // เรียก AJAX
-    fetch(`/meters/get-by-period?month=${month}&year=${year}`)
-        .then(response => response.json())
-        .then(result => {
-            if (result.success) {
-                allMeters = result.data;
-                filterTable(); // กรองและแสดงผล
-            
-                const cardHeader = document.querySelector('.card .card-header .badge');
-                if (cardHeader) {
-                    cardHeader.textContent = result.count;
-                }
-            } else {
-                if (metersTableBody) {
-                    metersTableBody.innerHTML = '<tr><td colspan="10" class="text-center py-4 text-danger">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>';
-                }
-            }
-        })
-        .catch(error => {
-            console.error('Error loading meters:', error);
-            if (metersTableBody) {
-                metersTableBody.innerHTML = '<tr><td colspan="10" class="text-center py-4 text-danger">เกิดข้อผิดพลาดในการเชื่อมต่อ</td></tr>';
-            }
-        });
+
+    // คำนวณสถิติ
+    let stats = {
+        total: meters.length,
+        saved: 0,
+        unsaved: 0,
+        electricity: 0,
+        water: 0,
+        garbage: 0,
+        common_area: 0,
+        grandTotal: 0
+    };
+
+    meters.forEach(meter => {
+        // นับสถานะ
+        if (meter.status === 'saved' || meter.status === true || meter.status === 1 || meter.status === '1') {
+            stats.saved++;
+        } else {
+            stats.unsaved++;
+        }
+
+        // รวมค่าใช้จ่าย
+        stats.electricity += parseFloat(meter.electricity) || 0;
+        stats.water += parseFloat(meter.water) || 0;
+        stats.garbage += parseFloat(meter.garbage) || 0;
+        stats.common_area += parseFloat(meter.common_area) || 0;
+    });
+
+    // คำนวณรวมทั้งหมด
+    stats.grandTotal = stats.electricity + stats.water + stats.garbage + stats.common_area;
+
+    // อัพเดทแสดงผล
+    document.getElementById('totalMeters').textContent = stats.total.toLocaleString();
+    document.getElementById('savedCount').textContent = stats.saved.toLocaleString();
+    document.getElementById('unsavedCount').textContent = stats.unsaved.toLocaleString();
+    document.getElementById('totalElectricity').textContent = stats.electricity.toFixed(2);
+    document.getElementById('totalWater').textContent = stats.water.toFixed(2);
+    document.getElementById('totalGarbage').textContent = stats.garbage.toFixed(2);
+    document.getElementById('totalCommonArea').textContent = stats.common_area.toFixed(2);
+    document.getElementById('grandTotal').textContent = stats.grandTotal.toFixed(2);
 }
 
 // ฟังก์ชันกรองตาราง (จาก allMeters)
@@ -360,7 +448,10 @@ function filterTable() {
         filteredMeters = filteredMeters.filter(meter => meter.status === statusValue);
     }
     
-    // แสดงผล
+    // อัพเดทสถิติ
+    updateStats(filteredMeters);
+    
+    // แสดงผลตาราง
     renderTable(filteredMeters);
 }
 
@@ -411,6 +502,54 @@ function renderTable(meters) {
     });
     
     metersTableBody.innerHTML = html;
+}
+
+// ฟังก์ชัน loadMeters อัพเดท
+function loadMeters() {
+    const filterMonth = document.getElementById('filterMonth');
+    const filterYear = document.getElementById('filterYear');
+    const metersTableBody = document.getElementById('metersTableBody');
+    
+    const month = filterMonth ? filterMonth.value : '';
+    const year = filterYear ? filterYear.value : '';
+    
+    if (!month || !year) {
+        console.error('Month and year are required');
+        return;
+    }
+    
+    // แสดง loading
+    if (metersTableBody) {
+        metersTableBody.innerHTML = '<tr><td colspan="12" class="text-center py-4"><i class="fas fa-spinner fa-spin"></i> กำลังโหลดข้อมูล...</td></tr>';
+    }
+    
+    // รีเซ็ตสถิติขณะโหลด
+    updateStats([]);
+    
+    // เรียก AJAX
+    fetch(`/meters/get-by-period?month=${month}&year=${year}`)
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                allMeters = result.data;
+                filterTable(); // กรองและแสดงผล
+            
+                const cardHeader = document.querySelector('.card .card-header .badge');
+                if (cardHeader) {
+                    cardHeader.textContent = result.count;
+                }
+            } else {
+                if (metersTableBody) {
+                    metersTableBody.innerHTML = '<tr><td colspan="12" class="text-center py-4 text-danger">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>';
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error loading meters:', error);
+            if (metersTableBody) {
+                metersTableBody.innerHTML = '<tr><td colspan="12" class="text-center py-4 text-danger">เกิดข้อผิดพลาดในการเชื่อมต่อ</td></tr>';
+            }
+        });
 }
 
 // JavaScript สำหรับการกรองแบบ AJAX
@@ -470,6 +609,26 @@ document.addEventListener('click', function(event) {
         const meter = allMeters.find(m => m.id == meterId);
 
         if (meter) {
+
+            // อัพเดทหัวข้อ modal พร้อมเดือน/ปี
+            const monthNames = {
+                '01': '<?php echo t('month.january'); ?>',
+                '02': '<?php echo t('month.february'); ?>',
+                '03': '<?php echo t('month.march'); ?>',
+                '04': '<?php echo t('month.april'); ?>',
+                '05': '<?php echo t('month.may'); ?>',
+                '06': '<?php echo t('month.june'); ?>',
+                '07': '<?php echo t('month.july'); ?>',
+                '08': '<?php echo t('month.august'); ?>',
+                '09': '<?php echo t('month.september'); ?>',
+                '10': '<?php echo t('month.october'); ?>',
+                '11': '<?php echo t('month.november'); ?>',
+                '12': '<?php echo t('month.december'); ?>'
+            };
+            
+            const month = String(meter.month).padStart(2, '0');
+            const year = meter.year;
+            document.getElementById('modalMonthYear').textContent = `${monthNames[month]} ${year}`;
             // เติมข้อมูลในฟอร์ม
             document.getElementById('meterPcode').value = meter.pcode || '';
             document.getElementById('meterMonth').value = meter.month || '';
@@ -481,6 +640,9 @@ document.addEventListener('click', function(event) {
             document.getElementById('readingValueGarbage').value = meter.garbage || '';
             document.getElementById('readingValueCommonArea').value = meter.common_area || '';
             document.getElementById('meterRemark').value = meter.remark || '';
+
+            document.getElementById('electricity_ppu').value = meter.electricity_ppu || 0;
+            document.getElementById('water_ppu').value = meter.water_ppu || 0;
 
             // เก็บข้อมูลปัจจุบัน
             currentMeterData = meter;

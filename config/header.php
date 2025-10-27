@@ -21,6 +21,7 @@ return [
         
         // --- สไตล์สำหรับตาราง ---
         'table_responsive' => 'max-height: 49vh; overflow-y: auto; overflow-x: auto;',
+        'table_responsive_row_2' => 'max-height: 42vh; overflow-y: auto; overflow-x: auto;',
         'table_container' => 'overflow-x: auto; -webkit-overflow-scrolling: touch;'
     ],
     'classes' => [

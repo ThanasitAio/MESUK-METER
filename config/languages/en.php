@@ -199,8 +199,8 @@ return array(
 
         'meterData' => 'Meter Data',
         'productCode' => 'Product Code',
-        'previous_electricity_reading' => 'Latest Electricity Reading',
-        'previous_water_reading' => 'Latest Water Reading',
+        'previous_electricity_reading' => 'Previous Electricity Reading',
+        'previous_water_reading' => 'Previous Water Reading',
         'latest_electricity_reading' => 'Latest Electricity Reading',
         'latest_water_reading' => 'Latest Water Reading',
         'img_electricity' => 'Electricity Meter Image',
@@ -208,6 +208,19 @@ return array(
         'img_not' => 'No Image',
         'img_delete' => 'Delete Image',
         'remark' => 'Remark',
+        'electricity_ppu' => 'Price Per Unit Electricity',
+        'water_ppu' => 'Price Per Unit Water',
+
+        // เพิ่มสถิติ
+        'stats' => array(
+            'saved_count' => 'Saved',
+            'unsaved_count' => 'Unsaved',
+            'total_electricity' => 'Total Electricity',
+            'total_water' => 'Total Water',
+            'total_garbage' => 'Total Garbage',
+            'total_common_area' => 'Total Common Area',
+            'grand_total' => 'Grand Total'
+        )
 
     ),
 

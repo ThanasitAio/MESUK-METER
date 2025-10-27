@@ -111,7 +111,10 @@ class Meter extends Model {
                     'electricityMeterNumberBefore' => (int)$electricityMeterNumberBefore,
                     'meterwater' => (int)$meterwater,
                     'meterelectricity' => (int)$meterelectricity,
-                    'remark' => (string)$remark
+                    'remark' => (string)$remark,
+                    'water_ppu' => (float)$product['water_ppu'],
+                    'electricity_ppu' => (float)$product['electricity_ppu'],
+
                 );
             }
             
