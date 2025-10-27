@@ -312,72 +312,75 @@ class Meter extends Model {
         return $hasMeter || $hasOther;
     }
 
-    /**
-     * บันทึกหรืออัพเดทข้อมูลมิเตอร์พร้อมหมายเหตุ
-     */
-    public function saveOrUpdateMeterWithRemark($data) {
-        try {
-            // ดึง user ID ของผู้ใช้ปัจจุบัน
-            $userId = null;
-            if (class_exists('Auth')) {
-                $currentUser = Auth::user();
-                $userId = isset($currentUser['id']) ? $currentUser['id'] : null;
-            }
-            
-            $pcode = $data['pcode'];
-            $month = $data['month'];
-            $year = $data['year'];
-            $remark = isset($data['remark']) ? trim($data['remark']) : '';
-            
-            // ตรวจสอบว่ามีข้อมูลอยู่แล้วหรือไม่
-            $exists = $this->meterRecordExists($data['pcode'], $data['month'], $data['year'], $data['type']);
-           
-            if ($exists) {
-                // Update existing record
-                $sql = "UPDATE me_meter 
-                        SET reading_value = ?, 
-                            remark = ?,
-                            updated_at = NOW(), 
-                            updated_by = ? 
-                        WHERE pcode = ? AND month = ? AND year = ? AND meter_type = ?";
-                $stmt = $this->db->prepare($sql);
-                $result = $stmt->execute([
-                    $data['reading_value'],
-                    $remark,
-                    $userId,
-                    $data['pcode'],
-                    $data['month'],
-                    $data['year'],
-                    $data['type']
-                ]);
-                error_log("Updated meter with remark: " . $data['type'] . " - pcode=" . $data['pcode'] . ", value=" . $data['reading_value']);
-            } else {
-                // Insert new record
-                $sql = "INSERT INTO me_meter 
-                        (meter_type, pcode, month, year, reading_value, remark, reading_date, created_at, created_by, updated_at, updated_by) 
-                        VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), ?, NOW(), ?)";
-                $stmt = $this->db->prepare($sql);
-                $result = $stmt->execute([
-                    $data['type'],
-                    $data['pcode'],
-                    $data['month'],
-                    $data['year'],
-                    $data['reading_value'],
-                    $remark,
-                    $userId,
-                    $userId
-                ]);
-                error_log("Inserted meter with remark: " . $data['type'] . " - pcode=" . $data['pcode'] . ", value=" . $data['reading_value']);
-            }
-            return $result;
-        } catch (PDOException $e) {
-            error_log("Error saving or updating meter record with remark (" . $data['type'] . "): " . $e->getMessage());
-            if (isset($stmt)) {
-                error_log("SQL Error Info: " . print_r($stmt->errorInfo(), true));
-            }
-            return false;
+
+   public function saveOrUpdateMeterWithImage($data) {
+    try {
+        // ดึง user ID ของผู้ใช้ปัจจุบัน
+        $userId = null;
+        if (class_exists('Auth')) {
+            $currentUser = Auth::user();
+            $userId = isset($currentUser['id']) ? $currentUser['id'] : null;
         }
+        
+        $pcode = $data['pcode'];
+        $month = $data['month'];
+        $year = $data['year'];
+        $remark = isset($data['remark']) ? trim($data['remark']) : '';
+        $img = isset($data['img']) ? $data['img'] : null; // เปลี่ยนจาก image_path เป็น img
+        
+        // ตรวจสอบว่ามีข้อมูลอยู่แล้วหรือไม่
+        $exists = $this->meterRecordExists($data['pcode'], $data['month'], $data['year'], $data['type']);
+       
+        if ($exists) {
+            // Update existing record
+            $sql = "UPDATE me_meter 
+                    SET reading_value = ?, 
+                        remark = ?,
+                        img = ?,  -- เปลี่ยนจาก image_path เป็น img
+                        updated_at = NOW(), 
+                        updated_by = ? 
+                    WHERE pcode = ? AND month = ? AND year = ? AND meter_type = ?";
+            $stmt = $this->db->prepare($sql);
+            $result = $stmt->execute(array(
+                $data['reading_value'],
+                $remark,
+                $img,  // เปลี่ยนจาก imagePath เป็น img
+                $userId,
+                $data['pcode'],
+                $data['month'],
+                $data['year'],
+                $data['type']
+            ));
+            error_log("Updated meter with image: " . $data['type'] . " - pcode=" . $data['pcode'] . ", img=" . $img);
+        } else {
+            // Insert new record
+            $sql = "INSERT INTO me_meter 
+                    (meter_type, pcode, month, year, reading_value, remark, img, reading_date, created_at, created_by, updated_at, updated_by) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), ?, NOW(), ?)";
+            $stmt = $this->db->prepare($sql);
+            $result = $stmt->execute(array(
+                $data['type'],
+                $data['pcode'],
+                $data['month'],
+                $data['year'],
+                $data['reading_value'],
+                $remark,
+                $img,  // เปลี่ยนจาก imagePath เป็น img
+                $userId,
+                $userId
+            ));
+            error_log("Inserted meter with image: " . $data['type'] . " - pcode=" . $data['pcode'] . ", img=" . $img);
+        }
+        return $result;
+    } catch (PDOException $e) {
+        error_log("Error saving or updating meter record with image (" . $data['type'] . "): " . $e->getMessage());
+        if (isset($stmt)) {
+            $errorInfo = $stmt->errorInfo();
+            error_log("SQL Error Info: " . print_r($errorInfo, true));
+        }
+        return false;
     }
+}
 
     /**
      * บันทึกหรืออัพเดทค่าใช้จ่ายอื่นๆ พร้อมหมายเหตุ

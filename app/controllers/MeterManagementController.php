@@ -156,6 +156,16 @@ class MeterManagementController extends Controller {
             // ตัวแปรเก็บผลลัพธ์
             $allSuccess = true;
             $errors = array();
+
+            // บันทึกรูปภาพถ้ามี
+            $electricityImagePath = $this->saveMeterImage('img_electricity', $pcode, $month, $year, 'electricity');
+            $waterImagePath = $this->saveMeterImage('img_water', $pcode, $month, $year, 'water');
+
+            // ในฟังก์ชัน saveMeter เพิ่มการรับค่า current images
+            $currentElectricityImage = isset($_POST['current_electricity_image']) ? trim($_POST['current_electricity_image']) : '';
+            $currentWaterImage = isset($_POST['current_water_image']) ? trim($_POST['current_water_image']) : '';
+
+            
             
             // บันทึกข้อมูลค่าไฟพร้อมหมายเหตุ
             $electricityData = array(
@@ -164,10 +174,11 @@ class MeterManagementController extends Controller {
                 'year' => $year,
                 'type' => 'ค่าไฟ',
                 'reading_value' => $electricity,
-                'remark' => $remark
+                'remark' => $remark,
+                'img' => $electricityImagePath ?: $currentElectricityImage
             );
             
-            $electricityResult = $this->meterModel->saveOrUpdateMeterWithRemark($electricityData);
+            $electricityResult = $this->meterModel->saveOrUpdateMeterWithImage($electricityData);
             error_log("Electricity save result: " . ($electricityResult ? 'success' : 'failed'));
             if (!$electricityResult) {
                 $allSuccess = false;
@@ -181,9 +192,10 @@ class MeterManagementController extends Controller {
                 'year' => $year,
                 'type' => 'ค่าน้ำ',
                 'reading_value' => $water,
-                'remark' => $remark
+                'remark' => $remark,
+                'img' =>  $waterImagePath ?: $currentWaterImage
             );
-            $waterResult = $this->meterModel->saveOrUpdateMeterWithRemark($waterData);
+            $waterResult = $this->meterModel->saveOrUpdateMeterWithImage($waterData);
             error_log("Water save result: " . ($waterResult ? 'success' : 'failed'));
             if (!$waterResult) {
                 $allSuccess = false;
@@ -229,6 +241,53 @@ class MeterManagementController extends Controller {
             ));
         }
         exit;
+    }
+
+     /**
+     * บันทึกรูปภาพมิเตอร์ (รองรับ PHP 5.6)
+     */
+    private function saveMeterImage($fieldName, $pcode, $month, $year, $type) {
+        // ตรวจสอบว่ามีไฟล์ถูกอัพโหลดหรือไม่
+        if (!isset($_FILES[$fieldName]) || $_FILES[$fieldName]['error'] !== UPLOAD_ERR_OK) {
+            return null;
+        }
+        
+        $file = $_FILES[$fieldName];
+        
+        // ตรวจสอบประเภทไฟล์แบบเก่าสำหรับ PHP 5.6
+        $allowedTypes = array('image/jpeg', 'image/png', 'image/gif');
+        $fileType = $file['type'];
+        
+        if (!in_array($fileType, $allowedTypes)) {
+            error_log("Invalid file type: " . $fileType);
+            return null;
+        }
+        
+        // ตรวจสอบขนาดไฟล์ (จำกัดที่ 5MB)
+        if ($file['size'] > 5 * 1024 * 1024) {
+            error_log("File too large: " . $file['size']);
+            return null;
+        }
+        
+        // สร้างโฟลเดอร์เก็บรูปภาพ
+        $uploadDir = __DIR__ . '/../../public/uploads/meters/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+        
+        // สร้างชื่อไฟล์ที่ปลอดภัย
+        $fileExtension = pathinfo($file['name'], PATHINFO_EXTENSION);
+        $safeFilename = preg_replace('/[^a-zA-Z0-9_-]/', '_', $pcode);
+        $filename = $safeFilename . "_" . $month . "_" . $year . "_" . $type . "_" . time() . "." . $fileExtension;
+        $filepath = $uploadDir . $filename;
+        
+        // บันทึกไฟล์
+        if (move_uploaded_file($file['tmp_name'], $filepath)) {
+            return "/uploads/meters/" . $filename; // Return relative path
+        }
+        
+        error_log("Failed to save image: " . $filepath);
+        return null;
     }
 
     /**
@@ -305,5 +364,69 @@ class MeterManagementController extends Controller {
             return false;
         }
     }
+
+    /**
+     * ดึงข้อมูลรูปภาพมิเตอร์ (AJAX)
+     */
+    public function getMeterImages() {
+        header('Content-Type: application/json');
+        
+        if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+            http_response_code(405);
+            echo json_encode(array('success' => false, 'message' => 'Method not allowed'));
+            exit;
+        }
+        
+        try {
+            $pcode = isset($_GET['pcode']) ? trim($_GET['pcode']) : '';
+            $month = isset($_GET['month']) ? (int)$_GET['month'] : 0;
+            $year = isset($_GET['year']) ? (int)$_GET['year'] : 0;
+            
+            if (empty($pcode) || $month === 0 || $year === 0) {
+                echo json_encode(array('success' => false, 'message' => 'ข้อมูลไม่ครบถ้วน'));
+                exit;
+            }
+            
+            // ดึงข้อมูลรูปภาพจากฐานข้อมูล
+            $electricityImage = $this->getMeterImage($pcode, $month, $year, 'ค่าไฟ');
+            $waterImage = $this->getMeterImage($pcode, $month, $year, 'ค่าน้ำ');
+            
+            echo json_encode(array(
+                'success' => true,
+                'data' => array(
+                    'electricityImage' => $electricityImage,
+                    'waterImage' => $waterImage
+                )
+            ));
+            
+        } catch (Exception $e) {
+            error_log("Error getting meter images: " . $e->getMessage());
+            echo json_encode(array(
+                'success' => false,
+                'message' => 'เกิดข้อผิดพลาดในการดึงข้อมูลรูปภาพ'
+            ));
+        }
+        exit;
+    }
+
+    /**
+     * ดึง path รูปภาพจากฐานข้อมูล
+     */
+    private function getMeterImage($pcode, $month, $year, $type) {
+        try {
+            $sql = "SELECT img FROM me_meter WHERE pcode = ? AND month = ? AND year = ? AND meter_type = ? AND img IS NOT NULL AND img != ''";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute(array($pcode, $month, $year, $type));
+            
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ? $result['img'] : null;
+            
+        } catch (PDOException $e) {
+            error_log("Error getting meter image: " . $e->getMessage());
+            return null;
+        }
+    }
+
     
 }
+

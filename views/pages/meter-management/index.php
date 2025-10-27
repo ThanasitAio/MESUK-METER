@@ -145,6 +145,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
     </div>
 </div>
 
+
 <!-- Modal สำหรับแก้ไขข้อมูล -->
 <div class="modal fade" id="editMeterModal" tabindex="-1" aria-labelledby="editMeterModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -156,7 +157,6 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
             <div class="modal-body">
                 <form id="editMeterForm">
                     <!-- ข้อมูลมิเตอร์ -->
-                
                     <div class="row">
                         <div class="col-4 col-sm-4 col-md-3 mb-3">
                             <label for="meterPcode" class="form-label">รหัสสินค้า</label>
@@ -170,8 +170,6 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                             <label for="meterYear" class="form-label">ปี</label>
                             <input type="number" class="form-control form-control-sm" id="meterYear" name="year" readonly disabled>
                         </div>
-                        
-                        
                     </div>
                     <hr>
                     <div class="row">
@@ -202,24 +200,51 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                             <input type="number" class="form-control form-control-sm" id="readingValueCommonArea" name="common_area">
                         </div>
                     </div>
+                    
+                    <!-- ส่วนแสดงรูปภาพ -->
                     <div class="row">
                         <div class="col-6 col-sm-6 col-md-3 mb-3">
-                            <label for="meterImgElectricity" class="form-label">รูปมิเตอร์ - ไฟ</label>
-                            <input type="file" class="form-control form-control-sm" id="meterImgElectricity" name="img_electricity">
+                            <label class="form-label">รูปมิเตอร์ - ไฟ</label>
+                            <div class="image-preview-container mb-2" style="width: 100%; height: 120px; border: 1px solid #dee2e6; border-radius: 0.5rem; background: #f8f9fa; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                <div class="image-preview w-100 h-100 d-flex align-items-center justify-content-center" id="electricityImagePreview">
+                                    <div class="placeholder text-center text-muted">
+                                        <i class="fas fa-image fa-2x mb-1"></i>
+                                        <div style="font-size: 0.9em;">ไม่มีรูปภาพ</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="file" class="form-control form-control-sm" id="img_electricity" name="img_electricity" accept="image/*" onchange="previewElectricityImage(event)">
+                            <input type="hidden" id="currentElectricityImage" name="current_electricity_image">
+                            <div class="form-text small">
+                                <button type="button" class="btn btn-outline-danger btn-sm mt-1" onclick="clearElectricityImage()" style="display:none;" id="clearElectricityBtn">
+                                    <i class="fas fa-times"></i> ลบรูปภาพ
+                                </button>
+                            </div>
                         </div>
                         <div class="col-6 col-sm-6 col-md-3 mb-3">
-                            <label for="meterImgWater" class="form-label">รูปมิเตอร์ - น้ำ</label>
-                            <input type="file" class="form-control form-control-sm" id="meterImgWater" name="img_water">
+                            <label class="form-label">รูปมิเตอร์ - น้ำ</label>
+                            <div class="image-preview-container mb-2" style="width: 100%; height: 120px; border: 1px solid #dee2e6; border-radius: 0.5rem; background: #f8f9fa; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                <div class="image-preview w-100 h-100 d-flex align-items-center justify-content-center" id="waterImagePreview">
+                                    <div class="placeholder text-center text-muted">
+                                        <i class="fas fa-image fa-2x mb-1"></i>
+                                        <div style="font-size: 0.9em;">ไม่มีรูปภาพ</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="file" class="form-control form-control-sm" id="img_water" name="img_water" accept="image/*" onchange="previewWaterImage(event)">
+                            <input type="hidden" id="currentWaterImage" name="current_water_image">
+                            <div class="form-text small">
+                                <button type="button" class="btn btn-outline-danger btn-sm mt-1" onclick="clearWaterImage()" style="display:none;" id="clearWaterBtn">
+                                    <i class="fas fa-times"></i> ลบรูปภาพ
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 col-md-12 mb-3">
+                        <div class="col-6 col-sm-6 col-md-6 mb-3">
                             <label for="meterRemark" class="form-label">หมายเหตุ</label>
-                            <textarea class="form-control" id="meterRemark" name="remark" rows="3"></textarea>
+                            <textarea class="form-control" id="meterRemark" name="remark" rows="5"></textarea>
                         </div>
                     </div>
                     <hr>
-                    
                 </form>
             </div>
             <div class="modal-footer">
@@ -228,6 +253,12 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
             </div>
         </div>
     </div>
+</div>
+
+<!-- Modal สำหรับแสดงรูปภาพเต็มหน้าจอ -->
+<div id="imageModal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.9); align-items:center; justify-content:center;">
+    <span style="position:absolute; top:20px; right:30px; color:#fff; font-size:2em; cursor:pointer; z-index:10000;" onclick="closeImageModal()">&times;</span>
+    <img id="modalImage" src="" style="max-width:90vw; max-height:90vh; border-radius:1em; box-shadow:0 0 20px #000; display:block; margin:auto;">
 </div>
 
 
@@ -413,6 +444,8 @@ let editMeterModal;
 const editMeterForm = document.getElementById('editMeterForm');
 const saveMeterChanges = document.getElementById('saveMeterChanges');
 
+let currentMeterData = {};
+
 // เปิด Modal เมื่อคลิกปุ่มแก้ไข
 document.addEventListener('click', function(event) {
     if (event.target.closest('.btn-edit-meter')) {
@@ -432,12 +465,179 @@ document.addEventListener('click', function(event) {
             document.getElementById('readingValueCommonArea').value = meter.common_area || '';
             document.getElementById('meterRemark').value = meter.remark || '';
 
+            // เก็บข้อมูลปัจจุบัน
+            currentMeterData = meter;
+
+            // โหลดรูปภาพจาก API
+            loadMeterImages(meter.pcode, meter.month, meter.year);
+
             // แสดง Modal
             editMeterModal.show();
         }
     }
 });
 
+// ฟังก์ชันโหลดรูปภาพจาก API
+function loadMeterImages(pcode, month, year) {
+    // รีเซ็ต preview
+    resetImagePreviews();
+    
+    // เรียก API เพื่อดึงข้อมูลรูปภาพ
+    fetch(`/meter-management/get-meter-images?pcode=${pcode}&month=${month}&year=${year}`)
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                // แสดงรูปภาพไฟฟ้า
+                if (result.data.electricityImage) {
+                    displayExistingImage('electricityImagePreview', result.data.electricityImage, 'electricity');
+                    document.getElementById('currentElectricityImage').value = result.data.electricityImage;
+                    document.getElementById('clearElectricityBtn').style.display = 'block';
+                }
+                
+                // แสดงรูปภาพน้ำ
+                if (result.data.waterImage) {
+                    displayExistingImage('waterImagePreview', result.data.waterImage, 'water');
+                    document.getElementById('currentWaterImage').value = result.data.waterImage;
+                    document.getElementById('clearWaterBtn').style.display = 'block';
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error loading meter images:', error);
+        });
+}
+
+// ฟังก์ชันรีเซ็ต preview
+function resetImagePreviews() {
+    const electricityPreview = document.getElementById('electricityImagePreview');
+    const waterPreview = document.getElementById('waterImagePreview');
+    
+    electricityPreview.innerHTML = '<div class="placeholder text-center text-muted"><i class="fas fa-image fa-2x mb-1"></i><div style="font-size: 0.9em;">ไม่มีรูปภาพ</div></div>';
+    waterPreview.innerHTML = '<div class="placeholder text-center text-muted"><i class="fas fa-image fa-2x mb-1"></i><div style="font-size: 0.9em;">ไม่มีรูปภาพ</div></div>';
+    
+    document.getElementById('currentElectricityImage').value = '';
+    document.getElementById('currentWaterImage').value = '';
+    document.getElementById('clearElectricityBtn').style.display = 'none';
+    document.getElementById('clearWaterBtn').style.display = 'none';
+    
+    // รีเซ็ต input file
+    document.getElementById('img_electricity').value = '';
+    document.getElementById('img_water').value = '';
+}
+
+// ฟังก์ชันแสดงรูปภาพที่มีอยู่
+function displayExistingImage(previewId, imagePath, type) {
+    const preview = document.getElementById(previewId);
+    preview.innerHTML = `
+        <img src="${imagePath}" alt="รูปมิเตอร์ ${type}" 
+             class="img-fluid preview-clickable" 
+             style="max-width: 100%; max-height: 100%; cursor:pointer; object-fit: contain;"
+             onclick="openImageModal('${imagePath}')">
+    `;
+}
+
+// ฟังก์ชัน preview รูปภาพไฟฟ้า
+function previewElectricityImage(event) {
+    const file = event.target.files[0];
+    const preview = document.getElementById('electricityImagePreview');
+    
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.innerHTML = `
+                <img src="${e.target.result}" alt="Preview" 
+                     class="img-fluid preview-clickable" 
+                     style="max-width: 100%; max-height: 100%; cursor:pointer; object-fit: contain;"
+                     onclick="openImageModal('${e.target.result}')">
+            `;
+            document.getElementById('clearElectricityBtn').style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+    } else {
+        // ถ้าไม่มีไฟล์ใหม่ แต่มีรูปเดิม ให้แสดงรูปเดิม
+        const currentImage = document.getElementById('currentElectricityImage').value;
+        if (currentImage) {
+            displayExistingImage('electricityImagePreview', currentImage, 'electricity');
+        } else {
+            preview.innerHTML = '<div class="placeholder text-center text-muted"><i class="fas fa-image fa-2x mb-1"></i><div style="font-size: 0.9em;">ไม่มีรูปภาพ</div></div>';
+            document.getElementById('clearElectricityBtn').style.display = 'none';
+        }
+    }
+}
+
+// ฟังก์ชัน preview รูปภาพน้ำ
+function previewWaterImage(event) {
+    const file = event.target.files[0];
+    const preview = document.getElementById('waterImagePreview');
+    
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.innerHTML = `
+                <img src="${e.target.result}" alt="Preview" 
+                     class="img-fluid preview-clickable" 
+                     style="max-width: 100%; max-height: 100%; cursor:pointer; object-fit: contain;"
+                     onclick="openImageModal('${e.target.result}')">
+            `;
+            document.getElementById('clearWaterBtn').style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+    } else {
+        // ถ้าไม่มีไฟล์ใหม่ แต่มีรูปเดิม ให้แสดงรูปเดิม
+        const currentImage = document.getElementById('currentWaterImage').value;
+        if (currentImage) {
+            displayExistingImage('waterImagePreview', currentImage, 'water');
+        } else {
+            preview.innerHTML = '<div class="placeholder text-center text-muted"><i class="fas fa-image fa-2x mb-1"></i><div style="font-size: 0.9em;">ไม่มีรูปภาพ</div></div>';
+            document.getElementById('clearWaterBtn').style.display = 'none';
+        }
+    }
+}
+
+// ฟังก์ชันลบรูปภาพไฟฟ้า
+function clearElectricityImage() {
+    document.getElementById('electricityImagePreview').innerHTML = '<div class="placeholder text-center text-muted"><i class="fas fa-image fa-2x mb-1"></i><div style="font-size: 0.9em;">ไม่มีรูปภาพ</div></div>';
+    document.getElementById('img_electricity').value = '';
+    document.getElementById('currentElectricityImage').value = '';
+    document.getElementById('clearElectricityBtn').style.display = 'none';
+}
+
+// ฟังก์ชันลบรูปภาพน้ำ
+function clearWaterImage() {
+    document.getElementById('waterImagePreview').innerHTML = '<div class="placeholder text-center text-muted"><i class="fas fa-image fa-2x mb-1"></i><div style="font-size: 0.9em;">ไม่มีรูปภาพ</div></div>';
+    document.getElementById('img_water').value = '';
+    document.getElementById('currentWaterImage').value = '';
+    document.getElementById('clearWaterBtn').style.display = 'none';
+}
+
+// Modal popup functions
+function openImageModal(src) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    modalImg.src = src;
+    modal.style.display = 'flex';
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('imageModal');
+    modal.style.display = 'none';
+}
+
+// ปิด modal เมื่อคลิกนอกภาพ
+document.getElementById('imageModal').addEventListener('click', function(e) {
+    if (e.target === this) closeImageModal();
+});
+
+// รีเซ็ตฟอร์มเมื่อปิด modal
+document.getElementById('editMeterModal').addEventListener('hidden.bs.modal', function () {
+    resetImagePreviews();
+    currentMeterData = {};
+});
+
+
+
+
+// บันทึกข้อมูลเมื่อคลิกปุ่มบันทึก
 // บันทึกข้อมูลเมื่อคลิกปุ่มบันทึก
 saveMeterChanges.addEventListener('click', function() {
     // รวบรวมข้อมูลจากฟอร์ม
@@ -449,6 +649,12 @@ saveMeterChanges.addEventListener('click', function() {
     const garbage = document.getElementById('readingValueGarbage').value;
     const common_area = document.getElementById('readingValueCommonArea').value;
     const remark = document.getElementById('meterRemark').value;
+    const currentElectricityImage = document.getElementById('currentElectricityImage').value;
+    const currentWaterImage = document.getElementById('currentWaterImage').value;
+
+    // รับไฟล์รูปภาพ
+    const imgElectricity = document.getElementById('img_electricity').files[0];
+    const imgWater = document.getElementById('img_water').files[0];
 
     // ตรวจสอบข้อมูลที่จำเป็น
     if (!pcode || !month || !year) {
@@ -466,6 +672,21 @@ saveMeterChanges.addEventListener('click', function() {
     formData.append('garbage', garbage || '0');
     formData.append('common_area', common_area || '0');
     formData.append('remark', remark || '');
+    formData.append('current_electricity_image', currentElectricityImage || '');
+    formData.append('current_water_image', currentWaterImage || '');
+
+    // เพิ่มไฟล์รูปภาพถ้ามี
+    if (imgElectricity) {
+        formData.append('img_electricity', imgElectricity);
+    }
+    if (imgWater) {
+        formData.append('img_water', imgWater);
+    }
+
+    // แสดง loading
+    const originalText = saveMeterChanges.innerHTML;
+    saveMeterChanges.disabled = true;
+    saveMeterChanges.innerHTML = '<i class="fas fa-spinner fa-spin"></i> กำลังบันทึก...';
 
     // ส่งข้อมูลไปยัง server
     fetch('/meter-management/save-meter', {
@@ -484,7 +705,7 @@ saveMeterChanges.addEventListener('click', function() {
         if (result.success) {
             alert('บันทึกข้อมูลสำเร็จ');
             editMeterModal.hide();
-            loadMeters(); // โหลดข้อมูลใหม่ - ตอนนี้สามารถเรียกใช้ได้แล้ว
+            loadMeters();
         } else {
             alert('เกิดข้อผิดพลาด: ' + (result.message || 'Unknown error'));
         }
@@ -492,6 +713,11 @@ saveMeterChanges.addEventListener('click', function() {
     .catch(error => {
         console.error('Error saving meter:', error);
         alert('เกิดข้อผิดพลาดในการเชื่อมต่อ: ' + error.message);
+    })
+    .finally(() => {
+        // คืนสถานะปุ่ม
+        saveMeterChanges.disabled = false;
+        saveMeterChanges.innerHTML = originalText;
     });
 });
 </script>

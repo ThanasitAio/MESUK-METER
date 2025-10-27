@@ -22,8 +22,7 @@ return array(
         '/meters' => 'MeterManagementController@index',
         '/meters/edit/{id}' => 'MeterManagementController@edit',
         '/meters/get-by-period' => 'MeterManagementController@getByPeriod',
-
-        '/meter-management/save-meter' => 'MeterManagementController@saveMeter',
+        '/meter-management/get-meter-images' => 'MeterManagementController@getMeterImages', // เพิ่ม route ใหม่นี้
     ),
     'POST' => array(
         '/login' => 'AuthController@login',
@@ -43,7 +42,6 @@ return array(
         // Meter Management Routes
         '/meters/store' => 'MeterManagementController@store',
         '/meters/update/{id}' => 'MeterManagementController@update',
-
         '/meter-management/save-meter' => 'MeterManagementController@saveMeter',
     )
 );
