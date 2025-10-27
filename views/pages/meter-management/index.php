@@ -266,7 +266,24 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
 // ส่งค่าภาษาจาก PHP ไปยัง JavaScript
 const translations = {
     saved: '<?php echo t('meter_management.saved'); ?>',
-    unsaved: '<?php echo t('meter_management.unsaved'); ?>'
+    unsaved: '<?php echo t('meter_management.unsaved'); ?>',
+    swal: {
+        incomplete_data: '<?php echo t('swal.incomplete_data'); ?>',
+        missing_required_fields: '<?php echo t('swal.missing_required_fields'); ?>',
+        confirm_save_title: '<?php echo t('swal.confirm_save_title'); ?>',
+        confirm_save_text: '<?php echo t('swal.confirm_save_text'); ?>',
+
+        save_button: '<?php echo t('swal.save_button'); ?>',
+        cancel_button: '<?php echo t('swal.cancel_button'); ?>',
+        saving_title: '<?php echo t('swal.saving_title'); ?>',
+        saving_text: '<?php echo t('swal.saving_text'); ?>',
+        save_success_title: '<?php echo t('swal.save_success_title'); ?>',
+        save_success_text: '<?php echo t('swal.save_success_text'); ?>',
+        save_error_title: '<?php echo t('swal.save_error_title'); ?>',
+        save_error_text: '<?php echo t('swal.save_error_text'); ?>',
+        connection_error_title: '<?php echo t('swal.connection_error_title'); ?>',
+        connection_error_text: '<?php echo t('swal.connection_error_text'); ?>',
+    }
 };
 </script>
 <script>
@@ -638,7 +655,6 @@ document.getElementById('editMeterModal').addEventListener('hidden.bs.modal', fu
 
 
 // บันทึกข้อมูลเมื่อคลิกปุ่มบันทึก
-// บันทึกข้อมูลเมื่อคลิกปุ่มบันทึก
 saveMeterChanges.addEventListener('click', function() {
     // รวบรวมข้อมูลจากฟอร์ม
     const pcode = document.getElementById('meterPcode').value;
@@ -658,66 +674,100 @@ saveMeterChanges.addEventListener('click', function() {
 
     // ตรวจสอบข้อมูลที่จำเป็น
     if (!pcode || !month || !year) {
-        alert('กรุณากรอกข้อมูล รหัสสินค้า, เดือน, และปี');
+        Swal.fire({
+            title: translations.swal.incomplete_data,
+            text: translations.swal.incomplete_data_text,
+            icon: 'warning'
+        });
         return;
     }
 
-    // สร้าง FormData
-    const formData = new FormData();
-    formData.append('pcode', pcode);
-    formData.append('month', month);
-    formData.append('year', year);
-    formData.append('electricity', electricity || '0');
-    formData.append('water', water || '0');
-    formData.append('garbage', garbage || '0');
-    formData.append('common_area', common_area || '0');
-    formData.append('remark', remark || '');
-    formData.append('current_electricity_image', currentElectricityImage || '');
-    formData.append('current_water_image', currentWaterImage || '');
+    // แสดงการยืนยันการบันทึก
+    Swal.fire({
+        title: translations.swal.confirm_save_title,
+        text: translations.swal.confirm_save_text,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: translations.swal.save_button,
+        cancelButtonText: translations.swal.cancel_button
+    }).then(function(result) {
+        if (result.isConfirmed) {
+            // สร้าง FormData
+            const formData = new FormData();
+            formData.append('pcode', pcode);
+            formData.append('month', month);
+            formData.append('year', year);
+            formData.append('electricity', electricity || '0');
+            formData.append('water', water || '0');
+            formData.append('garbage', garbage || '0');
+            formData.append('common_area', common_area || '0');
+            formData.append('remark', remark || '');
+            formData.append('current_electricity_image', currentElectricityImage || '');
+            formData.append('current_water_image', currentWaterImage || '');
 
-    // เพิ่มไฟล์รูปภาพถ้ามี
-    if (imgElectricity) {
-        formData.append('img_electricity', imgElectricity);
-    }
-    if (imgWater) {
-        formData.append('img_water', imgWater);
-    }
+            // เพิ่มไฟล์รูปภาพถ้ามี
+            if (imgElectricity) {
+                formData.append('img_electricity', imgElectricity);
+            }
+            if (imgWater) {
+                formData.append('img_water', imgWater);
+            }
 
-    // แสดง loading
-    const originalText = saveMeterChanges.innerHTML;
-    saveMeterChanges.disabled = true;
-    saveMeterChanges.innerHTML = '<i class="fas fa-spinner fa-spin"></i> กำลังบันทึก...';
+            // แสดง loading ใน SweetAlert
+            Swal.fire({
+                title: translations.swal.saving_data_title,
+                text: translations.swal.saving_data_text,
+                icon: 'info',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
 
-    // ส่งข้อมูลไปยัง server
-    fetch('/meter-management/save-meter', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
-        console.log('Response status:', response.status);
-        if (!response.ok) {
-            throw new Error('Network response was not ok: ' + response.status);
+            // ส่งข้อมูลไปยัง server
+            fetch('/meter-management/save-meter', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(result => {
+                if (result.success) {
+                    Swal.fire({
+                        title: translations.swal.save_success_title,
+                        text: translations.swal.save_success_text,
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(function() {
+                        editMeterModal.hide();
+                        loadMeters();
+                    });
+                } else {
+                    var errorMsg = result.errors ? result.errors.join('<br>') : (result.message || translations.swal.save_error_text);
+                    Swal.fire({
+                        title: translations.swal.save_error_title,
+                        html: errorMsg,
+                        icon: 'error'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error saving meter:', error);
+                Swal.fire({
+                    title: translations.swal.connection_error_title,
+                    text: translations.swal.connection_error_text + error.message,
+                    icon: 'error'
+                });
+            });
         }
-        return response.json();
-    })
-    .then(result => {
-        console.log('Server response:', result);
-        if (result.success) {
-            alert('บันทึกข้อมูลสำเร็จ');
-            editMeterModal.hide();
-            loadMeters();
-        } else {
-            alert('เกิดข้อผิดพลาด: ' + (result.message || 'Unknown error'));
-        }
-    })
-    .catch(error => {
-        console.error('Error saving meter:', error);
-        alert('เกิดข้อผิดพลาดในการเชื่อมต่อ: ' + error.message);
-    })
-    .finally(() => {
-        // คืนสถานะปุ่ม
-        saveMeterChanges.disabled = false;
-        saveMeterChanges.innerHTML = originalText;
     });
 });
 </script>

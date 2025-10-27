@@ -240,5 +240,22 @@ return array(
 
     ),
 
+    'swal' => array(
+        'incomplete_data' => 'ข้อมูลไม่ครบถ้วน',
+        'missing_required_fields' => 'กรุณากรอกข้อมูล รหัสสินค้า, เดือน, และปี',
+        'confirm_save_title' => 'ยืนยันการบันทึกข้อมูล',
+        'confirm_save_text' => 'คุณต้องการบันทึกข้อมูลมิเตอร์นี้หรือไม่?',
+        'save_button' => 'บันทึกข้อมูล',
+        'cancel_button' => 'ยกเลิก',
+        'saving_title' => 'กำลังบันทึกข้อมูล...',
+        'saving_text' => 'กรุณารอสักครู่',
+        'save_success_title' => 'บันทึกข้อมูลสำเร็จ!',
+        'save_success_text' => 'ข้อมูลถูกบันทึกเรียบร้อยแล้ว',
+        'save_error_title' => 'บันทึกข้อมูลไม่สำเร็จ',
+        'save_error_text' => 'เกิดข้อผิดพลาดในการบันทึกข้อมูล',
+        'connection_error_title' => 'เกิดข้อผิดพลาด',
+        'connection_error_text' => 'เกิดข้อผิดพลาดในการเชื่อมต่อ',
+    )
+
     
 );

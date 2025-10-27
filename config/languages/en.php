@@ -236,6 +236,24 @@ return array(
         'cancel' => 'Cancel',
 
     ),
+
+    'swal' => array(
+        'incomplete_data' => 'Incomplete Data',
+        'missing_required_fields' => 'Please enter Product Code, Month, and Year',
+        'confirm_save_title' => 'Confirm Save',
+        'confirm_save_text' => 'Do you want to save this meter data?',
+        'save_button' => 'Save Data',
+        'cancel_button' => 'Cancel',
+        'saving_title' => 'Saving Data...',
+        'saving_text' => 'Please wait a moment',
+        'save_success_title' => 'Save Successful!',
+        'save_success_text' => 'Data has been saved successfully',
+        'save_error_title' => 'Save Failed',
+        'save_error_text' => 'Error occurred while saving data',
+        'connection_error_title' => 'Error',
+        'connection_error_text' => 'Connection error occurred',
+    )
+
 );
 
 
