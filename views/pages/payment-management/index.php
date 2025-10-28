@@ -394,7 +394,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
 
 <script>
 // ส่งค่าภาษาจาก PHP ไปยัง JavaScript
-const translations = {
+var translations = {
     paid: '<?php echo t('payment_management.paid'); ?>',
     unpaid: '<?php echo t('payment_management.unpaid'); ?>',
     create_payment: '<?php echo t('payment_management.create_payment'); ?>',
@@ -455,32 +455,34 @@ const translations = {
 
 <script>
 // ประกาศตัวแปร global
-let allPayments = [];
-let currentPaymentData = {};
-let createPaymentModal;
+var allPayments = [];
+var currentPaymentData = {};
+var createPaymentModal;
 
 // ฟังก์ชันแสดงผลตาราง
 function renderTable(payments) {
-    const paymentsTableBody = document.getElementById('paymentsTableBody');
+    var paymentsTableBody = document.getElementById('paymentsTableBody');
     
     if (!paymentsTableBody) return;
     
     if (!payments || payments.length === 0) {
-        paymentsTableBody.innerHTML = `
-            <tr>
-                <td colspan="9" class="text-center py-4">
-                    <i class="fa-solid fa-circle-exclamation fa-2x text-muted mb-2"></i><br>
-                    ${translations.no_data}
-                </td>
-            </tr>`;
+        paymentsTableBody.innerHTML = 
+            '<tr>' +
+            '<td colspan="9" class="text-center py-4">' +
+            '<i class="fa-solid fa-circle-exclamation fa-2x text-muted mb-2"></i><br>' +
+            translations.no_data +
+            '</td>' +
+            '</tr>';
         return;
     }
     
-    let html = '';
+    var html = '';
 
-    payments.forEach((payment, index) => {
+    for (var i = 0; i < payments.length; i++) {
+        var payment = payments[i];
+        
         // ตรวจสอบและแปลงค่า status
-        let statusBadge;
+        var statusBadge;
         if (payment.status === 'paid' || payment.status === true) {
             statusBadge = '<span class="badge bg-success">' + translations.paid + '</span>';
         } else {
@@ -488,45 +490,44 @@ function renderTable(payments) {
         }
         
         // กำหนดคลาสสำหรับยอดคงเหลือ
-        let balanceClass = 'balance-zero';
+        var balanceClass = 'balance-zero';
         if (payment.balance > 0) {
             balanceClass = 'balance-positive';
         } else if (payment.balance < 0) {
             balanceClass = 'balance-negative';
         }
         
-        html += `
-            <tr>
-                <td class="text-center text-muted small">${index + 1}</td>
-                <td><div class="fw-bold small">${payment.inv_no || ''}</div></td>
-                <td class="text-start d-none d-lg-table-cell"><div class="small">${payment.pcode || '-'}</div></td>
-                <td class="text-center"><div class="small">${String(payment.month).padStart(2, '0')}/${payment.year}</div></td>
-                <td class="text-center">${statusBadge}</td>
-                <td class="text-end d-none d-lg-table-cell"><div class="small">${parseFloat(payment.total_invoice).toFixed(2)}</div></td>
-                <td class="text-end d-none d-lg-table-cell"><div class="small">${parseFloat(payment.total_paid).toFixed(2)}</div></td>
-                <td class="text-end ${balanceClass}"><div class="small">${parseFloat(payment.balance).toFixed(2)}</div></td>
-                <td class="text-center">
-                    <div class="btn-group btn-group-sm" role="group">
-                        <button class="btn btn-success btn-sm btn-create-payment" data-id="${payment.id}" title="${translations.create_payment}">
-                            <i class="fa-brands fa-paypal"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        `;
-    });
+        html += 
+            '<tr>' +
+            '<td class="text-center text-muted small">' + (i + 1) + '</td>' +
+            '<td><div class="fw-bold small">' + (payment.inv_no || '') + '</div></td>' +
+            '<td class="text-start d-none d-lg-table-cell"><div class="small">' + (payment.pcode || '-') + '</div></td>' +
+            '<td class="text-center"><div class="small">' + String(payment.month).padStart(2, '0') + '/' + payment.year + '</div></td>' +
+            '<td class="text-center">' + statusBadge + '</td>' +
+            '<td class="text-end d-none d-lg-table-cell"><div class="small">' + parseFloat(payment.total_invoice).toFixed(2) + '</div></td>' +
+            '<td class="text-end d-none d-lg-table-cell"><div class="small">' + parseFloat(payment.total_paid).toFixed(2) + '</div></td>' +
+            '<td class="text-end ' + balanceClass + '"><div class="small">' + parseFloat(payment.balance).toFixed(2) + '</div></td>' +
+            '<td class="text-center">' +
+            '<div class="btn-group btn-group-sm" role="group">' +
+            '<button class="btn btn-success btn-sm btn-create-payment" data-id="' + payment.id + '" title="' + translations.create_payment + '">' +
+            '<i class="fa-brands fa-paypal"></i>' +
+            '</button>' +
+            '</div>' +
+            '</td>' +
+            '</tr>';
+    }
     
     paymentsTableBody.innerHTML = html;
 }
 
 // ฟังก์ชัน loadPayments
 function loadPayments() {
-    const filterMonth = document.getElementById('filterMonth');
-    const filterYear = document.getElementById('filterYear');
-    const paymentsTableBody = document.getElementById('paymentsTableBody');
+    var filterMonth = document.getElementById('filterMonth');
+    var filterYear = document.getElementById('filterYear');
+    var paymentsTableBody = document.getElementById('paymentsTableBody');
     
-    const month = filterMonth ? filterMonth.value : '';
-    const year = filterYear ? filterYear.value : '';
+    var month = filterMonth ? filterMonth.value : '';
+    var year = filterYear ? filterYear.value : '';
     
     if (!month || !year) {
         console.error('Month and year are required');
@@ -539,9 +540,11 @@ function loadPayments() {
     }
     
     // เรียก AJAX
-    fetch(`/payments/get-by-period?month=${month}&year=${year}`)
-        .then(response => response.json())
-        .then(result => {
+    fetch('/payments/get-by-period?month=' + month + '&year=' + year)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(result) {
             if (result.success) {
                 allPayments = result.data;
                 filterTable();
@@ -551,7 +554,7 @@ function loadPayments() {
                     updateStatsFromServer(result.stats);
                 }
                 
-                const cardHeader = document.querySelector('.card .card-header .badge');
+                var cardHeader = document.querySelector('.card .card-header .badge');
                 if (cardHeader) {
                     cardHeader.textContent = result.count;
                 }
@@ -561,7 +564,7 @@ function loadPayments() {
                 }
             }
         })
-        .catch(error => {
+        .catch(function(error) {
             console.error('Error loading payments:', error);
             if (paymentsTableBody) {
                 paymentsTableBody.innerHTML = '<tr><td colspan="9" class="text-center py-4 text-danger">' + translations.connection_error + '</td></tr>';
@@ -573,17 +576,23 @@ function loadPayments() {
 function updateStatsFromServer(stats) {
     if (!stats) return;
     
-    document.getElementById('totalInvoices').textContent = (stats.total_invoices || 0).toLocaleString();
-    document.getElementById('paidCount').textContent = (stats.paid_count || 0).toLocaleString();
-    document.getElementById('unpaidCount').textContent = (stats.not_paid_count || 0).toLocaleString();
-    document.getElementById('totalPaid').textContent = parseFloat(stats.total_paid || 0).toFixed(2);
-    document.getElementById('totalInvoiceAmount').textContent = parseFloat(stats.total_invoice || 0).toFixed(2);
+    var totalInvoicesEl = document.getElementById('totalInvoices');
+    var paidCountEl = document.getElementById('paidCount');
+    var unpaidCountEl = document.getElementById('unpaidCount');
+    var totalPaidEl = document.getElementById('totalPaid');
+    var totalInvoiceAmountEl = document.getElementById('totalInvoiceAmount');
+    
+    if (totalInvoicesEl) totalInvoicesEl.textContent = (stats.total_invoices || 0).toLocaleString();
+    if (paidCountEl) paidCountEl.textContent = (stats.paid_count || 0).toLocaleString();
+    if (unpaidCountEl) unpaidCountEl.textContent = (stats.not_paid_count || 0).toLocaleString();
+    if (totalPaidEl) totalPaidEl.textContent = parseFloat(stats.total_paid || 0).toFixed(2);
+    if (totalInvoiceAmountEl) totalInvoiceAmountEl.textContent = parseFloat(stats.total_invoice || 0).toFixed(2);
 }
 
 // Event listener เมื่อ DOM โหลดเสร็จ
 document.addEventListener('DOMContentLoaded', function() {
     // กำหนด modal
-    const createPaymentModalElement = document.getElementById('createPaymentModal');
+    var createPaymentModalElement = document.getElementById('createPaymentModal');
     if (createPaymentModalElement) {
         createPaymentModal = new bootstrap.Modal(createPaymentModalElement);
         
@@ -594,7 +603,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    const confirmCreatePaymentBtn = document.getElementById('confirmCreatePayment');
+    var confirmCreatePaymentBtn = document.getElementById('confirmCreatePayment');
     if (confirmCreatePaymentBtn) {
         confirmCreatePaymentBtn.addEventListener('click', function() {
             confirmCreatePayment();
@@ -604,8 +613,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Event listener สำหรับปุ่มบันทึกการชำระเงิน
     document.addEventListener('click', function(event) {
         if (event.target.closest('.btn-create-payment')) {
-            const paymentId = event.target.closest('.btn-create-payment').dataset.id;
-            const payment = allPayments.find(p => p.id == paymentId);
+            var paymentId = event.target.closest('.btn-create-payment').getAttribute('data-id');
+            var payment = allPayments.find(function(p) {
+                return p.id == paymentId;
+            });
 
             if (payment) {
                 openCreatePaymentModal(payment);
@@ -625,20 +636,15 @@ function confirmCreatePayment() {
     }
     
     // ใช้ยอดคงเหลือทั้งหมดเป็นจำนวนเงินที่ต้องชำระ
-    const totalBalance = parseFloat(document.getElementById('paymentTotalBalance').textContent) || 0;
+    var totalBalance = parseFloat(document.getElementById('paymentTotalBalance').textContent) || 0;
     
-    // ตรวจสอบว่ามียอดต้องชำระหรือไม่
-    if (totalBalance <= 0) {
-        showAlert('warning', 'ไม่มียอดต้องชำระ', 'ยอดคงเหลือทั้งหมดเป็น 0 บาท ไม่จำเป็นต้องบันทึกการชำระเงิน');
-        return;
-    }
-    
+    // อนุญาตให้บันทึกได้แม้ยอดเป็น 0
     Swal.fire({
         title: translations.swal.confirm_create_payment_title,
-        html: `${translations.swal.confirm_create_payment_text}<br>
-              <strong>${currentPaymentData.pcode}</strong> - ${currentPaymentData.pdesc}<br>
-              ${translations.month} ${currentPaymentData.month}/${currentPaymentData.year}<br>
-              <span class="text-success">${translations.total_amount}: ${totalBalance.toFixed(2)} <?php echo t('currency.baht'); ?></span>`,
+        html: translations.swal.confirm_create_payment_text + '<br>' +
+              '<strong>' + currentPaymentData.pcode + '</strong> - ' + (currentPaymentData.pdesc || '') + '<br>' +
+              translations.month + ' ' + currentPaymentData.month + '/' + currentPaymentData.year + '<br>' +
+              '<span class="text-success">' + translations.total_amount + ': ' + totalBalance.toFixed(2) + ' บาท</span>',
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#28a745',
@@ -667,7 +673,7 @@ function openCreatePaymentModal(payment) {
     currentPaymentData = payment;
     
     // อัพเดทหัวข้อ modal พร้อมเดือน/ปี
-    const monthNames = {
+    var monthNames = {
         '01': '<?php echo t('month.january'); ?>',
         '02': '<?php echo t('month.february'); ?>',
         '03': '<?php echo t('month.march'); ?>',
@@ -682,24 +688,24 @@ function openCreatePaymentModal(payment) {
         '12': '<?php echo t('month.december'); ?>'
     };
     
-    const month = String(payment.month).padStart(2, '0');
-    const year = payment.year;
+    var month = String(payment.month).padStart(2, '0');
+    var year = payment.year;
     
     // ตรวจสอบว่า element ยังอยู่ใน DOM ก่อนตั้งค่า
-    const paymentMonthYearEl = document.getElementById('paymentMonthYear');
+    var paymentMonthYearEl = document.getElementById('paymentMonthYear');
     if (paymentMonthYearEl) {
-        paymentMonthYearEl.textContent = `${monthNames[month]} ${year}`;
+        paymentMonthYearEl.textContent = monthNames[month] + ' ' + year;
     }
     
     // เติมข้อมูลในฟอร์ม - ตรวจสอบ element ก่อนทุกครั้ง
-    const paymentPcodeEl = document.getElementById('paymentPcode');
-    const paymentInvNoEl = document.getElementById('paymentInvNo');
+    var paymentPcodeEl = document.getElementById('paymentPcode');
+    var paymentInvNoEl = document.getElementById('paymentInvNo');
     
     if (paymentPcodeEl) paymentPcodeEl.textContent = payment.pcode || '';
     if (paymentInvNoEl) paymentInvNoEl.textContent = payment.inv_no || '-';
     
     // เติมข้อมูลใบแจ้งหนี้และยอดชำระแล้ว
-    const invoiceElements = [
+    var invoiceElements = [
         'paymentElectricityInvoice', 'paymentWaterInvoice', 'paymentGarbageInvoice', 
         'paymentCommonAreaInvoice', 'paymentTotalInvoice',
         'paymentElectricityPaid', 'paymentWaterPaid', 'paymentGarbagePaid', 
@@ -707,10 +713,10 @@ function openCreatePaymentModal(payment) {
     ];
     
     // ตั้งค่าค่าเริ่มต้นก่อน
-    invoiceElements.forEach(id => {
-        const el = document.getElementById(id);
+    for (var i = 0; i < invoiceElements.length; i++) {
+        var el = document.getElementById(invoiceElements[i]);
         if (el) el.textContent = '0.00';
-    });
+    }
     
     // เติมข้อมูลจริง
     setElementText('paymentElectricityInvoice', parseFloat(payment.electricity || 0).toFixed(2));
@@ -726,11 +732,11 @@ function openCreatePaymentModal(payment) {
     setElementText('paymentTotalPaid', parseFloat(payment.total_paid || 0).toFixed(2));
     
     // คำนวณและแสดงยอดคงเหลือ (จำนวนที่ต้องชำระ)
-    const electricityBalance = Math.max(0, parseFloat(payment.electricity || 0) - parseFloat(payment.paid_electricity || 0));
-    const waterBalance = Math.max(0, parseFloat(payment.water || 0) - parseFloat(payment.paid_water || 0));
-    const garbageBalance = Math.max(0, parseFloat(payment.garbage || 0) - parseFloat(payment.paid_garbage || 0));
-    const commonAreaBalance = Math.max(0, parseFloat(payment.common_area || 0) - parseFloat(payment.paid_common_area || 0));
-    const totalBalance = Math.max(0, parseFloat(payment.total_invoice || 0) - parseFloat(payment.total_paid || 0));
+    var electricityBalance = Math.max(0, parseFloat(payment.electricity || 0) - parseFloat(payment.paid_electricity || 0));
+    var waterBalance = Math.max(0, parseFloat(payment.water || 0) - parseFloat(payment.paid_water || 0));
+    var garbageBalance = Math.max(0, parseFloat(payment.garbage || 0) - parseFloat(payment.paid_garbage || 0));
+    var commonAreaBalance = Math.max(0, parseFloat(payment.common_area || 0) - parseFloat(payment.paid_common_area || 0));
+    var totalBalance = Math.max(0, parseFloat(payment.total_invoice || 0) - parseFloat(payment.total_paid || 0));
     
     setElementText('paymentElectricityBalance', electricityBalance.toFixed(2));
     setElementText('paymentWaterBalance', waterBalance.toFixed(2));
@@ -753,7 +759,7 @@ function openCreatePaymentModal(payment) {
 
 // ฟังก์ชันช่วยสำหรับตั้งค่า text content อย่างปลอดภัย
 function setElementText(elementId, text) {
-    const element = document.getElementById(elementId);
+    var element = document.getElementById(elementId);
     if (element) {
         element.textContent = text;
     }
@@ -762,27 +768,29 @@ function setElementText(elementId, text) {
 // ตรวจสอบสถานะการชำระเงิน
 function checkPaymentStatus(payment) {
     // ซ่อน alert เก่า
-    const existingPaymentAlert = document.getElementById('existingPaymentAlert');
+    var existingPaymentAlert = document.getElementById('existingPaymentAlert');
     if (existingPaymentAlert) {
         existingPaymentAlert.style.display = 'none';
     }
     
     // เรียก API เพื่อตรวจสอบว่ามีการชำระเงินแล้วหรือไม่
-    fetch(`/payments/check-payment?pcode=${payment.pcode}&month=${payment.month}&year=${payment.year}`)
-        .then(response => response.json())
-        .then(result => {
+    fetch('/payments/check-payment?pcode=' + payment.pcode + '&month=' + payment.month + '&year=' + payment.year)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(result) {
             if (result.success && result.exists) {
                 // มีการชำระเงินแล้ว
-                const paymentData = result.payment;
+                var paymentData = result.payment;
                 setElementText('existingPaymentNo', paymentData.payment_no + ' (' + paymentData.types + ')');
                 
-                const existingPaymentAlert = document.getElementById('existingPaymentAlert');
+                var existingPaymentAlert = document.getElementById('existingPaymentAlert');
                 if (existingPaymentAlert) {
                     existingPaymentAlert.style.display = 'block';
                 }
                 
                 // ปิดปุ่มบันทึกการชำระเงินถ้าชำระครบแล้ว
-                const confirmCreatePaymentBtn = document.getElementById('confirmCreatePayment');
+                var confirmCreatePaymentBtn = document.getElementById('confirmCreatePayment');
                 if (confirmCreatePaymentBtn && payment.status === 'paid') {
                     confirmCreatePaymentBtn.disabled = true;
                     confirmCreatePaymentBtn.innerHTML = '<i class="fas fa-ban me-1"></i>' + translations.existing_payment;
@@ -792,7 +800,7 @@ function checkPaymentStatus(payment) {
                 updatePaymentStatusInTable(paymentData.all_payments);
             } else {
                 // ยังไม่มีการชำระเงิน
-                const confirmCreatePaymentBtn = document.getElementById('confirmCreatePayment');
+                var confirmCreatePaymentBtn = document.getElementById('confirmCreatePayment');
                 if (confirmCreatePaymentBtn) {
                     confirmCreatePaymentBtn.disabled = false;
                     confirmCreatePaymentBtn.innerHTML = '<i class="fa-brands fa-paypal me-1"></i>' + translations.create_payment;
@@ -805,9 +813,9 @@ function checkPaymentStatus(payment) {
                 setElementHTML('paymentCommonAreaStatus', '<span class="badge bg-success">' + translations.ready_to_pay + '</span>');
             }
         })
-        .catch(error => {
+        .catch(function(error) {
             console.error('Error checking payment status:', error);
-            const confirmCreatePaymentBtn = document.getElementById('confirmCreatePayment');
+            var confirmCreatePaymentBtn = document.getElementById('confirmCreatePayment');
             if (confirmCreatePaymentBtn) {
                 confirmCreatePaymentBtn.disabled = false;
             }
@@ -816,7 +824,7 @@ function checkPaymentStatus(payment) {
 
 // ฟังก์ชันช่วยสำหรับตั้งค่า HTML อย่างปลอดภัย
 function setElementHTML(elementId, html) {
-    const element = document.getElementById(elementId);
+    var element = document.getElementById(elementId);
     if (element) {
         element.innerHTML = html;
     }
@@ -824,10 +832,11 @@ function setElementHTML(elementId, html) {
 
 // อัพเดทสถานะในตารางตามข้อมูลการชำระเงินที่มี
 function updatePaymentStatusInTable(payments) {
-    const statusMap = {};
-    payments.forEach(pay => {
+    var statusMap = {};
+    for (var i = 0; i < payments.length; i++) {
+        var pay = payments[i];
         statusMap[pay.type] = '<span class="badge bg-secondary">' + translations.already_paid + '</span>';
-    });
+    }
     
     setElementHTML('paymentElectricityStatus', statusMap['ค่าไฟ'] || '<span class="badge bg-success">' + translations.ready_to_pay + '</span>');
     setElementHTML('paymentWaterStatus', statusMap['ค่าน้ำ'] || '<span class="badge bg-success">' + translations.ready_to_pay + '</span>');
@@ -843,18 +852,18 @@ function createPayment(totalAmount) {
         icon: 'info',
         showConfirmButton: false,
         allowOutsideClick: false,
-        didOpen: () => {
+        didOpen: function() {
             Swal.showLoading();
         }
     });
     
     // คำนวณยอดคงเหลือแต่ละรายการ
-    const electricityBalance = parseFloat(document.getElementById('paymentElectricityBalance').textContent) || 0;
-    const waterBalance = parseFloat(document.getElementById('paymentWaterBalance').textContent) || 0;
-    const garbageBalance = parseFloat(document.getElementById('paymentGarbageBalance').textContent) || 0;
-    const commonAreaBalance = parseFloat(document.getElementById('paymentCommonAreaBalance').textContent) || 0;
+    var electricityBalance = parseFloat(document.getElementById('paymentElectricityBalance').textContent) || 0;
+    var waterBalance = parseFloat(document.getElementById('paymentWaterBalance').textContent) || 0;
+    var garbageBalance = parseFloat(document.getElementById('paymentGarbageBalance').textContent) || 0;
+    var commonAreaBalance = parseFloat(document.getElementById('paymentCommonAreaBalance').textContent) || 0;
     
-    const formData = new FormData();
+    var formData = new FormData();
     formData.append('pcode', currentPaymentData.pcode);
     formData.append('month', currentPaymentData.month);
     formData.append('year', currentPaymentData.year);
@@ -867,20 +876,20 @@ function createPayment(totalAmount) {
         method: 'POST',
         body: formData
     })
-    .then(response => {
+    .then(function(response) {
         if (!response.ok) {
             throw new Error('Network response was not ok: ' + response.status);
         }
         return response.json();
     })
-    .then(result => {
+    .then(function(result) {
         if (result.success) {
             Swal.fire({
                 title: translations.swal.create_payment_success_title,
-                html: `${translations.swal.create_payment_success_text} <strong>${currentPaymentData.pcode}</strong><br>
-                      <strong><?php echo t('payment_management.payment_no'); ?>: ${result.payment_no}</strong><br>
-                      ${result.created_count} <?php echo t('payment_management.items'); ?><br>
-                      <?php echo t('payment_management.total_amount'); ?>: <span class="text-success">${parseFloat(result.total_paid).toFixed(2)} <?php echo t('currency.baht'); ?></span>`,
+                html: translations.swal.create_payment_success_text + ' <strong>' + currentPaymentData.pcode + '</strong><br>' +
+                      '<strong><?php echo t('payment_management.payment_no'); ?>: ' + result.payment_no + '</strong><br>' +
+                      result.created_count + ' <?php echo t('payment_management.items'); ?><br>' +
+                      '<?php echo t('payment_management.total_amount'); ?>: <span class="text-success">' + parseFloat(result.total_paid).toFixed(2) + ' บาท</span>',
                 icon: 'success',
                 confirmButtonText: '<?php echo t('btns.ok'); ?>'
             }).then(function() {
@@ -898,7 +907,7 @@ function createPayment(totalAmount) {
             });
         }
     })
-    .catch(error => {
+    .catch(function(error) {
         console.error('Error creating payment:', error);
         Swal.fire({
             title: translations.swal.connection_error_title,
@@ -911,27 +920,29 @@ function createPayment(totalAmount) {
 
 // ฟังก์ชันกรองตาราง
 function filterTable() {
-    const searchPayment = document.getElementById('searchPayment');
-    const filterStatus = document.getElementById('filterStatus');
-    const paymentsTableBody = document.getElementById('paymentsTableBody');
+    var searchPayment = document.getElementById('searchPayment');
+    var filterStatus = document.getElementById('filterStatus');
+    var paymentsTableBody = document.getElementById('paymentsTableBody');
     
-    const searchValue = searchPayment ? searchPayment.value.toLowerCase().trim() : '';
-    const statusValue = filterStatus ? filterStatus.value : '';
+    var searchValue = searchPayment ? searchPayment.value.toLowerCase().trim() : '';
+    var statusValue = filterStatus ? filterStatus.value : '';
     
-    let filteredPayments = allPayments;
+    var filteredPayments = allPayments;
     
     // กรองตามการค้นหา
     if (searchValue) {
-        filteredPayments = filteredPayments.filter(payment => {
-            const pcode = (payment.pcode || '').toLowerCase();
-            const invNo = (payment.inv_no || '').toLowerCase();
-            return pcode.includes(searchValue) || invNo.includes(searchValue);
+        filteredPayments = filteredPayments.filter(function(payment) {
+            var pcode = (payment.pcode || '').toLowerCase();
+            var invNo = (payment.inv_no || '').toLowerCase();
+            return pcode.indexOf(searchValue) !== -1 || invNo.indexOf(searchValue) !== -1;
         });
     }
     
     // กรองตามสถานะ
     if (statusValue) {
-        filteredPayments = filteredPayments.filter(payment => payment.status === statusValue);
+        filteredPayments = filteredPayments.filter(function(payment) {
+            return payment.status === statusValue;
+        });
     }
     
     // แสดงผลตาราง
@@ -940,11 +951,11 @@ function filterTable() {
 
 // Event listeners สำหรับการกรอง
 document.addEventListener('DOMContentLoaded', function() {
-    const searchPayment = document.getElementById('searchPayment');
-    const resetSearch = document.getElementById('resetSearch');
-    const filterMonth = document.getElementById('filterMonth');
-    const filterYear = document.getElementById('filterYear');
-    const filterStatus = document.getElementById('filterStatus');
+    var searchPayment = document.getElementById('searchPayment');
+    var resetSearch = document.getElementById('resetSearch');
+    var filterMonth = document.getElementById('filterMonth');
+    var filterYear = document.getElementById('filterYear');
+    var filterStatus = document.getElementById('filterStatus');
 
     if (searchPayment) {
         searchPayment.addEventListener('input', filterTable);

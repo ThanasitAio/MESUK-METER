@@ -9,11 +9,11 @@
                     </a>
                 </li>
 
-                <!-- รับชำระหนี้ -->
+                <!-- มิเตอร์ -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/payments">
-                        <div class="nav-icon"><i class="fa-brands fa-paypal"></i></i></div>
-                        <span class="nav-text"><?php echo t('sidebar.payment'); ?></span>
+                    <a class="nav-link" href="/meters">
+                        <div class="nav-icon"><i class="fa-solid fa-jug-detergent"></i></div>
+                        <span class="nav-text"><?php echo t('sidebar.meter_data'); ?></span>
                     </a>
                 </li>
 
@@ -25,13 +25,14 @@
                     </a>
                 </li>
 
-                <!-- มิเตอร์ -->
+                <!-- รับชำระหนี้ -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/meters">
-                        <div class="nav-icon"><i class="fa-solid fa-jug-detergent"></i></div>
-                        <span class="nav-text"><?php echo t('sidebar.meter_data'); ?></span>
+                    <a class="nav-link" href="/payments">
+                        <div class="nav-icon"><i class="fa-brands fa-paypal"></i></i></div>
+                        <span class="nav-text"><?php echo t('sidebar.payment'); ?></span>
                     </a>
                 </li>
+
                 
                 <!-- สินค้า -->
                 <li class="nav-item">
@@ -41,7 +42,7 @@
                     </a>
                 </li>
 
-                <!-- ตัวอย่างเมนูหลักปกติ -->
+                <!-- ผู้ใช้ -->
                 <li class="nav-item">
                     <a class="nav-link" href="/users">
                         <div class="nav-icon"><i class="bi bi-people"></i></div>
@@ -49,7 +50,7 @@
                     </a>
                 </li>
 
-                <!-- ตัวอย่างเมนูหลักปกติ -->
+                <!-- นำเข้าผู้ใช้ -->
                 <li class="nav-item">
                     <a class="nav-link" href="/import-users">
                         <div class="nav-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
@@ -59,7 +60,7 @@
 
                 
 
-                <!-- อีกตัวอย่างของ submenu -->
+                <!-- รายงาน -->
                 <!-- <li class="nav-item has-submenu">
                     <a href="#" class="nav-link submenu-toggle">
                         <div class="nav-icon"><i class="bi bi-graph-up"></i></div>

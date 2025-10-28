@@ -276,7 +276,7 @@ return array(
         'payment_list' => 'Payment List',
         'payment_not_found' => 'Payment not found',
         'pcode' => 'Product Code',
-        'pcode_placeholder' => 'Product code...',
+        'pcode_placeholder' => 'Invoice No, Product code...',
         'month' => 'Month',
         'year' => 'Year',
         'status' => 'Status',

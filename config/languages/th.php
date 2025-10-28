@@ -276,7 +276,7 @@ return array(
         'payment_list' => 'รายการชำระเงิน',
         'payment_not_found' => 'ไม่พบข้อมูลการชำระเงิน',
         'pcode' => 'รหัสสินค้า',
-        'pcode_placeholder' => 'รหัสสินค้า...',
+        'pcode_placeholder' => 'เลขที่ใบแจ้งหนี้, รหัสสินค้า...',
         'month' => 'เดือน',
         'year' => 'ปี',
         'status' => 'สถานะ',

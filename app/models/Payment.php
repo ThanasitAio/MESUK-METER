@@ -265,6 +265,12 @@ class Payment extends Model {
      */
     public function createPayment($pcode, $month, $year, $electricity, $water, $garbage, $common_area) {
         try {
+            // ตรวจสอบว่ามียอดชำระอย่างน้อย 1 รายการที่มากกว่า 0
+            $totalAmount = $electricity + $water + $garbage + $common_area;
+            
+            // อนุญาตให้บันทึกแม้ยอดเป็น 0
+            // ลบการตรวจสอบ if ($totalAmount <= 0) 
+            
             // ดึง user ID ของผู้ใช้ปัจจุบัน
             $currentUser = Auth::user();
             $userId = isset($currentUser['id']) ? $currentUser['id'] : null;
@@ -284,28 +290,29 @@ class Payment extends Model {
             $totalPaid = 0;
             
             foreach ($paymentTypes as $type => $amount) {
-                if ($amount > 0) {
-                    $sql = "INSERT INTO me_payment 
-                            (payment_id, payment_no, pcode, month, year, type, price, created_at, created_by, updated_at, updated_by) 
-                            VALUES (UUID(), ?, ?, ?, ?, ?, ?, NOW(), ?, NOW(), ?)";
-                    
-                    $stmt = $this->db->prepare($sql);
-                    $result = $stmt->execute([
-                        $paymentNo,
-                        $pcode,
-                        $month,
-                        $year,
-                        $type,
-                        $amount,
-                        $userId,
-                        $userId
-                    ]);
-                    
-                    if ($result) {
-                        $createdCount++;
-                        $totalPaid += $amount;
-                        error_log("Payment created: $paymentNo - pcode=$pcode, type=$type, amount=$amount");
-                    }
+                // อนุญาตให้บันทึกแม้ยอดเป็น 0
+                // ลบการตรวจสอบ if ($amount > 0) 
+                
+                $sql = "INSERT INTO me_payment 
+                        (payment_id, payment_no, pcode, month, year, type, price, created_at, created_by, updated_at, updated_by) 
+                        VALUES (UUID(), ?, ?, ?, ?, ?, ?, NOW(), ?, NOW(), ?)";
+                
+                $stmt = $this->db->prepare($sql);
+                $result = $stmt->execute([
+                    $paymentNo,
+                    $pcode,
+                    $month,
+                    $year,
+                    $type,
+                    $amount,
+                    $userId,
+                    $userId
+                ]);
+                
+                if ($result) {
+                    $createdCount++;
+                    $totalPaid += $amount;
+                    error_log("Payment created: $paymentNo - pcode=$pcode, type=$type, amount=$amount");
                 }
             }
             
@@ -337,11 +344,11 @@ class Payment extends Model {
             $stmt->execute([$month, $year]);
             $count = $stmt->fetchColumn() + 1;
             
-            // รูปแบบ: PAY2025100001 (PAY + YYYY + MM + XXXX)
-            return sprintf('PAY%s%02d%04d', $year, $month, $count);
+            // รูปแบบ: RE2025100001 (PAY + YYYY + MM + XXXX)
+            return sprintf('RE%s%02d%04d', $year, $month, $count);
         } catch (PDOException $e) {
             error_log("Error generating payment number: " . $e->getMessage());
-            return sprintf('PAY%s%02d%04d', $year, $month, 1);
+            return sprintf('RE%s%02d%04d', $year, $month, 1);
         }
     }
 
