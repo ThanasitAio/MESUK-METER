@@ -717,7 +717,7 @@ public function invoiceExists($pcode, $month, $year) {
 }
 
 /**
- * สร้างเลขที่เอกสารใบแจ้งหนี้รูปแบบ INVYYYYMMXXXX
+ * สร้างเลขที่เอกสารใบแจ้งหนี้รูปแบบ INRYYYYMMXXXX
  */
 private function generateInvoiceNumber($month, $year) {
     try {
@@ -727,11 +727,11 @@ private function generateInvoiceNumber($month, $year) {
         $stmt->execute([$month, $year]);
         $count = $stmt->fetchColumn() + 1;
         
-        // รูปแบบ: INV2025100001 (INV + YYYY + MM + XXXX)
-        return sprintf('INV%s%02d%04d', $year, $month, $count);
+        // รูปแบบ: INV2025100001 (INR + YYYY + MM + XXXX)
+        return sprintf('INR%s%02d%04d', $year, $month, $count);
     } catch (PDOException $e) {
         error_log("Error generating invoice number: " . $e->getMessage());
-        return sprintf('INV%s%02d%04d', $year, $month, 1);
+        return sprintf('INR%s%02d%04d', $year, $month, 1);
     }
 }
 

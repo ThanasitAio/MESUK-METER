@@ -226,22 +226,42 @@ return array(
     ),
 
     'invoice_management' => array(
-    'title' => 'จัดการใบแจ้งหนี้',
-    'total_invoices' => 'จำนวนใบแจ้งหนี้ทั้งหมด',
-    'open_invoices' => 'จำนวนใบแจ้งหนี้ที่สร้างแล้ว',
-    'closed_invoices' => 'จำนวนใบแจ้งหนี้ที่ยังไม่สร้าง',
-    'open_invoices_price' => 'ราคารวมใบแจ้งหนี้ที่สร้างแล้ว',
+        'title' => 'จัดการใบแจ้งหนี้',
+        'total_invoices' => 'จำนวนใบแจ้งหนี้ทั้งหมด',
+        'open_invoices' => 'ใบแจ้งหนี้ที่สร้างแล้ว',
+        'closed_invoices' => 'ใบแจ้งหนี้ที่ยังไม่สร้าง',
+        'open_invoices_price' => 'ราคารวม',
         'search' => 'ค้นหา',
         'invoice_list' => 'รายการใบแจ้งหนี้',
         'invoice_not_found' => 'ไม่พบข้อมูลใบแจ้งหนี้',
         'pcode' => 'รหัสสินค้า',
+        'pcode_placeholder' => 'รหัสสินค้า...',
         'month' => 'เดือน',
         'year' => 'ปี',
         'status' => 'สถานะ',
         'all' => 'ทั้งหมด',
         'open' => 'เปิด',
         'closed' => 'ยังไม่เปิด',
-
+        'electricity' => 'ค่าไฟฟ้า',
+        'water' => 'ค่าน้ำ',
+        'garbage' => 'ค่าขยะ',
+        'common_area' => 'ค่าส่วนกลาง',
+        'total' => 'รวม',
+        'actions' => 'การจัดการ',
+        'create_invoice' => 'เปิดใบแจ้งหนี้',
+        'existing_invoice' => 'มีใบแจ้งหนี้แล้ว',
+        'ready_to_open' => 'พร้อมเปิด',
+        'already_opened' => 'เปิดแล้ว',
+        'item' => 'รายการ',
+        'amount' => 'จำนวนเงิน',
+        'description' => 'คำอธิบาย',
+        'no_data' => 'ไม่พบข้อมูลมิเตอร์',
+        'loading' => 'กำลังโหลดข้อมูล...',
+        'connection_error' => 'เกิดข้อผิดพลาดในการเชื่อมต่อ',
+        'load_error' => 'เกิดข้อผิดพลาดในการโหลดข้อมูล',
+        'invoice_no' => 'เลขที่เอกสาร',
+        'items' => 'รายการ',
+        'total_amount' => 'จำนวนเงินรวม',
     ),
 
     'month' => array(
@@ -267,6 +287,7 @@ return array(
     'btns' => array(
         'save' => 'บันทึก',
         'cancel' => 'ยกเลิก',
+        'ok' => 'ตกลง',
 
     ),
 
@@ -285,7 +306,23 @@ return array(
         'save_error_text' => 'เกิดข้อผิดพลาดในการบันทึกข้อมูล',
         'connection_error_title' => 'เกิดข้อผิดพลาด',
         'connection_error_text' => 'เกิดข้อผิดพลาดในการเชื่อมต่อ',
-    )
+        'confirm_create_invoice_title' => 'ยืนยันการเปิดใบแจ้งหนี้',
+        'confirm_create_invoice_text' => 'คุณต้องการเปิดใบแจ้งหนี้สำหรับ',
+        'create_invoice_button' => 'เปิดใบแจ้งหนี้',
+        'creating_invoice_title' => 'กำลังเปิดใบแจ้งหนี้...',
+        'creating_invoice_text' => 'กรุณารอสักครู่',
+        'create_invoice_success_title' => 'เปิดใบแจ้งหนี้สำเร็จ!',
+        'create_invoice_success_text' => 'สร้างใบแจ้งหนี้สำหรับ',
+        'create_invoice_error_title' => 'เปิดใบแจ้งหนี้ไม่สำเร็จ',
+        'create_invoice_error_text' => 'เกิดข้อผิดพลาดในการสร้างใบแจ้งหนี้',
+        'invoice_exists_title' => 'มีใบแจ้งหนี้แล้ว',
+        'invoice_exists_text' => 'มีใบแจ้งหนี้สำหรับรายการนี้แล้ว',
+    ),
+    'currency' => array(
+        'baht' => 'บาท',
+    ),
+
+
 
     
 );

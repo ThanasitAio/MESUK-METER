@@ -88,7 +88,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                                 </label>
                                 <div class="input-group input-group-sm">
                                     <input type="text" class="form-control form-control-sm" id="searchUser" 
-                                           placeholder="<?php echo t('invoice_management.pcode'); ?>...">
+                                           placeholder="<?php echo t('invoice_management.pcode_placeholder'); ?>">
                                     <button type="button" class="btn btn-outline-secondary btn-sm" id="resetSearch">
                                         <i class="fas fa-times"></i>
                                     </button>
@@ -128,7 +128,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                             <div class="mb-0">
                                 <label for="filterStatus" class="form-label fw-bold small"><?php echo t('invoice_management.status'); ?></label>
                                 <select class="select-beast form-select form-select-sm" id="filterStatus">
-                                    <option value=""><?php echo t('invoice_management.all'); ?></option>
+                                    <option value=""><?php echo t('selection.all'); ?></option>
                                     <option value="open"><?php echo t('invoice_management.open'); ?></option>
                                     <option value="closed"><?php echo t('invoice_management.closed'); ?></option>
                                 </select>
@@ -155,21 +155,21 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                             <thead class="table-light" >
                                 <tr>
                                     <th width="40" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>">#</th>
-                                    <th width="120" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.product_code'); ?></th>
-                                    <th width="40" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.month'); ?>/<?php echo t('meter_management.year'); ?></th>
-                                    <th width="40" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.status'); ?></th>
-                                    <th width="80" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.electricity'); ?></th>
-                                    <th width="80" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.water'); ?></th>
-                                    <th width="80" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.garbage'); ?></th>
-                                    <th width="80" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.common_area'); ?></th>
-                                    <th width="80" class="text-right" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.total'); ?></th>
-                                    <th width="60" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.actions'); ?></th>
+                                    <th width="120" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('invoice_management.pcode'); ?></th>
+                                    <th width="40" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('invoice_management.month'); ?>/<?php echo t('invoice_management.year'); ?></th>
+                                    <th width="40" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('invoice_management.status'); ?></th>
+                                    <th width="80" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('invoice_management.electricity'); ?></th>
+                                    <th width="80" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('invoice_management.water'); ?></th>
+                                    <th width="80" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('invoice_management.garbage'); ?></th>
+                                    <th width="80" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('invoice_management.common_area'); ?></th>
+                                    <th width="80" class="text-right" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('invoice_management.total'); ?></th>
+                                    <th width="60" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('invoice_management.actions'); ?></th>
                                 </tr>
                             </thead>
                             <tbody id="metersTableBody">
                                 <tr>
                                     <td colspan="12" class="text-center py-4">
-                                        <i class="fas fa-spinner fa-spin"></i> กำลังโหลดข้อมูล...
+                                        <i class="fas fa-spinner fa-spin"></i> <?php echo t('invoice_management.loading'); ?>
                                     </td>
                                 </tr>
                             </tbody>
@@ -187,7 +187,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="createInvoiceModalLabel">
-                    <i class="fas fa-file-invoice me-2"></i>เปิดใบแจ้งหนี้
+                    <i class="fas fa-file-invoice me-2"></i><?php echo t('invoice_management.create_invoice'); ?>
                     <span id="invoiceMonthYear" class="month-year-gradient"></span>
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -195,11 +195,11 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
             <div class="modal-body">
                 <div class="row mb-3">
                     <div class="col-md-3">
-                        <h6 class="text-muted">รหัสสินค้า</h6>
+                        <h6 class="text-muted"><?php echo t('invoice_management.pcode'); ?></h6>
                         <h7 id="invoicePcode" class="fw-bold text-primary"></h7>
                     </div>
                     <div class="col-md-9">
-                        <h6 class="text-muted">คำอธิบาย</h6>
+                        <h6 class="text-muted"><?php echo t('invoice_management.description'); ?></h6>
                         <h7 id="invoicePdesc" class="fw-bold"></h7>
                     </div>
                 </div>
@@ -207,52 +207,52 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                 <!-- แสดงเลขที่เอกสาร (ถ้ามีแล้ว) -->
                 <div class="alert alert-info" id="existingInvoiceAlert" style="display: none;">
                     <i class="fas fa-info-circle me-2"></i>
-                    มีใบแจ้งหนี้แล้ว: <strong id="existingInvNo"></strong>
+                    <?php echo t('invoice_management.existing_invoice'); ?>: <strong id="existingInvNo"></strong>
                 </div>
                 
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead class="table-light">
                             <tr>
-                                <th width="40%" class="text-center">รายการ</th>
-                                <th width="30%" class="text-center">จำนวนเงิน</th>
-                                <th width="30%" class="text-center">สถานะ</th>
+                                <th width="40%" class="text-center"><?php echo t('invoice_management.item'); ?></th>
+                                <th width="30%" class="text-center"><?php echo t('invoice_management.amount'); ?></th>
+                                <th width="30%" class="text-center"><?php echo t('invoice_management.status'); ?></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="fw-bold">ค่าไฟฟ้า</td>
+                                <td class="fw-bold"><?php echo t('invoice_management.electricity'); ?></td>
                                 <td class="text-end" id="invoiceElectricity">0.00</td>
                                 <td class="text-center" id="invoiceElectricityStatus">
-                                    <span class="badge bg-success">พร้อมเปิด</span>
+                                    <span class="badge bg-success"><?php echo t('invoice_management.ready_to_open'); ?></span>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="fw-bold">ค่าน้ำ</td>
+                                <td class="fw-bold"><?php echo t('invoice_management.water'); ?></td>
                                 <td class="text-end" id="invoiceWater">0.00</td>
                                 <td class="text-center" id="invoiceWaterStatus">
-                                    <span class="badge bg-success">พร้อมเปิด</span>
+                                    <span class="badge bg-success"><?php echo t('invoice_management.ready_to_open'); ?></span>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="fw-bold">ค่าขยะ</td>
+                                <td class="fw-bold"><?php echo t('invoice_management.garbage'); ?></td>
                                 <td class="text-end" id="invoiceGarbage">0.00</td>
                                 <td class="text-center" id="invoiceGarbageStatus">
-                                    <span class="badge bg-success">พร้อมเปิด</span>
+                                    <span class="badge bg-success"><?php echo t('invoice_management.ready_to_open'); ?></span>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="fw-bold">ค่าส่วนกลาง</td>
+                                <td class="fw-bold"><?php echo t('invoice_management.common_area'); ?></td>
                                 <td class="text-end" id="invoiceCommonArea">0.00</td>
                                 <td class="text-center" id="invoiceCommonAreaStatus">
-                                    <span class="badge bg-success">พร้อมเปิด</span>
+                                    <span class="badge bg-success"><?php echo t('invoice_management.ready_to_open'); ?></span>
                                 </td>
                             </tr>
                             <tr class="table-primary fw-bold">
-                                <td>รวมทั้งสิ้น</td>
+                                <td><?php echo t('invoice_management.total'); ?></td>
                                 <td class="text-end" id="invoiceTotal">0.00</td>
                                 <td class="text-center">
-                                    <span class="badge bg-primary">รวม</span>
+                                    <span class="badge bg-primary"><?php echo t('invoice_management.total'); ?></span>
                                 </td>
                             </tr>
                         </tbody>
@@ -262,10 +262,10 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="fas fa-times me-1"></i>ปิด
+                    <i class="fas fa-times me-1"></i><?php echo t('btns.cancel'); ?>
                 </button>
                 <button type="button" class="btn btn-primary" id="confirmCreateInvoice">
-                    <i class="fas fa-file-invoice me-1"></i>เปิดใบแจ้งหนี้
+                    <i class="fas fa-file-invoice me-1"></i><?php echo t('invoice_management.create_invoice'); ?>
                 </button>
             </div>
         </div>
@@ -285,12 +285,23 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
 const translations = {
     open: '<?php echo t('invoice_management.open'); ?>',
     closed: '<?php echo t('invoice_management.closed'); ?>',
+    create_invoice: '<?php echo t('invoice_management.create_invoice'); ?>',
+    existing_invoice: '<?php echo t('invoice_management.existing_invoice'); ?>',
+    ready_to_open: '<?php echo t('invoice_management.ready_to_open'); ?>',
+    already_opened: '<?php echo t('invoice_management.already_opened'); ?>',
+    item: '<?php echo t('invoice_management.item'); ?>',
+    amount: '<?php echo t('invoice_management.amount'); ?>',
+    description: '<?php echo t('invoice_management.description'); ?>',
+    no_data: '<?php echo t('invoice_management.no_data'); ?>',
+    loading: '<?php echo t('invoice_management.loading'); ?>',
+    connection_error: '<?php echo t('invoice_management.connection_error'); ?>',
+    load_error: '<?php echo t('invoice_management.load_error'); ?>',
+    
     swal: {
         incomplete_data: '<?php echo t('swal.incomplete_data'); ?>',
         missing_required_fields: '<?php echo t('swal.missing_required_fields'); ?>',
         confirm_save_title: '<?php echo t('swal.confirm_save_title'); ?>',
         confirm_save_text: '<?php echo t('swal.confirm_save_text'); ?>',
-
         save_button: '<?php echo t('swal.save_button'); ?>',
         cancel_button: '<?php echo t('swal.cancel_button'); ?>',
         saving_title: '<?php echo t('swal.saving_title'); ?>',
@@ -301,95 +312,29 @@ const translations = {
         save_error_text: '<?php echo t('swal.save_error_text'); ?>',
         connection_error_title: '<?php echo t('swal.connection_error_title'); ?>',
         connection_error_text: '<?php echo t('swal.connection_error_text'); ?>',
+        
+        // เพิ่มสำหรับ invoice
+        confirm_create_invoice_title: '<?php echo t('swal.confirm_create_invoice_title'); ?>',
+        confirm_create_invoice_text: '<?php echo t('swal.confirm_create_invoice_text'); ?>',
+        create_invoice_button: '<?php echo t('swal.create_invoice_button'); ?>',
+        creating_invoice_title: '<?php echo t('swal.creating_invoice_title'); ?>',
+        creating_invoice_text: '<?php echo t('swal.creating_invoice_text'); ?>',
+        create_invoice_success_title: '<?php echo t('swal.create_invoice_success_title'); ?>',
+        create_invoice_success_text: '<?php echo t('swal.create_invoice_success_text'); ?>',
+        create_invoice_error_title: '<?php echo t('swal.create_invoice_error_title'); ?>',
+        create_invoice_error_text: '<?php echo t('swal.create_invoice_error_text'); ?>',
+        invoice_exists_title: '<?php echo t('swal.invoice_exists_title'); ?>',
+        invoice_exists_text: '<?php echo t('swal.invoice_exists_text'); ?>',
     }
 };
 </script>
+
 <script>
 // ประกาศตัวแปร allMeters ในระดับ global
 let allMeters = []; // เก็บข้อมูลมิเตอร์ทั้งหมดที่โหลดจาก AJAX
 let currentInvoiceData = {};
 let createInvoiceModal;
-let editMeterModal;
-// ฟังก์ชันคำนวณและแสดงสถิติ
-function updateStats(meters) {
-    if (!meters || meters.length === 0) {
-        // รีเซ็ตสถิติทั้งหมดเป็น 0
-        document.getElementById('totalInvoices').textContent = '0';
-        document.getElementById('openCount').textContent = '0';
-        document.getElementById('closedCount').textContent = '0';
-        document.getElementById('totalPrice').textContent = '0.00';
-        return;
-    }
 
-    // คำนวณสถิติ
-    let stats = {
-        total: meters.length,
-        saved: 0,
-        unsaved: 0,
-        electricity: 0,
-        water: 0,
-        garbage: 0,
-    };
-
-    meters.forEach(meter => {
-        console.log(meters)
-        // นับสถานะ
-        if (meter.status === 'saved' || meter.status === true || meter.status === 1 || meter.status === '1') {
-            stats.saved++;
-        } else {
-            stats.unsaved++;
-        }
-
-        // รวมค่าใช้จ่าย
-        stats.electricity += parseFloat(meter.electricity) || 0;
-        stats.water += parseFloat(meter.water) || 0;
-        stats.garbage += parseFloat(meter.garbage) || 0;
-        stats.common_area += parseFloat(meter.common_area) || 0;
-    });
-
-    // คำนวณรวมทั้งหมด
-    stats.grandTotal = stats.electricity + stats.water + stats.garbage + stats.common_area;
-
-    // อัพเดทแสดงผล
-    document.getElementById('totalInvoices').textContent = stats.total.toLocaleString();
-    document.getElementById('openCount').textContent = stats.saved.toLocaleString();
-    document.getElementById('closedCount').textContent = stats.unsaved.toLocaleString();
-    document.getElementById('totalPrice').textContent = stats.electricity.toFixed(2);
-}
-
-// ฟังก์ชันกรองตาราง (จาก allMeters)
-function filterTable() {
-    const searchUser = document.getElementById('searchUser');
-    const filterStatus = document.getElementById('filterStatus');
-    const metersTableBody = document.getElementById('metersTableBody');
-    
-    const searchValue = searchUser ? searchUser.value.toLowerCase().trim() : '';
-    const statusValue = filterStatus ? filterStatus.value : '';
-    
-    let filteredMeters = allMeters;
-    
-    // กรองตามการค้นหา
-    if (searchValue) {
-        filteredMeters = filteredMeters.filter(meter => {
-            const pcode = (meter.pcode || '').toLowerCase();
-            const pdesc = (meter.pdesc || '').toLowerCase();
-            return pcode.includes(searchValue) || pdesc.includes(searchValue);
-        });
-    }
-    
-    // กรองตามสถานะ
-    if (statusValue) {
-        filteredMeters = filteredMeters.filter(meter => meter.status === statusValue);
-    }
-    
-    // อัพเดทสถิติ
-    updateStats(filteredMeters);
-    
-    // แสดงผลตาราง
-    renderTable(filteredMeters);
-}
-
-// ฟังก์ชันแสดงผลตาราง
 // ฟังก์ชันแสดงผลตาราง
 function renderTable(meters) {
     const metersTableBody = document.getElementById('metersTableBody');
@@ -397,7 +342,13 @@ function renderTable(meters) {
     if (!metersTableBody) return;
     
     if (!meters || meters.length === 0) {
-        metersTableBody.innerHTML = '<tr><td colspan="12" class="text-center py-4"><i class="fa-solid fa-circle-exclamation fa-2x text-muted mb-2"></i><br>ไม่พบข้อมูลมิเตอร์</td></tr>';
+        metersTableBody.innerHTML = `
+            <tr>
+                <td colspan="12" class="text-center py-4">
+                    <i class="fa-solid fa-circle-exclamation fa-2x text-muted mb-2"></i><br>
+                    ${translations.no_data}
+                </td>
+            </tr>`;
         return;
     }
     
@@ -425,7 +376,7 @@ function renderTable(meters) {
                 <td class="text-end">${parseFloat(meter.total).toFixed(2)}</td>
                 <td class="text-center">
                     <div class="btn-group btn-group-sm" role="group">
-                        <button class="btn btn-primary btn-sm btn-create-invoice" data-id="${meter.id}" title="เปิดใบแจ้งหนี้">
+                        <button class="btn btn-primary btn-sm btn-create-invoice" data-id="${meter.id}" title="${translations.create_invoice}">
                             <i class="fas fa-file-invoice"></i>
                         </button>
                     </div>
@@ -437,8 +388,7 @@ function renderTable(meters) {
     metersTableBody.innerHTML = html;
 }
 
-// ฟังก์ชัน loadMeters อัพเดท
-// ฟังก์ชัน loadMeters อัพเดท
+// ฟังก์ชัน loadMeters
 function loadMeters() {
     const filterMonth = document.getElementById('filterMonth');
     const filterYear = document.getElementById('filterYear');
@@ -454,11 +404,8 @@ function loadMeters() {
     
     // แสดง loading
     if (metersTableBody) {
-        metersTableBody.innerHTML = '<tr><td colspan="12" class="text-center py-4"><i class="fas fa-spinner fa-spin"></i> กำลังโหลดข้อมูล...</td></tr>';
+        metersTableBody.innerHTML = '<tr><td colspan="12" class="text-center py-4"><i class="fas fa-spinner fa-spin"></i> ' + translations.loading + '</td></tr>';
     }
-    
-    // รีเซ็ตสถิติขณะโหลด
-    updateStats([]);
     
     // เรียก AJAX
     fetch(`/invoices/get-by-period?month=${month}&year=${year}`)
@@ -466,7 +413,7 @@ function loadMeters() {
         .then(result => {
             if (result.success) {
                 allMeters = result.data;
-                filterTable(); // กรองและแสดงผล
+                filterTable();
             
                 // อัพเดทสถิติจากข้อมูลที่ได้จากเซิร์ฟเวอร์
                 if (result.stats) {
@@ -479,14 +426,14 @@ function loadMeters() {
                 }
             } else {
                 if (metersTableBody) {
-                    metersTableBody.innerHTML = '<tr><td colspan="12" class="text-center py-4 text-danger">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>';
+                    metersTableBody.innerHTML = '<tr><td colspan="12" class="text-center py-4 text-danger">' + translations.load_error + '</td></tr>';
                 }
             }
         })
         .catch(error => {
             console.error('Error loading meters:', error);
             if (metersTableBody) {
-                metersTableBody.innerHTML = '<tr><td colspan="12" class="text-center py-4 text-danger">เกิดข้อผิดพลาดในการเชื่อมต่อ</td></tr>';
+                metersTableBody.innerHTML = '<tr><td colspan="12" class="text-center py-4 text-danger">' + translations.connection_error + '</td></tr>';
             }
         });
 }
@@ -495,52 +442,10 @@ function loadMeters() {
 function updateStatsFromServer(stats) {
     if (!stats) return;
     
-    // อัพเดทสถิติจากข้อมูลที่คำนวณในเซิร์ฟเวอร์
     document.getElementById('totalInvoices').textContent = (stats.total_saved || 0).toLocaleString();
     document.getElementById('openCount').textContent = (stats.open_count || 0).toLocaleString();
     document.getElementById('closedCount').textContent = (stats.not_opened_count || 0).toLocaleString();
     document.getElementById('totalPrice').textContent = parseFloat(stats.total_price || 0).toFixed(2);
-}
-
-// ฟังก์ชันคำนวณและแสดงสถิติ (สำหรับกรองข้อมูลในฝั่ง client)
-function updateStats(meters) {
-    if (!meters || meters.length === 0) {
-        // ไม่ต้องรีเซ็ตสถิติทั้งหมดเป็น 0 เพราะอาจมีข้อมูลจากเซิร์ฟเวอร์
-        return;
-    }
-
-    // คำนวณสถิติเฉพาะสำหรับข้อมูลที่กรองแล้ว
-    let stats = {
-        total: meters.length,
-        saved: 0,
-        unsaved: 0,
-        electricity: 0,
-        water: 0,
-        garbage: 0,
-        common_area: 0
-    };
-
-    meters.forEach(meter => {
-        // นับสถานะ
-        if (meter.status === 'saved' || meter.status === true || meter.status === 1 || meter.status === '1') {
-            stats.saved++;
-        } else {
-            stats.unsaved++;
-        }
-
-        // รวมค่าใช้จ่าย
-        stats.electricity += parseFloat(meter.electricity) || 0;
-        stats.water += parseFloat(meter.water) || 0;
-        stats.garbage += parseFloat(meter.garbage) || 0;
-        stats.common_area += parseFloat(meter.common_area) || 0;
-    });
-
-    // คำนวณรวมทั้งหมด
-    stats.grandTotal = stats.electricity + stats.water + stats.garbage + stats.common_area;
-
-    // อัพเดทแสดงผลเฉพาะส่วนที่เกี่ยวข้องกับการกรอง
-    // หมายเหตุ: เราไม่เปลี่ยน openCount, closedCount, totalPrice หลักจากเซิร์ฟเวอร์
-    document.getElementById('totalInvoices').textContent = stats.total.toLocaleString();
 }
 
 // แทนที่โค้ดเดิมในส่วน event listener
@@ -574,26 +479,25 @@ document.addEventListener('DOMContentLoaded', function() {
     loadMeters();
 });
 
-// ฟังก์ชันยืนยันการสร้างใบแจ้งหนี้ (แยกออกมา)
+// ฟังก์ชันยืนยันการสร้างใบแจ้งหนี้
 function confirmCreateInvoice() {
     if (!currentInvoiceData.pcode) {
-        showAlert('error', 'เกิดข้อผิดพลาด', 'ไม่พบข้อมูลใบแจ้งหนี้');
+        showAlert('error', translations.swal.incomplete_data, translations.swal.missing_required_fields);
         return;
     }
     
-    // ใช้ SwitchAlert2 สำหรับการยืนยัน
     Swal.fire({
-        title: 'ยืนยันการเปิดใบแจ้งหนี้',
-        html: `คุณต้องการเปิดใบแจ้งหนี้สำหรับ<br>
+        title: translations.swal.confirm_create_invoice_title,
+        html: `${translations.swal.confirm_create_invoice_text}<br>
               <strong>${currentInvoiceData.pcode}</strong> - ${currentInvoiceData.pdesc}<br>
-              เดือน ${currentInvoiceData.month}/${currentInvoiceData.year}<br>
-              <span class="text-primary">รวมทั้งสิ้น ${document.getElementById('invoiceTotal').textContent} บาท</span>`,
+              ${translations.month} ${currentInvoiceData.month}/${currentInvoiceData.year}<br>
+              <span class="text-primary">${translations.total} ${document.getElementById('invoiceTotal').textContent} <?php echo t('currency.baht'); ?></span>`,
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: '<i class="fas fa-file-invoice me-1"></i>เปิดใบแจ้งหนี้',
-        cancelButtonText: '<i class="fas fa-times me-1"></i>ยกเลิก'
+        confirmButtonText: '<i class="fas fa-file-invoice me-1"></i>' + translations.swal.create_invoice_button,
+        cancelButtonText: '<i class="fas fa-times me-1"></i>' + translations.swal.cancel_button
     }).then(function(result) {
         if (result.isConfirmed) {
             createInvoice();
@@ -607,22 +511,9 @@ function showAlert(icon, title, text) {
         icon: icon,
         title: title,
         text: text,
-        confirmButtonText: 'ตกลง'
+        confirmButtonText: '<?php echo t('btns.ok'); ?>'
     });
 }
-
-// เปิด Modal เมื่อคลิกปุ่มเปิดใบแจ้งหนี้
-document.addEventListener('click', function(event) {
-    // ตรวจสอบว่าคลิกที่ปุ่มเปิดใบแจ้งหนี้
-    if (event.target.closest('.btn-create-invoice')) {
-        const meterId = event.target.closest('.btn-create-invoice').dataset.id;
-        const meter = allMeters.find(m => m.id == meterId);
-
-        if (meter) {
-            openCreateInvoiceModal(meter);
-        }
-    }
-});
 
 // ฟังก์ชันเปิด Modal สร้างใบแจ้งหนี้
 function openCreateInvoiceModal(meter) {
@@ -683,321 +574,52 @@ function checkInvoiceStatus(meter) {
         .then(result => {
             if (result.success && result.exists) {
                 // มีใบแจ้งหนี้แล้ว
-                document.getElementById('existingInvNo').textContent = result.invoice.inv_no;
-                document.getElementById('existingInvoiceAlert').style.display = 'block';
-                
-                // ปิดปุ่มสร้างใบแจ้งหนี้
-                document.getElementById('confirmCreateInvoice').disabled = true;
-                document.getElementById('confirmCreateInvoice').innerHTML = '<i class="fas fa-ban me-1"></i>มีใบแจ้งหนี้แล้ว';
-                
-                // อัพเดทสถานะ
-                document.getElementById('invoiceElectricityStatus').innerHTML = '<span class="badge bg-secondary">เปิดแล้ว</span>';
-                document.getElementById('invoiceWaterStatus').innerHTML = '<span class="badge bg-secondary">เปิดแล้ว</span>';
-                document.getElementById('invoiceGarbageStatus').innerHTML = '<span class="badge bg-secondary">เปิดแล้ว</span>';
-                document.getElementById('invoiceCommonAreaStatus').innerHTML = '<span class="badge bg-secondary">เปิดแล้ว</span>';
-            } else {
-                // ยังไม่มีใบแจ้งหนี้
-                document.getElementById('confirmCreateInvoice').disabled = false;
-                document.getElementById('confirmCreateInvoice').innerHTML = '<i class="fas fa-file-invoice me-1"></i>เปิดใบแจ้งหนี้';
-                
-                // อัพเดทสถานะ
-                document.getElementById('invoiceElectricityStatus').innerHTML = '<span class="badge bg-success">พร้อมเปิด</span>';
-                document.getElementById('invoiceWaterStatus').innerHTML = '<span class="badge bg-success">พร้อมเปิด</span>';
-                document.getElementById('invoiceGarbageStatus').innerHTML = '<span class="badge bg-success">พร้อมเปิด</span>';
-                document.getElementById('invoiceCommonAreaStatus').innerHTML = '<span class="badge bg-success">พร้อมเปิด</span>';
-            }
-        })
-        .catch(error => {
-            console.error('Error checking invoice status:', error);
-            // หากตรวจสอบไม่ได้ ให้แสดงสถานะพร้อมเปิด
-            document.getElementById('confirmCreateInvoice').disabled = false;
-        });
-}
-
-// สร้างใบแจ้งหนี้
-function createInvoice() {
-    // แสดง loading
-    Swal.fire({
-        title: 'กำลังเปิดใบแจ้งหนี้...',
-        text: 'กรุณารอสักครู่',
-        icon: 'info',
-        showConfirmButton: false,
-        allowOutsideClick: false,
-        didOpen: () => {
-            Swal.showLoading();
-        }
-    });
-    
-    // ส่งข้อมูลไปยัง server
-    const formData = new FormData();
-    formData.append('pcode', currentInvoiceData.pcode);
-    formData.append('month', currentInvoiceData.month);
-    formData.append('year', currentInvoiceData.year);
-    formData.append('electricity', currentInvoiceData.electricity || 0);
-    formData.append('water', currentInvoiceData.water || 0);
-    formData.append('garbage', currentInvoiceData.garbage || 0);
-    formData.append('common_area', currentInvoiceData.common_area || 0);
-    
-    fetch('/invoices/create-invoice', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok: ' + response.status);
-        }
-        return response.json();
-    })
-    .then(result => {
-        if (result.success) {
-            Swal.fire({
-                title: 'เปิดใบแจ้งหนี้สำเร็จ!',
-                html: `สร้างใบแจ้งหนี้สำหรับ <strong>${currentInvoiceData.pcode}</strong> เรียบร้อยแล้ว<br>
-                      <strong>เลขที่เอกสาร: ${result.inv_no}</strong><br>
-                      จำนวนเงินรวม: <span class="text-success">${parseFloat(result.total_price).toFixed(2)} บาท</span>`,
-                icon: 'success',
-                confirmButtonText: 'ตกลง'
-            }).then(function() {
-                if (createInvoiceModal) {
-                    createInvoiceModal.hide();
-                }
-                loadMeters(); // โหลดข้อมูลใหม่เพื่ออัพเดทสถานะ
-            });
-        } else {
-            Swal.fire({
-                title: 'เปิดใบแจ้งหนี้ไม่สำเร็จ',
-                text: result.message || 'เกิดข้อผิดพลาดในการสร้างใบแจ้งหนี้',
-                icon: 'error',
-                confirmButtonText: 'ตกลง'
-            });
-        }
-    })
-    .catch(error => {
-        console.error('Error creating invoice:', error);
-        Swal.fire({
-            title: 'เกิดข้อผิดพลาด',
-            text: 'เกิดข้อผิดพลาดในการเชื่อมต่อ: ' + error.message,
-            icon: 'error',
-            confirmButtonText: 'ตกลง'
-        });
-    });
-}
-
-// สร้างใบแจ้งหนี้
-function createInvoice() {
-    // แสดง loading
-    Swal.fire({
-        title: 'กำลังเปิดใบแจ้งหนี้...',
-        text: 'กรุณารอสักครู่',
-        icon: 'info',
-        showConfirmButton: false,
-        allowOutsideClick: false,
-        didOpen: () => {
-            Swal.showLoading();
-        }
-    });
-    
-    // ส่งข้อมูลไปยัง server
-    const formData = new FormData();
-    formData.append('pcode', currentInvoiceData.pcode);
-    formData.append('month', currentInvoiceData.month);
-    formData.append('year', currentInvoiceData.year);
-    formData.append('electricity', currentInvoiceData.electricity || 0);
-    formData.append('water', currentInvoiceData.water || 0);
-    formData.append('garbage', currentInvoiceData.garbage || 0);
-    formData.append('common_area', currentInvoiceData.common_area || 0);
-    
-    fetch('/invoices/create-invoice', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok: ' + response.status);
-        }
-        return response.json();
-    })
-    .then(result => {
-    if (result.success) {
-        Swal.fire({
-            title: 'เปิดใบแจ้งหนี้สำเร็จ!',
-            html: `สร้างใบแจ้งหนี้สำหรับ <strong>${currentInvoiceData.pcode}</strong> เรียบร้อยแล้ว<br>
-                  <strong>เลขที่เอกสาร: ${result.inv_no}</strong><br>
-                  จำนวนเงินรวม: <span class="text-success">${parseFloat(result.total_price).toFixed(2)} บาท</span>`,
-            icon: 'success',
-            confirmButtonText: 'ตกลง'
-        }).then(function() {
-            if (createInvoiceModal) {
-                createInvoiceModal.hide();
-            }
-            loadMeters(); // โหลดข้อมูลใหม่เพื่ออัพเดทสถานะ
-        });
-    } else {
-        Swal.fire({
-            title: 'เปิดใบแจ้งหนี้ไม่สำเร็จ',
-            text: result.message || 'เกิดข้อผิดพลาดในการสร้างใบแจ้งหนี้',
-            icon: 'error',
-            confirmButtonText: 'ตกลง'
-        });
-    }
-})
-    .catch(error => {
-        console.error('Error creating invoice:', error);
-        Swal.fire({
-            title: 'เกิดข้อผิดพลาด',
-            text: 'เกิดข้อผิดพลาดในการเชื่อมต่อ: ' + error.message,
-            icon: 'error',
-            confirmButtonText: 'ตกลง'
-        });
-    });
-}
-
-const editMeterForm = document.getElementById('editMeterForm');
-const saveMeterChanges = document.getElementById('saveMeterChanges');
-
-let currentMeterData = {};
-// เปิด Modal เมื่อคลิกปุ่มแก้ไข
-// เปิด Modal เมื่อคลิกปุ่มเปิดใบแจ้งหนี้
-document.addEventListener('click', function(event) {
-    if (event.target.closest('.btn-create-invoice')) {
-        const meterId = event.target.closest('.btn-create-invoice').dataset.id;
-        const meter = allMeters.find(m => m.id == meterId);
-
-        if (meter) {
-            currentInvoiceData = meter;
-            
-            // อัพเดทหัวข้อ modal พร้อมเดือน/ปี
-            const monthNames = {
-                '01': '<?php echo t('month.january'); ?>',
-                '02': '<?php echo t('month.february'); ?>',
-                '03': '<?php echo t('month.march'); ?>',
-                '04': '<?php echo t('month.april'); ?>',
-                '05': '<?php echo t('month.may'); ?>',
-                '06': '<?php echo t('month.june'); ?>',
-                '07': '<?php echo t('month.july'); ?>',
-                '08': '<?php echo t('month.august'); ?>',
-                '09': '<?php echo t('month.september'); ?>',
-                '10': '<?php echo t('month.october'); ?>',
-                '11': '<?php echo t('month.november'); ?>',
-                '12': '<?php echo t('month.december'); ?>'
-            };
-            
-            const month = String(meter.month).padStart(2, '0');
-            const year = meter.year;
-            document.getElementById('invoiceMonthYear').textContent = `${monthNames[month]} ${year}`;
-            
-            // เติมข้อมูลในฟอร์ม
-            document.getElementById('invoicePcode').textContent = meter.pcode || '';
-            document.getElementById('invoicePdesc').textContent = meter.pdesc || '';
-            document.getElementById('invoiceElectricity').textContent = parseFloat(meter.electricity || 0).toFixed(2);
-            document.getElementById('invoiceWater').textContent = parseFloat(meter.water || 0).toFixed(2);
-            document.getElementById('invoiceGarbage').textContent = parseFloat(meter.garbage || 0).toFixed(2);
-            document.getElementById('invoiceCommonArea').textContent = parseFloat(meter.common_area || 0).toFixed(2);
-            
-            // คำนวณรวม
-            const total = parseFloat(meter.electricity || 0) + 
-                         parseFloat(meter.water || 0) + 
-                         parseFloat(meter.garbage || 0) + 
-                         parseFloat(meter.common_area || 0);
-            document.getElementById('invoiceTotal').textContent = total.toFixed(2);
-            
-            // ตรวจสอบสถานะ (ถ้ามีใบแจ้งหนี้แล้วให้แสดงสถานะ)
-            checkInvoiceStatus(meter);
-            
-            // แสดง Modal
-            createInvoiceModal.show();
-        }
-    }
-});
-
-// ยืนยันการสร้างใบแจ้งหนี้
-document.getElementById('confirmCreateInvoice').addEventListener('click', function() {
-    if (!currentInvoiceData.pcode) {
-        showAlert('error', 'เกิดข้อผิดพลาด', 'ไม่พบข้อมูลใบแจ้งหนี้');
-        return;
-    }
-    
-    // ใช้ SwitchAlert2 สำหรับการยืนยัน
-    Swal.fire({
-        title: 'ยืนยันการเปิดใบแจ้งหนี้',
-        html: `คุณต้องการเปิดใบแจ้งหนี้สำหรับ<br>
-              <strong>${currentInvoiceData.pcode}</strong> - ${currentInvoiceData.pdesc}<br>
-              เดือน ${currentInvoiceData.month}/${currentInvoiceData.year}<br>
-              <span class="text-primary">รวมทั้งสิ้น ${document.getElementById('invoiceTotal').textContent} บาท</span>`,
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '<i class="fas fa-file-invoice me-1"></i>เปิดใบแจ้งหนี้',
-        cancelButtonText: '<i class="fas fa-times me-1"></i>ยกเลิก'
-    }).then(function(result) {
-        if (result.isConfirmed) {
-            createInvoice();
-        }
-    });
-});
-
-// ตรวจสอบสถานะใบแจ้งหนี้
-function checkInvoiceStatus(meter) {
-    // ซ่อน alert เก่า
-    document.getElementById('existingInvoiceAlert').style.display = 'none';
-    
-    // เรียก API เพื่อตรวจสอบว่ามีใบแจ้งหนี้แล้วหรือไม่
-    fetch(`/invoices/check-invoice?pcode=${meter.pcode}&month=${meter.month}&year=${meter.year}`)
-        .then(response => response.json())
-        .then(result => {
-            if (result.success && result.exists) {
-                // มีใบแจ้งหนี้แล้ว
                 const invoice = result.invoice;
                 document.getElementById('existingInvNo').textContent = invoice.inv_no + ' (' + invoice.types + ')';
                 document.getElementById('existingInvoiceAlert').style.display = 'block';
                 
                 // ปิดปุ่มสร้างใบแจ้งหนี้
                 document.getElementById('confirmCreateInvoice').disabled = true;
-                document.getElementById('confirmCreateInvoice').innerHTML = '<i class="fas fa-ban me-1"></i>มีใบแจ้งหนี้แล้ว';
+                document.getElementById('confirmCreateInvoice').innerHTML = '<i class="fas fa-ban me-1"></i>' + translations.existing_invoice;
                 
                 // อัพเดทสถานะในตาราง
                 updateInvoiceStatusInTable(invoice.all_invoices);
             } else {
                 // ยังไม่มีใบแจ้งหนี้
                 document.getElementById('confirmCreateInvoice').disabled = false;
-                document.getElementById('confirmCreateInvoice').innerHTML = '<i class="fas fa-file-invoice me-1"></i>เปิดใบแจ้งหนี้';
+                document.getElementById('confirmCreateInvoice').innerHTML = '<i class="fas fa-file-invoice me-1"></i>' + translations.create_invoice;
                 
                 // อัพเดทสถานะเป็นพร้อมเปิด
-                document.getElementById('invoiceElectricityStatus').innerHTML = '<span class="badge bg-success">พร้อมเปิด</span>';
-                document.getElementById('invoiceWaterStatus').innerHTML = '<span class="badge bg-success">พร้อมเปิด</span>';
-                document.getElementById('invoiceGarbageStatus').innerHTML = '<span class="badge bg-success">พร้อมเปิด</span>';
-                document.getElementById('invoiceCommonAreaStatus').innerHTML = '<span class="badge bg-success">พร้อมเปิด</span>';
+                document.getElementById('invoiceElectricityStatus').innerHTML = '<span class="badge bg-success">' + translations.ready_to_open + '</span>';
+                document.getElementById('invoiceWaterStatus').innerHTML = '<span class="badge bg-success">' + translations.ready_to_open + '</span>';
+                document.getElementById('invoiceGarbageStatus').innerHTML = '<span class="badge bg-success">' + translations.ready_to_open + '</span>';
+                document.getElementById('invoiceCommonAreaStatus').innerHTML = '<span class="badge bg-success">' + translations.ready_to_open + '</span>';
             }
         })
         .catch(error => {
             console.error('Error checking invoice status:', error);
-            // หากตรวจสอบไม่ได้ ให้แสดงสถานะพร้อมเปิด
             document.getElementById('confirmCreateInvoice').disabled = false;
         });
 }
 
 // อัพเดทสถานะในตารางตามข้อมูลใบแจ้งหนี้ที่มี
 function updateInvoiceStatusInTable(invoices) {
-    // สร้าง mapping ระหว่าง type และสถานะ
     const statusMap = {};
     invoices.forEach(inv => {
-        statusMap[inv.type] = '<span class="badge bg-secondary">เปิดแล้ว</span>';
+        statusMap[inv.type] = '<span class="badge bg-secondary">' + translations.already_opened + '</span>';
     });
     
-    // อัพเดทสถานะแต่ละรายการ
-    document.getElementById('invoiceElectricityStatus').innerHTML = statusMap['ค่าไฟ'] || '<span class="badge bg-success">พร้อมเปิด</span>';
-    document.getElementById('invoiceWaterStatus').innerHTML = statusMap['ค่าน้ำ'] || '<span class="badge bg-success">พร้อมเปิด</span>';
-    document.getElementById('invoiceGarbageStatus').innerHTML = statusMap['ค่าขยะ'] || '<span class="badge bg-success">พร้อมเปิด</span>';
-    document.getElementById('invoiceCommonAreaStatus').innerHTML = statusMap['ค่าส่วนกลาง'] || '<span class="badge bg-success">พร้อมเปิด</span>';
+    document.getElementById('invoiceElectricityStatus').innerHTML = statusMap['ค่าไฟ'] || '<span class="badge bg-success">' + translations.ready_to_open + '</span>';
+    document.getElementById('invoiceWaterStatus').innerHTML = statusMap['ค่าน้ำ'] || '<span class="badge bg-success">' + translations.ready_to_open + '</span>';
+    document.getElementById('invoiceGarbageStatus').innerHTML = statusMap['ค่าขยะ'] || '<span class="badge bg-success">' + translations.ready_to_open + '</span>';
+    document.getElementById('invoiceCommonAreaStatus').innerHTML = statusMap['ค่าส่วนกลาง'] || '<span class="badge bg-success">' + translations.ready_to_open + '</span>';
 }
 
 // สร้างใบแจ้งหนี้
 function createInvoice() {
-    // แสดง loading
     Swal.fire({
-        title: 'กำลังเปิดใบแจ้งหนี้...',
-        text: 'กรุณารอสักครู่',
+        title: translations.swal.creating_invoice_title,
+        text: translations.swal.creating_invoice_text,
         icon: 'info',
         showConfirmButton: false,
         allowOutsideClick: false,
@@ -1006,7 +628,6 @@ function createInvoice() {
         }
     });
     
-    // ส่งข้อมูลไปยัง server
     const formData = new FormData();
     formData.append('pcode', currentInvoiceData.pcode);
     formData.append('month', currentInvoiceData.month);
@@ -1029,313 +650,97 @@ function createInvoice() {
     .then(result => {
         if (result.success) {
             Swal.fire({
-                title: 'เปิดใบแจ้งหนี้สำเร็จ!',
-                html: `สร้างใบแจ้งหนี้สำหรับ <strong>${currentInvoiceData.pcode}</strong> เรียบร้อยแล้ว<br>
-                      <strong>เลขที่เอกสาร: ${result.inv_no}</strong><br>
-                      จำนวน ${result.created_count} รายการ<br>
-                      จำนวนเงินรวม: <span class="text-success">${parseFloat(result.total_price).toFixed(2)} บาท</span>`,
+                title: translations.swal.create_invoice_success_title,
+                html: `${translations.swal.create_invoice_success_text} <strong>${currentInvoiceData.pcode}</strong><br>
+                      <strong><?php echo t('invoice_management.invoice_no'); ?>: ${result.inv_no}</strong><br>
+                      ${result.created_count} <?php echo t('invoice_management.items'); ?><br>
+                      <?php echo t('invoice_management.total_amount'); ?>: <span class="text-success">${parseFloat(result.total_price).toFixed(2)} <?php echo t('currency.baht'); ?></span>`,
                 icon: 'success',
-                confirmButtonText: 'ตกลง'
+                confirmButtonText: '<?php echo t('btns.ok'); ?>'
             }).then(function() {
                 if (createInvoiceModal) {
                     createInvoiceModal.hide();
                 }
-                loadMeters(); // โหลดข้อมูลใหม่เพื่ออัพเดทสถานะ
+                loadMeters();
             });
         } else {
             Swal.fire({
-                title: 'เปิดใบแจ้งหนี้ไม่สำเร็จ',
-                text: result.message || 'เกิดข้อผิดพลาดในการสร้างใบแจ้งหนี้',
+                title: translations.swal.create_invoice_error_title,
+                text: result.message || translations.swal.create_invoice_error_text,
                 icon: 'error',
-                confirmButtonText: 'ตกลง'
+                confirmButtonText: '<?php echo t('btns.ok'); ?>'
             });
         }
     })
     .catch(error => {
         console.error('Error creating invoice:', error);
         Swal.fire({
-            title: 'เกิดข้อผิดพลาด',
-            text: 'เกิดข้อผิดพลาดในการเชื่อมต่อ: ' + error.message,
+            title: translations.swal.connection_error_title,
+            text: translations.swal.connection_error_text + error.message,
             icon: 'error',
-            confirmButtonText: 'ตกลง'
+            confirmButtonText: '<?php echo t('btns.ok'); ?>'
         });
     });
 }
 
-// ฟังก์ชันโหลดรูปภาพจาก API
-function loadMeterImages(pcode, month, year) {
-    // รีเซ็ต preview
-    resetImagePreviews();
+// ฟังก์ชันกรองตาราง
+function filterTable() {
+    const searchUser = document.getElementById('searchUser');
+    const filterStatus = document.getElementById('filterStatus');
+    const metersTableBody = document.getElementById('metersTableBody');
     
-    // เรียก API เพื่อดึงข้อมูลรูปภาพ
-    fetch(`/meter-management/get-meter-images?pcode=${pcode}&month=${month}&year=${year}`)
-        .then(response => response.json())
-        .then(result => {
-            if (result.success) {
-                // แสดงรูปภาพไฟฟ้า
-                if (result.data.electricityImage) {
-                    displayExistingImage('electricityImagePreview', result.data.electricityImage, 'electricity');
-                    document.getElementById('currentElectricityImage').value = result.data.electricityImage;
-                    document.getElementById('clearElectricityBtn').style.display = 'block';
-                }
-                
-                // แสดงรูปภาพน้ำ
-                if (result.data.waterImage) {
-                    displayExistingImage('waterImagePreview', result.data.waterImage, 'water');
-                    document.getElementById('currentWaterImage').value = result.data.waterImage;
-                    document.getElementById('clearWaterBtn').style.display = 'block';
-                }
-            }
-        })
-        .catch(error => {
-            console.error('Error loading meter images:', error);
+    const searchValue = searchUser ? searchUser.value.toLowerCase().trim() : '';
+    const statusValue = filterStatus ? filterStatus.value : '';
+    
+    let filteredMeters = allMeters;
+    
+    // กรองตามการค้นหา
+    if (searchValue) {
+        filteredMeters = filteredMeters.filter(meter => {
+            const pcode = (meter.pcode || '').toLowerCase();
+            const pdesc = (meter.pdesc || '').toLowerCase();
+            return pcode.includes(searchValue) || pdesc.includes(searchValue);
         });
-}
-
-// ฟังก์ชันรีเซ็ต preview
-function resetImagePreviews() {
-    const electricityPreview = document.getElementById('electricityImagePreview');
-    const waterPreview = document.getElementById('waterImagePreview');
-    
-    electricityPreview.innerHTML = '<div class="placeholder text-center text-muted"><i class="fas fa-image fa-2x mb-1"></i><div style="font-size: 0.9em;">ไม่มีรูปภาพ</div></div>';
-    waterPreview.innerHTML = '<div class="placeholder text-center text-muted"><i class="fas fa-image fa-2x mb-1"></i><div style="font-size: 0.9em;">ไม่มีรูปภาพ</div></div>';
-    
-    document.getElementById('currentElectricityImage').value = '';
-    document.getElementById('currentWaterImage').value = '';
-    document.getElementById('clearElectricityBtn').style.display = 'none';
-    document.getElementById('clearWaterBtn').style.display = 'none';
-    
-    // รีเซ็ต input file
-    document.getElementById('img_electricity').value = '';
-    document.getElementById('img_water').value = '';
-}
-
-// ฟังก์ชันแสดงรูปภาพที่มีอยู่
-function displayExistingImage(previewId, imagePath, type) {
-    const preview = document.getElementById(previewId);
-    preview.innerHTML = `
-        <img src="${imagePath}" alt="รูปมิเตอร์ ${type}" 
-             class="img-fluid preview-clickable" 
-             style="max-width: 100%; max-height: 100%; cursor:pointer; object-fit: contain;"
-             onclick="openImageModal('${imagePath}')">
-    `;
-}
-
-// ฟังก์ชัน preview รูปภาพไฟฟ้า
-function previewElectricityImage(event) {
-    const file = event.target.files[0];
-    const preview = document.getElementById('electricityImagePreview');
-    
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            preview.innerHTML = `
-                <img src="${e.target.result}" alt="Preview" 
-                     class="img-fluid preview-clickable" 
-                     style="max-width: 100%; max-height: 100%; cursor:pointer; object-fit: contain;"
-                     onclick="openImageModal('${e.target.result}')">
-            `;
-            document.getElementById('clearElectricityBtn').style.display = 'block';
-        }
-        reader.readAsDataURL(file);
-    } else {
-        // ถ้าไม่มีไฟล์ใหม่ แต่มีรูปเดิม ให้แสดงรูปเดิม
-        const currentImage = document.getElementById('currentElectricityImage').value;
-        if (currentImage) {
-            displayExistingImage('electricityImagePreview', currentImage, 'electricity');
-        } else {
-            preview.innerHTML = '<div class="placeholder text-center text-muted"><i class="fas fa-image fa-2x mb-1"></i><div style="font-size: 0.9em;">ไม่มีรูปภาพ</div></div>';
-            document.getElementById('clearElectricityBtn').style.display = 'none';
-        }
     }
-}
-
-// ฟังก์ชัน preview รูปภาพน้ำ
-function previewWaterImage(event) {
-    const file = event.target.files[0];
-    const preview = document.getElementById('waterImagePreview');
     
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            preview.innerHTML = `
-                <img src="${e.target.result}" alt="Preview" 
-                     class="img-fluid preview-clickable" 
-                     style="max-width: 100%; max-height: 100%; cursor:pointer; object-fit: contain;"
-                     onclick="openImageModal('${e.target.result}')">
-            `;
-            document.getElementById('clearWaterBtn').style.display = 'block';
-        }
-        reader.readAsDataURL(file);
-    } else {
-        // ถ้าไม่มีไฟล์ใหม่ แต่มีรูปเดิม ให้แสดงรูปเดิม
-        const currentImage = document.getElementById('currentWaterImage').value;
-        if (currentImage) {
-            displayExistingImage('waterImagePreview', currentImage, 'water');
-        } else {
-            preview.innerHTML = '<div class="placeholder text-center text-muted"><i class="fas fa-image fa-2x mb-1"></i><div style="font-size: 0.9em;">ไม่มีรูปภาพ</div></div>';
-            document.getElementById('clearWaterBtn').style.display = 'none';
-        }
+    // กรองตามสถานะ
+    if (statusValue) {
+        filteredMeters = filteredMeters.filter(meter => meter.status === statusValue);
     }
+    
+    // แสดงผลตาราง
+    renderTable(filteredMeters);
 }
 
-// ฟังก์ชันลบรูปภาพไฟฟ้า
-function clearElectricityImage() {
-    document.getElementById('electricityImagePreview').innerHTML = '<div class="placeholder text-center text-muted"><i class="fas fa-image fa-2x mb-1"></i><div style="font-size: 0.9em;">ไม่มีรูปภาพ</div></div>';
-    document.getElementById('img_electricity').value = '';
-    document.getElementById('currentElectricityImage').value = '';
-    document.getElementById('clearElectricityBtn').style.display = 'none';
-}
+// Event listeners สำหรับการกรอง
+document.addEventListener('DOMContentLoaded', function() {
+    const searchUser = document.getElementById('searchUser');
+    const resetSearch = document.getElementById('resetSearch');
+    const filterMonth = document.getElementById('filterMonth');
+    const filterYear = document.getElementById('filterYear');
+    const filterStatus = document.getElementById('filterStatus');
 
-// ฟังก์ชันลบรูปภาพน้ำ
-function clearWaterImage() {
-    document.getElementById('waterImagePreview').innerHTML = '<div class="placeholder text-center text-muted"><i class="fas fa-image fa-2x mb-1"></i><div style="font-size: 0.9em;">ไม่มีรูปภาพ</div></div>';
-    document.getElementById('img_water').value = '';
-    document.getElementById('currentWaterImage').value = '';
-    document.getElementById('clearWaterBtn').style.display = 'none';
-}
-
-// Modal popup functions
-function openImageModal(src) {
-    const modal = document.getElementById('imageModal');
-    const modalImg = document.getElementById('modalImage');
-    modalImg.src = src;
-    modal.style.display = 'flex';
-}
-
-function closeImageModal() {
-    const modal = document.getElementById('imageModal');
-    modal.style.display = 'none';
-}
-
-// ปิด modal เมื่อคลิกนอกภาพ
-document.getElementById('imageModal').addEventListener('click', function(e) {
-    if (e.target === this) closeImageModal();
-});
-
-// รีเซ็ตฟอร์มเมื่อปิด modal
-document.getElementById('editMeterModal').addEventListener('hidden.bs.modal', function () {
-    resetImagePreviews();
-    currentMeterData = {};
-});
-
-
-
-
-// บันทึกข้อมูลเมื่อคลิกปุ่มบันทึก
-saveMeterChanges.addEventListener('click', function() {
-    // รวบรวมข้อมูลจากฟอร์ม
-    const pcode = document.getElementById('meterPcode').value;
-    const month = document.getElementById('meterMonth').value;
-    const year = document.getElementById('meterYear').value;
-    const electricity = document.getElementById('readingValueElectricity').value;
-    const water = document.getElementById('readingValueWater').value;
-    const garbage = document.getElementById('readingValueGarbage').value;
-    const common_area = document.getElementById('readingValueCommonArea').value;
-    const remark = document.getElementById('meterRemark').value;
-    const currentElectricityImage = document.getElementById('currentElectricityImage').value;
-    const currentWaterImage = document.getElementById('currentWaterImage').value;
-
-    // รับไฟล์รูปภาพ
-    const imgElectricity = document.getElementById('img_electricity').files[0];
-    const imgWater = document.getElementById('img_water').files[0];
-
-    // ตรวจสอบข้อมูลที่จำเป็น
-    if (!pcode || !month || !year) {
-        Swal.fire({
-            title: translations.swal.incomplete_data,
-            text: translations.swal.incomplete_data_text,
-            icon: 'warning'
+    if (searchUser) {
+        searchUser.addEventListener('input', filterTable);
+    }
+    
+    if (resetSearch) {
+        resetSearch.addEventListener('click', function() {
+            if (searchUser) searchUser.value = '';
+            filterTable();
         });
-        return;
     }
-
-    // แสดงการยืนยันการบันทึก
-    Swal.fire({
-        title: translations.swal.confirm_save_title,
-        text: translations.swal.confirm_save_text,
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: translations.swal.save_button,
-        cancelButtonText: translations.swal.cancel_button
-    }).then(function(result) {
-        if (result.isConfirmed) {
-            // สร้าง FormData
-            const formData = new FormData();
-            formData.append('pcode', pcode);
-            formData.append('month', month);
-            formData.append('year', year);
-            formData.append('electricity', electricity || '0');
-            formData.append('water', water || '0');
-            formData.append('garbage', garbage || '0');
-            formData.append('common_area', common_area || '0');
-            formData.append('remark', remark || '');
-            formData.append('current_electricity_image', currentElectricityImage || '');
-            formData.append('current_water_image', currentWaterImage || '');
-
-            // เพิ่มไฟล์รูปภาพถ้ามี
-            if (imgElectricity) {
-                formData.append('img_electricity', imgElectricity);
-            }
-            if (imgWater) {
-                formData.append('img_water', imgWater);
-            }
-
-            // แสดง loading ใน SweetAlert
-            Swal.fire({
-                title: translations.swal.saving_data_title,
-                text: translations.swal.saving_data_text,
-                icon: 'info',
-                showConfirmButton: false,
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-
-            // ส่งข้อมูลไปยัง server
-            fetch('/meter-management/save-meter', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok: ' + response.status);
-                }
-                return response.json();
-            })
-            .then(result => {
-                if (result.success) {
-                    Swal.fire({
-                        title: translations.swal.save_success_title,
-                        text: translations.swal.save_success_text,
-                        icon: 'success',
-                        timer: 2000,
-                        showConfirmButton: false
-                    }).then(function() {
-                        editMeterModal.hide();
-                        loadMeters();
-                    });
-                } else {
-                    var errorMsg = result.errors ? result.errors.join('<br>') : (result.message || translations.swal.save_error_text);
-                    Swal.fire({
-                        title: translations.swal.save_error_title,
-                        html: errorMsg,
-                        icon: 'error'
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error saving meter:', error);
-                Swal.fire({
-                    title: translations.swal.connection_error_title,
-                    text: translations.swal.connection_error_text + error.message,
-                    icon: 'error'
-                });
-            });
-        }
-    });
+    
+    if (filterMonth) {
+        filterMonth.addEventListener('change', loadMeters);
+    }
+    
+    if (filterYear) {
+        filterYear.addEventListener('change', loadMeters);
+    }
+    
+    if (filterStatus) {
+        filterStatus.addEventListener('change', filterTable);
+    }
 });
 </script>
