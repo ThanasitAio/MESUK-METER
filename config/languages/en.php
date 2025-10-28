@@ -226,11 +226,11 @@ return array(
     ),
 
     'invoice_management' => array(
-        'title' => 'Invoice Management',
-        'total_invoices' => 'Total Invoices',
-        'open_invoices' => 'Open Invoices',
-        'closed_invoices' => 'Closed Invoices',
-        'open_invoices_price' => 'Open Invoices Price',
+    'title' => 'Invoice Management',
+    'total_invoices' => 'Total Invoices',
+    'open_invoices' => 'Invoices Created',
+    'closed_invoices' => 'Invoices Not Created',
+    'open_invoices_price' => 'Total Price of Created Invoices',
         'search' => 'Search',
         'invoice_list' => 'Invoice List',
         'invoice_not_found' => 'Invoice not found',

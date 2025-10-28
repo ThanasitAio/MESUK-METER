@@ -30,6 +30,8 @@ return array(
         '/invoices/create' => 'InvoiceManagementController@create',
         '/invoices/edit/{id}' => 'InvoiceManagementController@edit',
         '/invoices/get-by-period' => 'InvoiceManagementController@getByPeriod',
+        '/invoices/create-invoice' => 'InvoiceManagementController@createInvoice',
+        '/invoices/check-invoice' => 'InvoiceManagementController@checkInvoice',
 
     ),
     'POST' => array(
@@ -57,6 +59,8 @@ return array(
         '/invoices/update/{id}' => 'InvoiceManagementController@update',
         '/invoices/delete/{id}' => 'InvoiceManagementController@delete',
         '/invoices/get-by-period' => 'InvoiceManagementController@getByPeriod',
+        '/invoices/create-invoice' => 'InvoiceManagementController@createInvoice',
+        '/invoices/check-invoice' => 'InvoiceManagementController@checkInvoice',
 
     )
 );

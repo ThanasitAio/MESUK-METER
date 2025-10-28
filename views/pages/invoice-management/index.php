@@ -40,41 +40,42 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
             echo pageHeader(t('invoice_management.title'), '', '', 'fas fa-users-cog'); 
             ?>
 
-                        <!-- สถิติ -->
-            <div class="row" id="statsContainer">
-                <div class="col-6 col-md-2 mb-2">
-                    <div class="card text-center">
-                        <div class="card-body py-2">
-                            <div class="small text-muted"><?php echo t('invoice_management.total_invoices'); ?></div>
-                            <h4 class="mb-0 text-primary" id="totalInvoices">0</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-md-2 mb-2">
-                    <div class="card text-center">
-                        <div class="card-body py-2">
-                            <div class="small text-muted"><?php echo t('invoice_management.open_invoices'); ?></div>
-                            <h4 class="mb-0 text-success" id="openCount">0</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-md-2 mb-2">
-                    <div class="card text-center">
-                        <div class="card-body py-2">
-                            <div class="small text-muted"><?php echo t('invoice_management.closed_invoices'); ?></div>
-                            <h4 class="mb-0 text-warning" id="closedCount">0</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-md-2 mb-2">
-                    <div class="card text-center">
-                        <div class="card-body py-2">
-                            <div class="small text-muted"><?php echo t('invoice_management.open_invoices_price'); ?></div>
-                            <h4 class="mb-0 text-info" id="totalPrice">0.00</h4>
-                        </div>
-                    </div>
-                </div>
+            <!-- สถิติ -->
+<div class="row" id="statsContainer">
+    <div class="col-6 col-md-2 mb-2">
+        <div class="card text-center">
+            <div class="card-body py-2">
+                <div class="small text-muted"><?php echo t('invoice_management.total_invoices'); ?></div>
+                <h4 class="mb-0 text-primary" id="totalInvoices"><?php echo isset($stats['total_saved']) ? $stats['total_saved'] : '0'; ?></h4>
             </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-2 mb-2">
+        <div class="card text-center">
+            <div class="card-body py-2">
+                <div class="small text-muted"><?php echo t('invoice_management.open_invoices'); ?></div>
+                <h4 class="mb-0 text-success" id="openCount"><?php echo isset($stats['open_count']) ? $stats['open_count'] : '0'; ?></h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-2 mb-2">
+        <div class="card text-center">
+            <div class="card-body py-2">
+                <div class="small text-muted"><?php echo t('invoice_management.closed_invoices'); ?></div>
+                <h4 class="mb-0 text-warning" id="closedCount"><?php echo isset($stats['not_opened_count']) ? $stats['not_opened_count'] : '0'; ?></h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-2 mb-2">
+        <div class="card text-center">
+            <div class="card-body py-2">
+                <div class="small text-muted"><?php echo t('invoice_management.open_invoices_price'); ?></div>
+                <h4 class="mb-0 text-info" id="totalPrice"><?php echo isset($stats['total_price']) ? number_format($stats['total_price'], 2) : '0.00'; ?></h4>
+            </div>
+        </div>
+    </div>
+</div>
+
 
             <!-- ตัวกรองข้อมูล -->
             <div class="card <?php echo $headerConfig['classes']['filter_card']; ?>" style="position: relative; z-index: 100; overflow: visible;">
@@ -180,123 +181,97 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
     </div>
 </div>
 
-
-<!-- Modal สำหรับแก้ไขข้อมูล -->
-<div class="modal fade" id="editMeterModal" tabindex="-1" aria-labelledby="editMeterModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+<!-- Modal สำหรับเปิดใบแจ้งหนี้ -->
+<div class="modal fade" id="createInvoiceModal" tabindex="-1" aria-labelledby="createInvoiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editMeterModalLabel"><?php echo t('meter_management.meterData'); ?><span id="modalMonthYear" class="month-year-gradient"></span></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title" id="createInvoiceModalLabel">
+                    <i class="fas fa-file-invoice me-2"></i>เปิดใบแจ้งหนี้
+                    <span id="invoiceMonthYear" class="month-year-gradient"></span>
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="editMeterForm">
-                    <!-- ข้อมูลมิเตอร์ -->
-                    <div class="row">
-                        <div class="col-4 col-sm-4 col-md-3 mb-3">
-                            <label for="meterPcode" class="form-label"><?php echo t('meter_management.productCode'); ?></label>
-                            <input type="text" class="form-control form-control-sm" id="meterPcode" name="pcode" readonly disabled>
-                        </div>
-                        <div class="col-4 col-sm-4 col-md-2 mb-3">
-                            <label for="meterMonth" class="form-label"><?php echo t('meter_management.month'); ?></label>
-                            <input type="number" class="form-control form-control-sm" id="meterMonth" name="month" readonly disabled>
-                        </div>
-                        <div class="col-4 col-sm-4 col-md-2 mb-3">
-                            <label for="meterYear" class="form-label"><?php echo t('meter_management.year'); ?></label>
-                            <input type="number" class="form-control form-control-sm" id="meterYear" name="year" readonly disabled>
-                        </div>
-                        <div class="col-4 col-sm-4 col-md-2 mb-3">
-                            <label for="meterMonth" class="form-label"><?php echo t('meter_management.electricity_ppu'); ?></label>
-                            <input type="number" class="form-control form-control-sm" style="text-align: right;" id="electricity_ppu" name="electricity_ppu" readonly disabled>
-                        </div>
-                        <div class="col-4 col-sm-4 col-md-2 mb-3">
-                            <label for="meterYear" class="form-label"><?php echo t('meter_management.water_ppu'); ?></label>
-                            <input type="number" class="form-control form-control-sm" style="text-align: right;" id="water_ppu" name="water_ppu" readonly disabled>
-                        </div>
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <h6 class="text-muted">รหัสสินค้า</h6>
+                        <h7 id="invoicePcode" class="fw-bold text-primary"></h7>
                     </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-6 col-sm-6 col-md-3 mb-3">
-                            <label for="previousMeterWater" class="form-label"><?php echo t('meter_management.previous_electricity_reading'); ?></label>
-                            <input type="number" class="form-control form-control-sm" style="text-align: right;" id="previousMeterElectricity" name="previous_meter_electricity" readonly disabled>
-                        </div>
-                        <div class="col-6 col-sm-6 col-md-3 mb-3">
-                            <label for="previousMeterElectricity" class="form-label"><?php echo t('meter_management.previous_water_reading'); ?></label>
-                            <input type="number" class="form-control form-control-sm" style="text-align: right;" id="previousMeterWater" name="previous_meter_water" readonly disabled>
-                        </div>
+                    <div class="col-md-9">
+                        <h6 class="text-muted">คำอธิบาย</h6>
+                        <h7 id="invoicePdesc" class="fw-bold"></h7>
                     </div>
-                    <div class="row">
-                        <div class="col-6 col-sm-6 col-md-3 mb-3">
-                            <label for="readingValueElectricity" class="form-label"><?php echo t('meter_management.latest_electricity_reading'); ?></label>
-                            <input type="number" class="form-control form-control-sm" style="text-align: right;" id="readingValueElectricity" name="electricity">
-                        </div>
-                        <div class="col-6 col-sm-6 col-md-3 mb-3">
-                            <label for="readingValueWater" class="form-label"><?php echo t('meter_management.latest_water_reading'); ?></label>
-                            <input type="number" class="form-control form-control-sm" style="text-align: right;" id="readingValueWater" name="water">
-                        </div>
-                        <div class="col-6 col-sm-6 col-md-3 mb-3">
-                            <label for="readingValueGarbage" class="form-label"><?php echo t('meter_management.garbage'); ?></label>
-                            <input type="number" class="form-control form-control-sm" style="text-align: right;" id="readingValueGarbage" name="garbage">
-                        </div>
-                        <div class="col-6 col-sm-6 col-md-3 mb-3">
-                            <label for="readingValueCommonArea" class="form-label"><?php echo t('meter_management.common_area'); ?></label>
-                            <input type="number" class="form-control form-control-sm" style="text-align: right;" id="readingValueCommonArea" name="common_area">
-                        </div>
-                    </div>
-                    
-                    <!-- ส่วนแสดงรูปภาพ -->
-                    <div class="row">
-                        <div class="col-6 col-sm-6 col-md-3 mb-3">
-                            <label class="form-label"><?php echo t('meter_management.img_electricity'); ?></label>
-                            <div class="image-preview-container mb-2" style="width: 100%; height: 120px; border: 1px solid #dee2e6; border-radius: 0.5rem; background: #f8f9fa; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                                <div class="image-preview w-100 h-100 d-flex align-items-center justify-content-center" id="electricityImagePreview">
-                                    <div class="placeholder text-center text-muted">
-                                        <i class="fas fa-image fa-2x mb-1"></i>
-                                        <div style="font-size: 0.9em;"><?php echo t('meter_management.img_not'); ?></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="file" class="form-control form-control-sm" id="img_electricity" name="img_electricity" accept="image/*" onchange="previewElectricityImage(event)">
-                            <input type="hidden" id="currentElectricityImage" name="current_electricity_image">
-                            <div class="form-text small">
-                                <button type="button" class="btn btn-outline-danger btn-sm mt-1" onclick="clearElectricityImage()" style="display:none;" id="clearElectricityBtn">
-                                    <i class="fas fa-times"></i> <?php echo t('meter_management.img_delete'); ?>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-6 col-sm-6 col-md-3 mb-3">
-                            <label class="form-label"><?php echo t('meter_management.img_water'); ?></label>
-                            <div class="image-preview-container mb-2" style="width: 100%; height: 120px; border: 1px solid #dee2e6; border-radius: 0.5rem; background: #f8f9fa; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                                <div class="image-preview w-100 h-100 d-flex align-items-center justify-content-center" id="waterImagePreview">
-                                    <div class="placeholder text-center text-muted">
-                                        <i class="fas fa-image fa-2x mb-1"></i>
-                                        <div style="font-size: 0.9em;"><?php echo t('meter_management.img_not'); ?></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="file" class="form-control form-control-sm" id="img_water" name="img_water" accept="image/*" onchange="previewWaterImage(event)">
-                            <input type="hidden" id="currentWaterImage" name="current_water_image">
-                            <div class="form-text small">
-                                <button type="button" class="btn btn-outline-danger btn-sm mt-1" onclick="clearWaterImage()" style="display:none;" id="clearWaterBtn">
-                                    <i class="fas fa-times"></i> <?php echo t('meter_management.img_delete'); ?>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-6 mb-3">
-                            <label for="meterRemark" class="form-label"><?php echo t('meter_management.remark'); ?></label>
-                            <textarea class="form-control" id="meterRemark" name="remark" rows="5"></textarea>
-                        </div>
-                    </div>
-                    <hr>
-                </form>
+                </div>
+                
+                <!-- แสดงเลขที่เอกสาร (ถ้ามีแล้ว) -->
+                <div class="alert alert-info" id="existingInvoiceAlert" style="display: none;">
+                    <i class="fas fa-info-circle me-2"></i>
+                    มีใบแจ้งหนี้แล้ว: <strong id="existingInvNo"></strong>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th width="40%" class="text-center">รายการ</th>
+                                <th width="30%" class="text-center">จำนวนเงิน</th>
+                                <th width="30%" class="text-center">สถานะ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="fw-bold">ค่าไฟฟ้า</td>
+                                <td class="text-end" id="invoiceElectricity">0.00</td>
+                                <td class="text-center" id="invoiceElectricityStatus">
+                                    <span class="badge bg-success">พร้อมเปิด</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">ค่าน้ำ</td>
+                                <td class="text-end" id="invoiceWater">0.00</td>
+                                <td class="text-center" id="invoiceWaterStatus">
+                                    <span class="badge bg-success">พร้อมเปิด</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">ค่าขยะ</td>
+                                <td class="text-end" id="invoiceGarbage">0.00</td>
+                                <td class="text-center" id="invoiceGarbageStatus">
+                                    <span class="badge bg-success">พร้อมเปิด</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">ค่าส่วนกลาง</td>
+                                <td class="text-end" id="invoiceCommonArea">0.00</td>
+                                <td class="text-center" id="invoiceCommonAreaStatus">
+                                    <span class="badge bg-success">พร้อมเปิด</span>
+                                </td>
+                            </tr>
+                            <tr class="table-primary fw-bold">
+                                <td>รวมทั้งสิ้น</td>
+                                <td class="text-end" id="invoiceTotal">0.00</td>
+                                <td class="text-center">
+                                    <span class="badge bg-primary">รวม</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php echo t('btns.cancel'); ?></button>
-                <button type="button" class="btn btn-primary" id="saveMeterChanges"><?php echo t('btns.save'); ?></button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>ปิด
+                </button>
+                <button type="button" class="btn btn-primary" id="confirmCreateInvoice">
+                    <i class="fas fa-file-invoice me-1"></i>เปิดใบแจ้งหนี้
+                </button>
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- Modal สำหรับแสดงรูปภาพเต็มหน้าจอ -->
 <div id="imageModal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.9); align-items:center; justify-content:center;">
@@ -332,7 +307,9 @@ const translations = {
 <script>
 // ประกาศตัวแปร allMeters ในระดับ global
 let allMeters = []; // เก็บข้อมูลมิเตอร์ทั้งหมดที่โหลดจาก AJAX
-
+let currentInvoiceData = {};
+let createInvoiceModal;
+let editMeterModal;
 // ฟังก์ชันคำนวณและแสดงสถิติ
 function updateStats(meters) {
     if (!meters || meters.length === 0) {
@@ -413,6 +390,7 @@ function filterTable() {
 }
 
 // ฟังก์ชันแสดงผลตาราง
+// ฟังก์ชันแสดงผลตาราง
 function renderTable(meters) {
     const metersTableBody = document.getElementById('metersTableBody');
     
@@ -447,8 +425,8 @@ function renderTable(meters) {
                 <td class="text-end">${parseFloat(meter.total).toFixed(2)}</td>
                 <td class="text-center">
                     <div class="btn-group btn-group-sm" role="group">
-                        <button class="btn btn-warning btn-sm btn-edit-meter" data-id="${meter.id}" title="แก้ไข">
-                            <i class="fas fa-edit"></i>
+                        <button class="btn btn-primary btn-sm btn-create-invoice" data-id="${meter.id}" title="เปิดใบแจ้งหนี้">
+                            <i class="fas fa-file-invoice"></i>
                         </button>
                     </div>
                 </td>
@@ -459,6 +437,7 @@ function renderTable(meters) {
     metersTableBody.innerHTML = html;
 }
 
+// ฟังก์ชัน loadMeters อัพเดท
 // ฟังก์ชัน loadMeters อัพเดท
 function loadMeters() {
     const filterMonth = document.getElementById('filterMonth');
@@ -489,6 +468,11 @@ function loadMeters() {
                 allMeters = result.data;
                 filterTable(); // กรองและแสดงผล
             
+                // อัพเดทสถิติจากข้อมูลที่ได้จากเซิร์ฟเวอร์
+                if (result.stats) {
+                    updateStatsFromServer(result.stats);
+                }
+                
                 const cardHeader = document.querySelector('.card .card-header .badge');
                 if (cardHeader) {
                     cardHeader.textContent = result.count;
@@ -507,64 +491,381 @@ function loadMeters() {
         });
 }
 
-// JavaScript สำหรับการกรองแบบ AJAX
+// ฟังก์ชันอัพเดทสถิติจากข้อมูลเซิร์ฟเวอร์
+function updateStatsFromServer(stats) {
+    if (!stats) return;
+    
+    // อัพเดทสถิติจากข้อมูลที่คำนวณในเซิร์ฟเวอร์
+    document.getElementById('totalInvoices').textContent = (stats.total_saved || 0).toLocaleString();
+    document.getElementById('openCount').textContent = (stats.open_count || 0).toLocaleString();
+    document.getElementById('closedCount').textContent = (stats.not_opened_count || 0).toLocaleString();
+    document.getElementById('totalPrice').textContent = parseFloat(stats.total_price || 0).toFixed(2);
+}
+
+// ฟังก์ชันคำนวณและแสดงสถิติ (สำหรับกรองข้อมูลในฝั่ง client)
+function updateStats(meters) {
+    if (!meters || meters.length === 0) {
+        // ไม่ต้องรีเซ็ตสถิติทั้งหมดเป็น 0 เพราะอาจมีข้อมูลจากเซิร์ฟเวอร์
+        return;
+    }
+
+    // คำนวณสถิติเฉพาะสำหรับข้อมูลที่กรองแล้ว
+    let stats = {
+        total: meters.length,
+        saved: 0,
+        unsaved: 0,
+        electricity: 0,
+        water: 0,
+        garbage: 0,
+        common_area: 0
+    };
+
+    meters.forEach(meter => {
+        // นับสถานะ
+        if (meter.status === 'saved' || meter.status === true || meter.status === 1 || meter.status === '1') {
+            stats.saved++;
+        } else {
+            stats.unsaved++;
+        }
+
+        // รวมค่าใช้จ่าย
+        stats.electricity += parseFloat(meter.electricity) || 0;
+        stats.water += parseFloat(meter.water) || 0;
+        stats.garbage += parseFloat(meter.garbage) || 0;
+        stats.common_area += parseFloat(meter.common_area) || 0;
+    });
+
+    // คำนวณรวมทั้งหมด
+    stats.grandTotal = stats.electricity + stats.water + stats.garbage + stats.common_area;
+
+    // อัพเดทแสดงผลเฉพาะส่วนที่เกี่ยวข้องกับการกรอง
+    // หมายเหตุ: เราไม่เปลี่ยน openCount, closedCount, totalPrice หลักจากเซิร์ฟเวอร์
+    document.getElementById('totalInvoices').textContent = stats.total.toLocaleString();
+}
+
+// แทนที่โค้ดเดิมในส่วน event listener
 document.addEventListener('DOMContentLoaded', function() {
+    // กำหนด modal
+    const createInvoiceModalElement = document.getElementById('createInvoiceModal');
+    if (createInvoiceModalElement) {
+        createInvoiceModal = new bootstrap.Modal(createInvoiceModalElement);
+    }
+    
+    const confirmCreateInvoiceBtn = document.getElementById('confirmCreateInvoice');
+    if (confirmCreateInvoiceBtn) {
+        confirmCreateInvoiceBtn.addEventListener('click', function() {
+            confirmCreateInvoice();
+        });
+    }
+    
+    // Event listener สำหรับปุ่มเปิดใบแจ้งหนี้ (ใช้ event delegation)
+    document.addEventListener('click', function(event) {
+        if (event.target.closest('.btn-create-invoice')) {
+            const meterId = event.target.closest('.btn-create-invoice').dataset.id;
+            const meter = allMeters.find(m => m.id == meterId);
 
-    editMeterModal = new bootstrap.Modal(document.getElementById('editMeterModal'));
-    const searchUser = document.getElementById('searchUser');
-    const resetSearch = document.getElementById('resetSearch');
-    const filterMonth = document.getElementById('filterMonth');
-    const filterYear = document.getElementById('filterYear');
-    const filterStatus = document.getElementById('filterStatus');
-
-    // Event listeners
-    if (searchUser) {
-        searchUser.addEventListener('input', filterTable);
-        searchUser.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                filterTable();
+            if (meter) {
+                openCreateInvoiceModal(meter);
             }
-        });
-    }
-    
-    if (resetSearch) {
-        resetSearch.addEventListener('click', function() {
-            if (searchUser) searchUser.value = '';
-            filterTable();
-        });
-    }
-    
-    if (filterMonth) {
-        filterMonth.addEventListener('change', loadMeters);
-    }
-    
-    if (filterYear) {
-        filterYear.addEventListener('change', loadMeters);
-    }
-    
-    if (filterStatus) {
-        filterStatus.addEventListener('change', filterTable);
-    }
-    
+        }
+    });
+
     // โหลดข้อมูลครั้งแรก
     loadMeters();
 });
 
-let editMeterModal;
+// ฟังก์ชันยืนยันการสร้างใบแจ้งหนี้ (แยกออกมา)
+function confirmCreateInvoice() {
+    if (!currentInvoiceData.pcode) {
+        showAlert('error', 'เกิดข้อผิดพลาด', 'ไม่พบข้อมูลใบแจ้งหนี้');
+        return;
+    }
+    
+    // ใช้ SwitchAlert2 สำหรับการยืนยัน
+    Swal.fire({
+        title: 'ยืนยันการเปิดใบแจ้งหนี้',
+        html: `คุณต้องการเปิดใบแจ้งหนี้สำหรับ<br>
+              <strong>${currentInvoiceData.pcode}</strong> - ${currentInvoiceData.pdesc}<br>
+              เดือน ${currentInvoiceData.month}/${currentInvoiceData.year}<br>
+              <span class="text-primary">รวมทั้งสิ้น ${document.getElementById('invoiceTotal').textContent} บาท</span>`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '<i class="fas fa-file-invoice me-1"></i>เปิดใบแจ้งหนี้',
+        cancelButtonText: '<i class="fas fa-times me-1"></i>ยกเลิก'
+    }).then(function(result) {
+        if (result.isConfirmed) {
+            createInvoice();
+        }
+    });
+}
+
+// ฟังก์ชันแสดง Alert
+function showAlert(icon, title, text) {
+    Swal.fire({
+        icon: icon,
+        title: title,
+        text: text,
+        confirmButtonText: 'ตกลง'
+    });
+}
+
+// เปิด Modal เมื่อคลิกปุ่มเปิดใบแจ้งหนี้
+document.addEventListener('click', function(event) {
+    // ตรวจสอบว่าคลิกที่ปุ่มเปิดใบแจ้งหนี้
+    if (event.target.closest('.btn-create-invoice')) {
+        const meterId = event.target.closest('.btn-create-invoice').dataset.id;
+        const meter = allMeters.find(m => m.id == meterId);
+
+        if (meter) {
+            openCreateInvoiceModal(meter);
+        }
+    }
+});
+
+// ฟังก์ชันเปิด Modal สร้างใบแจ้งหนี้
+function openCreateInvoiceModal(meter) {
+    currentInvoiceData = meter;
+    
+    // อัพเดทหัวข้อ modal พร้อมเดือน/ปี
+    const monthNames = {
+        '01': '<?php echo t('month.january'); ?>',
+        '02': '<?php echo t('month.february'); ?>',
+        '03': '<?php echo t('month.march'); ?>',
+        '04': '<?php echo t('month.april'); ?>',
+        '05': '<?php echo t('month.may'); ?>',
+        '06': '<?php echo t('month.june'); ?>',
+        '07': '<?php echo t('month.july'); ?>',
+        '08': '<?php echo t('month.august'); ?>',
+        '09': '<?php echo t('month.september'); ?>',
+        '10': '<?php echo t('month.october'); ?>',
+        '11': '<?php echo t('month.november'); ?>',
+        '12': '<?php echo t('month.december'); ?>'
+    };
+    
+    const month = String(meter.month).padStart(2, '0');
+    const year = meter.year;
+    document.getElementById('invoiceMonthYear').textContent = `${monthNames[month]} ${year}`;
+    
+    // เติมข้อมูลในฟอร์ม
+    document.getElementById('invoicePcode').textContent = meter.pcode || '';
+    document.getElementById('invoicePdesc').textContent = meter.pdesc || '';
+    document.getElementById('invoiceElectricity').textContent = parseFloat(meter.electricity || 0).toFixed(2);
+    document.getElementById('invoiceWater').textContent = parseFloat(meter.water || 0).toFixed(2);
+    document.getElementById('invoiceGarbage').textContent = parseFloat(meter.garbage || 0).toFixed(2);
+    document.getElementById('invoiceCommonArea').textContent = parseFloat(meter.common_area || 0).toFixed(2);
+    
+    // คำนวณรวม
+    const total = parseFloat(meter.electricity || 0) + 
+                 parseFloat(meter.water || 0) + 
+                 parseFloat(meter.garbage || 0) + 
+                 parseFloat(meter.common_area || 0);
+    document.getElementById('invoiceTotal').textContent = total.toFixed(2);
+    
+    // ตรวจสอบสถานะใบแจ้งหนี้
+    checkInvoiceStatus(meter);
+    
+    // แสดง Modal
+    if (createInvoiceModal) {
+        createInvoiceModal.show();
+    }
+}
+
+// ตรวจสอบสถานะใบแจ้งหนี้
+function checkInvoiceStatus(meter) {
+    // ซ่อน alert เก่า
+    document.getElementById('existingInvoiceAlert').style.display = 'none';
+    
+    // เรียก API เพื่อตรวจสอบว่ามีใบแจ้งหนี้แล้วหรือไม่
+    fetch(`/invoices/check-invoice?pcode=${meter.pcode}&month=${meter.month}&year=${meter.year}`)
+        .then(response => response.json())
+        .then(result => {
+            if (result.success && result.exists) {
+                // มีใบแจ้งหนี้แล้ว
+                document.getElementById('existingInvNo').textContent = result.invoice.inv_no;
+                document.getElementById('existingInvoiceAlert').style.display = 'block';
+                
+                // ปิดปุ่มสร้างใบแจ้งหนี้
+                document.getElementById('confirmCreateInvoice').disabled = true;
+                document.getElementById('confirmCreateInvoice').innerHTML = '<i class="fas fa-ban me-1"></i>มีใบแจ้งหนี้แล้ว';
+                
+                // อัพเดทสถานะ
+                document.getElementById('invoiceElectricityStatus').innerHTML = '<span class="badge bg-secondary">เปิดแล้ว</span>';
+                document.getElementById('invoiceWaterStatus').innerHTML = '<span class="badge bg-secondary">เปิดแล้ว</span>';
+                document.getElementById('invoiceGarbageStatus').innerHTML = '<span class="badge bg-secondary">เปิดแล้ว</span>';
+                document.getElementById('invoiceCommonAreaStatus').innerHTML = '<span class="badge bg-secondary">เปิดแล้ว</span>';
+            } else {
+                // ยังไม่มีใบแจ้งหนี้
+                document.getElementById('confirmCreateInvoice').disabled = false;
+                document.getElementById('confirmCreateInvoice').innerHTML = '<i class="fas fa-file-invoice me-1"></i>เปิดใบแจ้งหนี้';
+                
+                // อัพเดทสถานะ
+                document.getElementById('invoiceElectricityStatus').innerHTML = '<span class="badge bg-success">พร้อมเปิด</span>';
+                document.getElementById('invoiceWaterStatus').innerHTML = '<span class="badge bg-success">พร้อมเปิด</span>';
+                document.getElementById('invoiceGarbageStatus').innerHTML = '<span class="badge bg-success">พร้อมเปิด</span>';
+                document.getElementById('invoiceCommonAreaStatus').innerHTML = '<span class="badge bg-success">พร้อมเปิด</span>';
+            }
+        })
+        .catch(error => {
+            console.error('Error checking invoice status:', error);
+            // หากตรวจสอบไม่ได้ ให้แสดงสถานะพร้อมเปิด
+            document.getElementById('confirmCreateInvoice').disabled = false;
+        });
+}
+
+// สร้างใบแจ้งหนี้
+function createInvoice() {
+    // แสดง loading
+    Swal.fire({
+        title: 'กำลังเปิดใบแจ้งหนี้...',
+        text: 'กรุณารอสักครู่',
+        icon: 'info',
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+    
+    // ส่งข้อมูลไปยัง server
+    const formData = new FormData();
+    formData.append('pcode', currentInvoiceData.pcode);
+    formData.append('month', currentInvoiceData.month);
+    formData.append('year', currentInvoiceData.year);
+    formData.append('electricity', currentInvoiceData.electricity || 0);
+    formData.append('water', currentInvoiceData.water || 0);
+    formData.append('garbage', currentInvoiceData.garbage || 0);
+    formData.append('common_area', currentInvoiceData.common_area || 0);
+    
+    fetch('/invoices/create-invoice', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(result => {
+        if (result.success) {
+            Swal.fire({
+                title: 'เปิดใบแจ้งหนี้สำเร็จ!',
+                html: `สร้างใบแจ้งหนี้สำหรับ <strong>${currentInvoiceData.pcode}</strong> เรียบร้อยแล้ว<br>
+                      <strong>เลขที่เอกสาร: ${result.inv_no}</strong><br>
+                      จำนวนเงินรวม: <span class="text-success">${parseFloat(result.total_price).toFixed(2)} บาท</span>`,
+                icon: 'success',
+                confirmButtonText: 'ตกลง'
+            }).then(function() {
+                if (createInvoiceModal) {
+                    createInvoiceModal.hide();
+                }
+                loadMeters(); // โหลดข้อมูลใหม่เพื่ออัพเดทสถานะ
+            });
+        } else {
+            Swal.fire({
+                title: 'เปิดใบแจ้งหนี้ไม่สำเร็จ',
+                text: result.message || 'เกิดข้อผิดพลาดในการสร้างใบแจ้งหนี้',
+                icon: 'error',
+                confirmButtonText: 'ตกลง'
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error creating invoice:', error);
+        Swal.fire({
+            title: 'เกิดข้อผิดพลาด',
+            text: 'เกิดข้อผิดพลาดในการเชื่อมต่อ: ' + error.message,
+            icon: 'error',
+            confirmButtonText: 'ตกลง'
+        });
+    });
+}
+
+// สร้างใบแจ้งหนี้
+function createInvoice() {
+    // แสดง loading
+    Swal.fire({
+        title: 'กำลังเปิดใบแจ้งหนี้...',
+        text: 'กรุณารอสักครู่',
+        icon: 'info',
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+    
+    // ส่งข้อมูลไปยัง server
+    const formData = new FormData();
+    formData.append('pcode', currentInvoiceData.pcode);
+    formData.append('month', currentInvoiceData.month);
+    formData.append('year', currentInvoiceData.year);
+    formData.append('electricity', currentInvoiceData.electricity || 0);
+    formData.append('water', currentInvoiceData.water || 0);
+    formData.append('garbage', currentInvoiceData.garbage || 0);
+    formData.append('common_area', currentInvoiceData.common_area || 0);
+    
+    fetch('/invoices/create-invoice', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(result => {
+    if (result.success) {
+        Swal.fire({
+            title: 'เปิดใบแจ้งหนี้สำเร็จ!',
+            html: `สร้างใบแจ้งหนี้สำหรับ <strong>${currentInvoiceData.pcode}</strong> เรียบร้อยแล้ว<br>
+                  <strong>เลขที่เอกสาร: ${result.inv_no}</strong><br>
+                  จำนวนเงินรวม: <span class="text-success">${parseFloat(result.total_price).toFixed(2)} บาท</span>`,
+            icon: 'success',
+            confirmButtonText: 'ตกลง'
+        }).then(function() {
+            if (createInvoiceModal) {
+                createInvoiceModal.hide();
+            }
+            loadMeters(); // โหลดข้อมูลใหม่เพื่ออัพเดทสถานะ
+        });
+    } else {
+        Swal.fire({
+            title: 'เปิดใบแจ้งหนี้ไม่สำเร็จ',
+            text: result.message || 'เกิดข้อผิดพลาดในการสร้างใบแจ้งหนี้',
+            icon: 'error',
+            confirmButtonText: 'ตกลง'
+        });
+    }
+})
+    .catch(error => {
+        console.error('Error creating invoice:', error);
+        Swal.fire({
+            title: 'เกิดข้อผิดพลาด',
+            text: 'เกิดข้อผิดพลาดในการเชื่อมต่อ: ' + error.message,
+            icon: 'error',
+            confirmButtonText: 'ตกลง'
+        });
+    });
+}
+
 const editMeterForm = document.getElementById('editMeterForm');
 const saveMeterChanges = document.getElementById('saveMeterChanges');
 
 let currentMeterData = {};
-
 // เปิด Modal เมื่อคลิกปุ่มแก้ไข
+// เปิด Modal เมื่อคลิกปุ่มเปิดใบแจ้งหนี้
 document.addEventListener('click', function(event) {
-    if (event.target.closest('.btn-edit-meter')) {
-        const meterId = event.target.closest('.btn-edit-meter').dataset.id;
+    if (event.target.closest('.btn-create-invoice')) {
+        const meterId = event.target.closest('.btn-create-invoice').dataset.id;
         const meter = allMeters.find(m => m.id == meterId);
 
         if (meter) {
-
+            currentInvoiceData = meter;
+            
             // อัพเดทหัวข้อ modal พร้อมเดือน/ปี
             const monthNames = {
                 '01': '<?php echo t('month.january'); ?>',
@@ -583,33 +884,183 @@ document.addEventListener('click', function(event) {
             
             const month = String(meter.month).padStart(2, '0');
             const year = meter.year;
-            document.getElementById('modalMonthYear').textContent = `${monthNames[month]} ${year}`;
+            document.getElementById('invoiceMonthYear').textContent = `${monthNames[month]} ${year}`;
+            
             // เติมข้อมูลในฟอร์ม
-            document.getElementById('meterPcode').value = meter.pcode || '';
-            document.getElementById('meterMonth').value = meter.month || '';
-            document.getElementById('meterYear').value = meter.year || '';
-            document.getElementById('previousMeterWater').value = meter.waterMeterNumberBefore || '0';
-            document.getElementById('previousMeterElectricity').value = meter.electricityMeterNumberBefore || '0';
-            document.getElementById('readingValueElectricity').value = meter.meterelectricity || '';
-            document.getElementById('readingValueWater').value = meter.meterwater || '';
-            document.getElementById('readingValueGarbage').value = meter.garbage || '';
-            document.getElementById('readingValueCommonArea').value = meter.common_area || '';
-            document.getElementById('meterRemark').value = meter.remark || '';
-
-            document.getElementById('electricity_ppu').value = meter.electricity_ppu || 0;
-            document.getElementById('water_ppu').value = meter.water_ppu || 0;
-
-            // เก็บข้อมูลปัจจุบัน
-            currentMeterData = meter;
-
-            // โหลดรูปภาพจาก API
-            loadMeterImages(meter.pcode, meter.month, meter.year);
-
+            document.getElementById('invoicePcode').textContent = meter.pcode || '';
+            document.getElementById('invoicePdesc').textContent = meter.pdesc || '';
+            document.getElementById('invoiceElectricity').textContent = parseFloat(meter.electricity || 0).toFixed(2);
+            document.getElementById('invoiceWater').textContent = parseFloat(meter.water || 0).toFixed(2);
+            document.getElementById('invoiceGarbage').textContent = parseFloat(meter.garbage || 0).toFixed(2);
+            document.getElementById('invoiceCommonArea').textContent = parseFloat(meter.common_area || 0).toFixed(2);
+            
+            // คำนวณรวม
+            const total = parseFloat(meter.electricity || 0) + 
+                         parseFloat(meter.water || 0) + 
+                         parseFloat(meter.garbage || 0) + 
+                         parseFloat(meter.common_area || 0);
+            document.getElementById('invoiceTotal').textContent = total.toFixed(2);
+            
+            // ตรวจสอบสถานะ (ถ้ามีใบแจ้งหนี้แล้วให้แสดงสถานะ)
+            checkInvoiceStatus(meter);
+            
             // แสดง Modal
-            editMeterModal.show();
+            createInvoiceModal.show();
         }
     }
 });
+
+// ยืนยันการสร้างใบแจ้งหนี้
+document.getElementById('confirmCreateInvoice').addEventListener('click', function() {
+    if (!currentInvoiceData.pcode) {
+        showAlert('error', 'เกิดข้อผิดพลาด', 'ไม่พบข้อมูลใบแจ้งหนี้');
+        return;
+    }
+    
+    // ใช้ SwitchAlert2 สำหรับการยืนยัน
+    Swal.fire({
+        title: 'ยืนยันการเปิดใบแจ้งหนี้',
+        html: `คุณต้องการเปิดใบแจ้งหนี้สำหรับ<br>
+              <strong>${currentInvoiceData.pcode}</strong> - ${currentInvoiceData.pdesc}<br>
+              เดือน ${currentInvoiceData.month}/${currentInvoiceData.year}<br>
+              <span class="text-primary">รวมทั้งสิ้น ${document.getElementById('invoiceTotal').textContent} บาท</span>`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '<i class="fas fa-file-invoice me-1"></i>เปิดใบแจ้งหนี้',
+        cancelButtonText: '<i class="fas fa-times me-1"></i>ยกเลิก'
+    }).then(function(result) {
+        if (result.isConfirmed) {
+            createInvoice();
+        }
+    });
+});
+
+// ตรวจสอบสถานะใบแจ้งหนี้
+function checkInvoiceStatus(meter) {
+    // ซ่อน alert เก่า
+    document.getElementById('existingInvoiceAlert').style.display = 'none';
+    
+    // เรียก API เพื่อตรวจสอบว่ามีใบแจ้งหนี้แล้วหรือไม่
+    fetch(`/invoices/check-invoice?pcode=${meter.pcode}&month=${meter.month}&year=${meter.year}`)
+        .then(response => response.json())
+        .then(result => {
+            if (result.success && result.exists) {
+                // มีใบแจ้งหนี้แล้ว
+                const invoice = result.invoice;
+                document.getElementById('existingInvNo').textContent = invoice.inv_no + ' (' + invoice.types + ')';
+                document.getElementById('existingInvoiceAlert').style.display = 'block';
+                
+                // ปิดปุ่มสร้างใบแจ้งหนี้
+                document.getElementById('confirmCreateInvoice').disabled = true;
+                document.getElementById('confirmCreateInvoice').innerHTML = '<i class="fas fa-ban me-1"></i>มีใบแจ้งหนี้แล้ว';
+                
+                // อัพเดทสถานะในตาราง
+                updateInvoiceStatusInTable(invoice.all_invoices);
+            } else {
+                // ยังไม่มีใบแจ้งหนี้
+                document.getElementById('confirmCreateInvoice').disabled = false;
+                document.getElementById('confirmCreateInvoice').innerHTML = '<i class="fas fa-file-invoice me-1"></i>เปิดใบแจ้งหนี้';
+                
+                // อัพเดทสถานะเป็นพร้อมเปิด
+                document.getElementById('invoiceElectricityStatus').innerHTML = '<span class="badge bg-success">พร้อมเปิด</span>';
+                document.getElementById('invoiceWaterStatus').innerHTML = '<span class="badge bg-success">พร้อมเปิด</span>';
+                document.getElementById('invoiceGarbageStatus').innerHTML = '<span class="badge bg-success">พร้อมเปิด</span>';
+                document.getElementById('invoiceCommonAreaStatus').innerHTML = '<span class="badge bg-success">พร้อมเปิด</span>';
+            }
+        })
+        .catch(error => {
+            console.error('Error checking invoice status:', error);
+            // หากตรวจสอบไม่ได้ ให้แสดงสถานะพร้อมเปิด
+            document.getElementById('confirmCreateInvoice').disabled = false;
+        });
+}
+
+// อัพเดทสถานะในตารางตามข้อมูลใบแจ้งหนี้ที่มี
+function updateInvoiceStatusInTable(invoices) {
+    // สร้าง mapping ระหว่าง type และสถานะ
+    const statusMap = {};
+    invoices.forEach(inv => {
+        statusMap[inv.type] = '<span class="badge bg-secondary">เปิดแล้ว</span>';
+    });
+    
+    // อัพเดทสถานะแต่ละรายการ
+    document.getElementById('invoiceElectricityStatus').innerHTML = statusMap['ค่าไฟ'] || '<span class="badge bg-success">พร้อมเปิด</span>';
+    document.getElementById('invoiceWaterStatus').innerHTML = statusMap['ค่าน้ำ'] || '<span class="badge bg-success">พร้อมเปิด</span>';
+    document.getElementById('invoiceGarbageStatus').innerHTML = statusMap['ค่าขยะ'] || '<span class="badge bg-success">พร้อมเปิด</span>';
+    document.getElementById('invoiceCommonAreaStatus').innerHTML = statusMap['ค่าส่วนกลาง'] || '<span class="badge bg-success">พร้อมเปิด</span>';
+}
+
+// สร้างใบแจ้งหนี้
+function createInvoice() {
+    // แสดง loading
+    Swal.fire({
+        title: 'กำลังเปิดใบแจ้งหนี้...',
+        text: 'กรุณารอสักครู่',
+        icon: 'info',
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+    
+    // ส่งข้อมูลไปยัง server
+    const formData = new FormData();
+    formData.append('pcode', currentInvoiceData.pcode);
+    formData.append('month', currentInvoiceData.month);
+    formData.append('year', currentInvoiceData.year);
+    formData.append('electricity', currentInvoiceData.electricity || 0);
+    formData.append('water', currentInvoiceData.water || 0);
+    formData.append('garbage', currentInvoiceData.garbage || 0);
+    formData.append('common_area', currentInvoiceData.common_area || 0);
+    
+    fetch('/invoices/create-invoice', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(result => {
+        if (result.success) {
+            Swal.fire({
+                title: 'เปิดใบแจ้งหนี้สำเร็จ!',
+                html: `สร้างใบแจ้งหนี้สำหรับ <strong>${currentInvoiceData.pcode}</strong> เรียบร้อยแล้ว<br>
+                      <strong>เลขที่เอกสาร: ${result.inv_no}</strong><br>
+                      จำนวน ${result.created_count} รายการ<br>
+                      จำนวนเงินรวม: <span class="text-success">${parseFloat(result.total_price).toFixed(2)} บาท</span>`,
+                icon: 'success',
+                confirmButtonText: 'ตกลง'
+            }).then(function() {
+                if (createInvoiceModal) {
+                    createInvoiceModal.hide();
+                }
+                loadMeters(); // โหลดข้อมูลใหม่เพื่ออัพเดทสถานะ
+            });
+        } else {
+            Swal.fire({
+                title: 'เปิดใบแจ้งหนี้ไม่สำเร็จ',
+                text: result.message || 'เกิดข้อผิดพลาดในการสร้างใบแจ้งหนี้',
+                icon: 'error',
+                confirmButtonText: 'ตกลง'
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error creating invoice:', error);
+        Swal.fire({
+            title: 'เกิดข้อผิดพลาด',
+            text: 'เกิดข้อผิดพลาดในการเชื่อมต่อ: ' + error.message,
+            icon: 'error',
+            confirmButtonText: 'ตกลง'
+        });
+    });
+}
 
 // ฟังก์ชันโหลดรูปภาพจาก API
 function loadMeterImages(pcode, month, year) {

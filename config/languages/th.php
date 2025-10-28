@@ -226,11 +226,11 @@ return array(
     ),
 
     'invoice_management' => array(
-        'title' => 'จัดการใบแจ้งหนี้',
-        'total_invoices' => 'ใบแจ้งหนี้ทั้งหมด',
-        'open_invoices' => 'เปิดใบแจ้งหนี้',
-        'closed_invoices' => 'ยังไม่เปิดใบแจ้งหนี้',
-        'open_invoices_price' => 'ราคาใบแจ้งหนี้ที่เปิด',
+    'title' => 'จัดการใบแจ้งหนี้',
+    'total_invoices' => 'จำนวนใบแจ้งหนี้ทั้งหมด',
+    'open_invoices' => 'จำนวนใบแจ้งหนี้ที่สร้างแล้ว',
+    'closed_invoices' => 'จำนวนใบแจ้งหนี้ที่ยังไม่สร้าง',
+    'open_invoices_price' => 'ราคารวมใบแจ้งหนี้ที่สร้างแล้ว',
         'search' => 'ค้นหา',
         'invoice_list' => 'รายการใบแจ้งหนี้',
         'invoice_not_found' => 'ไม่พบข้อมูลใบแจ้งหนี้',
