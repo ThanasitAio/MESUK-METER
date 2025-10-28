@@ -9,6 +9,14 @@
                     </a>
                 </li>
 
+                <!-- รับชำระหนี้ -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/payments">
+                        <div class="nav-icon"><i class="fa-brands fa-paypal"></i></i></div>
+                        <span class="nav-text"><?php echo t('sidebar.payment'); ?></span>
+                    </a>
+                </li>
+
                 <!-- ใบแจ้งหนี้ -->
                 <li class="nav-item">
                     <a class="nav-link" href="/invoices">

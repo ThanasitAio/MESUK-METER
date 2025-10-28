@@ -33,6 +33,11 @@ return array(
         '/invoices/create-invoice' => 'InvoiceManagementController@createInvoice',
         '/invoices/check-invoice' => 'InvoiceManagementController@checkInvoice',
 
+        // เพิ่มในส่วน GET routes
+        '/payments' => 'PaymentManagementController@index',
+        '/payments/get-by-period' => 'PaymentManagementController@getByPeriod',
+        '/payments/check-payment' => 'PaymentManagementController@checkPayment',
+
     ),
     'POST' => array(
         '/login' => 'AuthController@login',
@@ -61,6 +66,9 @@ return array(
         '/invoices/get-by-period' => 'InvoiceManagementController@getByPeriod',
         '/invoices/create-invoice' => 'InvoiceManagementController@createInvoice',
         '/invoices/check-invoice' => 'InvoiceManagementController@checkInvoice',
+
+        // เพิ่มในส่วน POST routes  
+        '/payments/create-payment' => 'PaymentManagementController@createPayment',
 
     )
 );
