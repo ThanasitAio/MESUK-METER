@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MESUK - <?php echo isset($title) ? $title : 'Dashboard'; ?></title>
+    <title>METER - <?php echo isset($title) ? $title : 'Dashboard'; ?></title>
+    <!-- logo -->
+    <link rel="icon" type="image/png" href="/assets/images/meters_logo.png"> 
+    <link rel="shortcut icon" type="image/png" href="/assets/images/meters_logo.png">
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -20,6 +23,16 @@
 </head>
 <body>
     <div class="d-flex">
+         <?php 
+            require_once __DIR__ . '/../../app/core/Database.php';
+            require_once __DIR__ . '/../../app/utils/LoginHistory.php';
+            $activeUsersCount = LoginHistory::getActiveUsersCount(3);
+            $currentUser = Auth::user();
+            $displayName = $currentUser ? $currentUser['full_name'] : 'Guest';
+            $role = $currentUser ? $currentUser['role'] : 'agent';
+
+         
+            ?>
         <!-- Sidebar -->
         <?php include_once __DIR__ . '/../partials/sidebar.php'; ?>
         

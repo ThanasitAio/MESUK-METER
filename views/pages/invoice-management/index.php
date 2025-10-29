@@ -42,7 +42,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
 
             <!-- สถิติ -->
 <div class="row" id="statsContainer">
-    <div class="col-6 col-md-2 mb-2">
+    <div class="col-6 col-md-4 col-xl-2 mb-2">
         <div class="card text-center">
             <div class="card-body py-2">
                 <div class="small text-muted"><?php echo t('invoice_management.total_invoices'); ?></div>
@@ -50,7 +50,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
             </div>
         </div>
     </div>
-    <div class="col-6 col-md-2 mb-2">
+    <div class="col-6 col-md-4 col-xl-2 mb-2">
         <div class="card text-center">
             <div class="card-body py-2">
                 <div class="small text-muted"><?php echo t('invoice_management.open_invoices'); ?></div>
@@ -58,7 +58,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
             </div>
         </div>
     </div>
-    <div class="col-6 col-md-2 mb-2">
+    <div class="col-6 col-md-4 col-xl-2 mb-2">
         <div class="card text-center">
             <div class="card-body py-2">
                 <div class="small text-muted"><?php echo t('invoice_management.closed_invoices'); ?></div>
@@ -66,7 +66,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
             </div>
         </div>
     </div>
-    <div class="col-6 col-md-2 mb-2">
+    <div class="col-6 col-md-4 col-xl-2 mb-2">
         <div class="card text-center">
             <div class="card-body py-2">
                 <div class="small text-muted"><?php echo t('invoice_management.open_invoices_price'); ?></div>

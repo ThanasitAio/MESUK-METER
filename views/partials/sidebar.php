@@ -42,21 +42,28 @@
                     </a>
                 </li>
 
-                <!-- ผู้ใช้ -->
-                <li class="nav-item">
-                    <a class="nav-link" href="/users">
-                        <div class="nav-icon"><i class="bi bi-people"></i></div>
-                        <span class="nav-text"><?php echo t('sidebar.user_management'); ?></span>
-                    </a>
-                </li>
+                <?
+                if($role === 'admin'){
+                    ?>
+                    <!-- ผู้ใช้ -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users">
+                            <div class="nav-icon"><i class="bi bi-people"></i></div>
+                            <span class="nav-text"><?php echo t('sidebar.user_management'); ?></span>
+                        </a>
+                    </li>
+                    <!-- นำเข้าผู้ใช้ -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/import-users">
+                            <div class="nav-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                            <span class="nav-text"><?php echo t('sidebar.import_user_data'); ?></span>
+                        </a>
+                    </li>
+                    <?
+                }
+                ?>
 
-                <!-- นำเข้าผู้ใช้ -->
-                <li class="nav-item">
-                    <a class="nav-link" href="/import-users">
-                        <div class="nav-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
-                        <span class="nav-text"><?php echo t('sidebar.import_user_data'); ?></span>
-                    </a>
-                </li>
+                
 
                 
 

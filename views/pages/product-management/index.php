@@ -24,7 +24,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
 
             <!-- สถิติ -->
             <div class="row">
-                <div class="col-6 col-md-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2 mb-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('product_management.total_products'); ?></div>

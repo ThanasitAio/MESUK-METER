@@ -42,7 +42,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
 
                         <!-- สถิติ -->
             <div class="row" id="statsContainer">
-                <div class="col-6 col-md-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2 mb-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('meter_management.total_meters'); ?></div>
@@ -50,7 +50,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2 mb-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('meter_management.stats.saved_count'); ?></div>
@@ -58,7 +58,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2 mb-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('meter_management.stats.unsaved_count'); ?></div>
@@ -66,7 +66,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2 mb-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('meter_management.stats.total_electricity'); ?></div>
@@ -74,7 +74,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2 mb-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('meter_management.stats.total_water'); ?></div>
@@ -82,7 +82,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2 mb-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('meter_management.stats.total_garbage'); ?></div>
@@ -90,7 +90,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2 mb-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('meter_management.stats.total_common_area'); ?></div>
@@ -98,7 +98,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2 mb-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('meter_management.stats.grand_total'); ?></div>

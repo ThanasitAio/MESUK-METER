@@ -126,7 +126,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
 
             <!-- สถิติ -->
             <div class="row" id="statsContainer">
-                <div class="col-6 col-md-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2 mb-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('payment_management.total_invoices'); ?></div>
@@ -134,7 +134,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2 mb-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('payment_management.paid_invoices'); ?></div>
@@ -142,7 +142,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2 mb-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('payment_management.unpaid_invoices'); ?></div>
@@ -150,7 +150,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2 mb-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('payment_management.total_paid'); ?></div>
@@ -158,7 +158,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2 mb-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('payment_management.total_invoice_amount'); ?></div>

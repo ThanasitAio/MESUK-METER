@@ -28,7 +28,9 @@
             $activeUsersCount = LoginHistory::getActiveUsersCount(3);
             $currentUser = Auth::user();
             $displayName = $currentUser ? $currentUser['full_name'] : 'Guest';
-            $role = $currentUser ? $currentUser['role'] : 'user';
+            $role = $currentUser ? $currentUser['role'] : 'agent';
+
+      
             ?>
             <div class="mobile-stats">
                 <div class="d-flex align-items-center text-muted px-2 py-1 rounded" 

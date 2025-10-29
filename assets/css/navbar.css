@@ -365,18 +365,10 @@
     animation: pulse 0.3s ease;
 }
 
-/* Smooth transitions for all interactive elements */
-.mobile-stats > div,
-.mobile-language-switcher .btn,
-.mobile-user-menu .btn,
-.dropdown-item {
-    transition: all 0.3s ease;
-}
 
 /* Dropdown hover effects */
 .dropdown-item:hover {
     background-color: #f8f9fa;
-    transform: translateX(5px);
 }
 
 .dropdown-item.text-danger:hover {

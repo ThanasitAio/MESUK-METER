@@ -3,7 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เข้าสู่ระบบ - MESUK</title>
+    <title>เข้าสู่ระบบ</title>
+
+    <!-- logo -->
+    <!-- Favicon สำหรับทุกขนาด -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/meters_logo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/meters_logo.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/images/meters_logo.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/assets/images/meters_logo.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/images/meters_logo.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="/assets/images/meters_logo.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/images/meters_logo.png">
+    <link rel="icon" type="image/png" sizes="256x256" href="/assets/images/meters_logo.png">
+    <link rel="icon" type="image/png" sizes="384x384" href="/assets/images/meters_logo.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/images/meters_logo.png">
+
+    <!-- สำหรับ Apple Devices -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/images/meters_logo.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/assets/images/meters_logo.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/images/meters_logo.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/images/meters_logo.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/images/meters_logo.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/assets/images/meters_logo.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/assets/images/meters_logo.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/images/meters_logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/meters_logo.png">
     
     <!-- 1. เพิ่มลิงก์สำหรับ Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
