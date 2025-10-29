@@ -101,65 +101,6 @@
     </div>
 </nav>
 
-<!-- Mobile Bottom Navigation -->
-<nav class="mobile-bottom-nav d-lg-none">
-    <div class="mobile-nav-container">
-        <a href="/" class="mobile-nav-item">
-            <i class="bi bi-speedometer2"></i>
-            <span><?php echo t('sidebar.dashboard'); ?></span>
-        </a>
-        <a href="#" class="mobile-nav-item mobile-menu-toggle">
-            <i class="bi bi-list"></i>
-            <span><?php echo t('mobile.menu'); ?></span>
-        </a>
-        <a href="#" class="mobile-nav-item mobile-notifications-toggle">
-            <i class="bi bi-bell"></i>
-            <span><?php echo t('mobile.alerts'); ?></span>
-            <span class="mobile-badge">3</span>
-        </a>
-        <a href="/profile" class="mobile-nav-item">
-            <i class="bi bi-person"></i>
-            <span><?php echo t('mobile.profile'); ?></span>
-        </a>
-    </div>
-</nav>
-
-<!-- Mobile Notifications Panel -->
-<div class="mobile-notifications-panel">
-    <div class="mobile-panel-header">
-        <h5><?php echo t('mobile.notifications'); ?></h5>
-        <button class="mobile-panel-close">&times;</button>
-    </div>
-    <div class="mobile-panel-content">
-        <div class="mobile-notification-item">
-            <div class="notification-icon">
-                <i class="bi bi-person-plus"></i>
-            </div>
-            <div class="notification-content">
-                <div class="notification-text"><?php echo t('notifications.new_user'); ?></div>
-                <small class="notification-time">2 minutes ago</small>
-            </div>
-        </div>
-        <div class="mobile-notification-item">
-            <div class="notification-icon">
-                <i class="bi bi-file-text"></i>
-            </div>
-            <div class="notification-content">
-                <div class="notification-text"><?php echo t('notifications.new_report'); ?></div>
-                <small class="notification-time">5 minutes ago</small>
-            </div>
-        </div>
-        <div class="mobile-notification-item">
-            <div class="notification-icon">
-                <i class="bi bi-shield-check"></i>
-            </div>
-            <div class="notification-content">
-                <div class="notification-text"><?php echo t('notifications.system_updated'); ?></div>
-                <small class="notification-time">1 hour ago</small>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <!-- Mobile Sidebar Overlay -->

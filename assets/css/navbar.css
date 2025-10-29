@@ -3,67 +3,60 @@
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000; /* ✅ เหนือ sidebar */
+    z-index: 1000;
     width: 100%;
 }
 
 /* ปุ่มหลัก */
 .custom-toggler {
-  border: none;
-  background-color: #ffffff;
-  padding: 6px 8px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    border: none;
+    background-color: #ffffff;
+    padding: 6px 8px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Hover effect */
 .custom-toggler:hover {
-  background-color: #f1f3f5;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.12);
-  transform: scale(1.05);
+    background-color: #f1f3f5;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.12);
+    transform: scale(1.05);
 }
 
-/* Focus (เวลาคลิกหรือแท็บมา) */
 .custom-toggler:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(13,110,253,0.25);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(13,110,253,0.25);
 }
 
-/* ปรับขนาดไอคอน */
 .custom-toggler .navbar-toggler-icon {
-  width: 1.2rem;
-  height: 1.2rem;
-  background-size: 100%;
-  filter: brightness(0.3);
-  transition: filter 0.3s ease;
+    width: 1.2rem;
+    height: 1.2rem;
+    background-size: 100%;
+    filter: brightness(0.3);
+    transition: filter 0.3s ease;
 }
 
-/* Hover ให้ไอคอนเข้มขึ้น */
 .custom-toggler:hover .navbar-toggler-icon {
-  filter: brightness(0.1);
+    filter: brightness(0.1);
 }
 
-/* เมื่อ sidebar เปิดอยู่ (เพิ่ม class active จาก JS ถ้ามี) */
 .custom-toggler.active {
-  background-color: #D3EE98;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    background-color: #D3EE98;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
 }
 
 .navbar-toggler.custom-toggler {
-    outline: none;       /* ลบเส้นรอบ */
-    box-shadow: none;    /* ลบเงาสีฟ้า */
-}
-
-/* ป้องกันเวลากดหรือ focus */
-.navbar-toggler.custom-toggler:focus {
     outline: none;
     box-shadow: none;
 }
 
+.navbar-toggler.custom-toggler:focus {
+    outline: none;
+    box-shadow: none;
+}
 
 .language-flag {
     width: 20px;
@@ -76,6 +69,21 @@
     color: #000;
 }
 
+/* Mobile Stats Styling */
+.mobile-stats {
+    display: flex;
+    align-items: center;
+}
+
+.mobile-stats > div {
+    transition: all 0.3s ease;
+    cursor: help;
+}
+
+.mobile-stats > div:hover {
+    background-color: #e9ecef !important;
+    transform: scale(1.05);
+}
 
 /* Mobile Language Switcher */
 .mobile-language-switcher {
@@ -94,6 +102,7 @@
 .mobile-language-switcher .btn:hover {
     background: #e9ecef;
     color: #000;
+    transform: scale(1.05);
 }
 
 .mobile-language-switcher .dropdown-menu {
@@ -105,25 +114,281 @@
     color: #000;
 }
 
-/* Responsive adjustments */
-@media (max-width: 576px) {
+/* Mobile User Menu */
+.mobile-user-menu {
+    display: flex;
+    align-items: center;
+}
+
+.mobile-user-menu .btn {
+    transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
+.mobile-user-menu .btn:hover {
+    background: #e9ecef !important;
+    transform: scale(1.05);
+}
+
+.mobile-user-menu .dropdown-menu {
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* User Info Header in Dropdown */
+.mobile-user-menu .dropdown-menu li:first-child {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+/* Tablet Responsive (768px - 991px) */
+@media (max-width: 991px) and (min-width: 768px) {
+    /* Stats */
+    .mobile-stats > div {
+        padding: 0.4rem 0.8rem !important;
+    }
+    
+    .mobile-stats i {
+        font-size: 1rem !important;
+    }
+    
+    .mobile-stats small {
+        font-size: 0.9rem;
+    }
+    
+    /* Language Switcher */
     .mobile-language-switcher .btn {
-        padding: 0.2rem 0.4rem;
+        padding: 0.4rem 0.7rem;
+        font-size: 0.85rem;
+    }
+    
+    /* User Menu */
+    .mobile-user-menu .btn {
+        padding: 0.35rem !important;
+    }
+    
+    .mobile-user-menu .rounded-circle {
+        width: 36px !important;
+        height: 36px !important;
+    }
+    
+    .mobile-user-menu .dropdown-menu {
+        min-width: 220px !important;
+    }
+}
+
+/* Mobile Responsive (577px - 767px) */
+@media (max-width: 767px) and (min-width: 577px) {
+    /* Stats */
+    .mobile-stats > div {
+        padding: 0.35rem 0.65rem !important;
+    }
+    
+    .mobile-stats i {
+        font-size: 0.95rem !important;
+    }
+    
+    .mobile-stats small {
+        font-size: 0.85rem;
+    }
+    
+    /* Language Switcher */
+    .mobile-language-switcher .btn {
+        padding: 0.35rem 0.6rem;
+        font-size: 0.8rem;
+    }
+    
+    /* User Menu */
+    .mobile-user-menu .btn {
+        padding: 0.3rem !important;
+    }
+    
+    .mobile-user-menu .rounded-circle {
+        width: 34px !important;
+        height: 34px !important;
+    }
+    
+    .mobile-user-menu .dropdown-menu {
+        min-width: 210px !important;
+    }
+}
+
+/* Small Mobile (max 576px) */
+@media (max-width: 576px) {
+    /* Container Gap */
+    .navbar-brand + .d-lg-none {
+        gap: 0.4rem !important;
+    }
+    
+    /* Stats */
+    .mobile-stats > div {
+        padding: 0.3rem 0.55rem !important;
+    }
+    
+    .mobile-stats i {
+        font-size: 0.9rem !important;
+        margin-right: 0.2rem !important;
+    }
+    
+    .mobile-stats small {
+        font-size: 0.8rem;
+    }
+    
+    /* Language Switcher */
+    .mobile-language-switcher {
+        margin-left: 0;
+    }
+    
+    .mobile-language-switcher .btn {
+        padding: 0.3rem 0.5rem;
         font-size: 0.75rem;
     }
     
     .mobile-language-switcher .btn i {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
+        margin-right: 0.2rem !important;
+    }
+    
+    /* User Menu */
+    .mobile-user-menu .btn {
+        padding: 0.25rem !important;
+    }
+    
+    .mobile-user-menu .rounded-circle {
+        width: 32px !important;
+        height: 32px !important;
+    }
+    
+    .mobile-user-menu .dropdown-menu {
+        min-width: 200px !important;
+        font-size: 0.9rem;
+    }
+    
+    .mobile-user-menu .dropdown-menu .fw-bold {
+        font-size: 0.85rem !important;
+    }
+    
+    .mobile-user-menu .dropdown-menu small {
+        font-size: 0.7rem !important;
     }
 }
 
-/* สำหรับมือถือขนาดเล็กมาก */
+/* Extra Small Mobile (max 360px) */
 @media (max-width: 360px) {
+    /* Container Gap */
+    .navbar-brand + .d-lg-none {
+        gap: 0.3rem !important;
+    }
+    
+    /* Stats - Compact */
+    .mobile-stats > div {
+        padding: 0.25rem 0.45rem !important;
+        border: none !important;
+        background-color: transparent !important;
+    }
+    
+    .mobile-stats i {
+        font-size: 0.85rem !important;
+        margin-right: 0.15rem !important;
+    }
+    
+    .mobile-stats small {
+        font-size: 0.75rem;
+    }
+    
+    /* Language Switcher - Icon Only */
     .mobile-language-switcher .btn span {
-        display: none; /* ซ่อนตัวอักษรภาษา เหลือแต่ไอคอน */
+        display: none;
     }
     
     .mobile-language-switcher .btn i {
         margin-right: 0;
     }
+    
+    .mobile-language-switcher .btn {
+        padding: 0.25rem 0.4rem;
+        min-width: 32px;
+    }
+    
+    /* User Menu - Compact */
+    .mobile-user-menu .btn {
+        padding: 0.2rem !important;
+        border: none !important;
+        background-color: transparent !important;
+    }
+    
+    .mobile-user-menu .rounded-circle {
+        width: 30px !important;
+        height: 30px !important;
+    }
+    
+    .mobile-user-menu .dropdown-menu {
+        min-width: 180px !important;
+        font-size: 0.85rem;
+    }
+    
+    .mobile-user-menu .dropdown-menu .fw-bold {
+        font-size: 0.8rem !important;
+    }
+    
+    .mobile-user-menu .dropdown-menu small {
+        font-size: 0.65rem !important;
+    }
+    
+    .mobile-user-menu .dropdown-menu .dropdown-item {
+        padding: 0.4rem 0.75rem !important;
+    }
+}
+
+/* Animation for stats */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+.mobile-stats > div:active,
+.mobile-language-switcher .btn:active,
+.mobile-user-menu .btn:active {
+    animation: pulse 0.3s ease;
+}
+
+/* Smooth transitions for all interactive elements */
+.mobile-stats > div,
+.mobile-language-switcher .btn,
+.mobile-user-menu .btn,
+.dropdown-item {
+    transition: all 0.3s ease;
+}
+
+/* Dropdown hover effects */
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(5px);
+}
+
+.dropdown-item.text-danger:hover {
+    background-color: #fff5f5;
+}
+
+/* User info section styling */
+.mobile-user-menu .dropdown-menu li:first-child .rounded-circle {
+    box-shadow: 0 2px 8px rgba(211, 238, 152, 0.3);
+}
+
+/* Role badge styling */
+.mobile-user-menu .dropdown-menu small i {
+    color: #D3EE98;
 }
