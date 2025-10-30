@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>METER - <?php echo isset($title) ? $title : 'Dashboard'; ?></title>
+    <title><?php echo isset($title) ? $title : 'Dashboard'; ?></title>
     <!-- logo -->
     <link rel="icon" type="image/png" href="/assets/images/meters_logo.png"> 
     <link rel="shortcut icon" type="image/png" href="/assets/images/meters_logo.png">

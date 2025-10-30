@@ -297,6 +297,8 @@ const translations = {
     connection_error: '<?php echo t('invoice_management.connection_error'); ?>',
     load_error: '<?php echo t('invoice_management.load_error'); ?>',
     
+    month: '<?php echo t('invoice_management.month'); ?>',
+    total: '<?php echo t('invoice_management.total'); ?>',
     swal: {
         incomplete_data: '<?php echo t('swal.incomplete_data'); ?>',
         missing_required_fields: '<?php echo t('swal.missing_required_fields'); ?>',
