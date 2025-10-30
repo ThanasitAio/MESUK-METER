@@ -68,7 +68,12 @@ class AuthController {
                         'code' => $user['code'],
                         'full_name' => isset($user['name']) ? $user['name'] : $user['username'],
                         'email' => isset($user['email']) && !empty($user['email']) ? $user['email'] : null,
-                        'role' => isset($user['role']) ? $user['role'] : 'user'
+                        'role' => isset($user['role']) ? $user['role'] : 'user',
+                        'tel' => isset($user['tel']) ? $user['tel'] : null,
+                        'birthday' => isset($user['birthday']) ? $user['birthday'] : null,
+                        'facebook_name' => isset($user['facebook_name']) ? $user['facebook_name'] : null,
+                        'line_id' => isset($user['line_id']) ? $user['line_id'] : null,
+                        'img' => isset($user['img']) ? $user['img'] : null,
                     ));
                     
                     // บันทึกประวัติการ Login สำเร็จ

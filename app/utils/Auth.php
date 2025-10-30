@@ -27,6 +27,12 @@ class Auth {
                 'email' => isset($_SESSION['email']) ? $_SESSION['email'] : null,
                 'role' => isset($_SESSION['role']) ? $_SESSION['role'] : 'user',
                 'full_name' => isset($_SESSION['full_name']) ? $_SESSION['full_name'] : null,
+                'tel' => isset($_SESSION['tel']) ? $_SESSION['tel'] : null,
+                'birthday' => isset($_SESSION['birthday']) ? $_SESSION['birthday'] : null,
+                'facebook_name' => isset($_SESSION['facebook_name']) ? $_SESSION['facebook_name'] : null,
+                'line_id' => isset($_SESSION['line_id']) ? $_SESSION['line_id'] : null,
+                'img' => isset($_SESSION['img']) ? $_SESSION['img'] : null,
+                'code' => isset($_SESSION['code']) ? $_SESSION['code'] : null,
             );
         }
         
@@ -57,6 +63,12 @@ class Auth {
         $_SESSION['email'] = isset($userData['email']) ? $userData['email'] : null;
         $_SESSION['role'] = isset($userData['role']) ? $userData['role'] : 'user';
         $_SESSION['full_name'] = isset($userData['full_name']) ? $userData['full_name'] : $userData['username'];
+        $_SESSION['tel'] = isset($userData['tel']) ? $userData['tel'] : null;
+        $_SESSION['birthday'] = isset($userData['birthday']) ? $userData['birthday'] : null;
+        $_SESSION['facebook_name'] = isset($userData['facebook_name']) ? $userData['facebook_name'] : null;
+        $_SESSION['line_id'] = isset($userData['line_id']) ? $userData['line_id'] : null;
+        $_SESSION['img'] = isset($userData['img']) ? $userData['img'] : null;
+        $_SESSION['code'] = isset($userData['code']) ? $userData['code'] : null;
         $_SESSION['logged_in_at'] = time();
         $_SESSION['last_activity'] = time();
         

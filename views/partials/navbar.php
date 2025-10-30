@@ -33,8 +33,9 @@
             $currentUser = Auth::user();
             $displayName = $currentUser ? $currentUser['full_name'] : 'Guest';
             $role = $currentUser ? $currentUser['role'] : 'agent';
+            $img = $currentUser ? $currentUser['img'] : '';
 
-      
+    
             ?>
             <div class="mobile-stats">
                 <div class="d-flex align-items-center text-muted px-2 py-1 rounded" 
@@ -84,8 +85,19 @@
                        href="#" role="button" data-bs-toggle="dropdown"
                        style="background-color: #f8f9fa; border: 1px solid #dee2e6;">
                         <div class="rounded-circle d-flex align-items-center justify-content-center" 
-                             style="width: 32px; height: 32px; background-color: #D3EE98; overflow: hidden;">
-                            <i class="bi bi-person-fill text-dark"></i>
+                             style="width: 36px; height: 36px; overflow: hidden;">
+                            <!-- รูปโปร์ไฟล์ -->
+                            <?php if (!empty($img)): ?>
+                            <img src="<?php echo htmlspecialchars($img); ?>" 
+                            alt="Avatar" 
+                            class="rounded-circle preview-clickable" 
+                            style="width: 40px; height: 40px; object-fit: cover; cursor:pointer;" >
+                            <?php else: ?>
+                                <div class="rounded-circle bg-secondary text-white d-inline-flex align-items-center justify-content-center" 
+                                        style="width: 40px; height: 40px;">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="min-width: 200px;">
@@ -93,15 +105,25 @@
                         <li class="px-3 py-2 border-bottom">
                             <div class="d-flex align-items-center mb-2">
                                 <div class="rounded-circle d-flex align-items-center justify-content-center me-2" 
-                                     style="width: 40px; height: 40px; background-color: #D3EE98;">
-                                    <i class="bi bi-person-fill text-dark fs-5"></i>
+                                     style="width: 36px; height: 36px;overflow: hidden;">
+                                    <?php if (!empty($img)): ?>
+                                    <img src="<?php echo htmlspecialchars($img); ?>" 
+                                    alt="Avatar" 
+                                    class="rounded-circle preview-clickable" 
+                                    style="width: 40px; height: 40px; object-fit: cover; cursor:pointer;" 
+                                    onclick="openImageModal(this.src)">
+                                    <?php else: ?>
+                                        <div class="rounded-circle bg-secondary text-white d-inline-flex align-items-center justify-content-center" 
+                                                style="width: 40px; height: 40px;">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="flex-grow-1">
                                     <div class="fw-bold text-dark" style="font-size: 0.9rem;">
                                         <?php echo htmlspecialchars($displayName); ?>
                                     </div>
                                     <small class="text-muted d-block" style="font-size: 0.75rem;">
-                                        <i class="bi bi-shield-check me-1"></i>
                                         <?php echo htmlspecialchars(ucfirst($role)); ?>
                                     </small>
                                 </div>
@@ -189,9 +211,24 @@
                        href="#" role="button" data-bs-toggle="dropdown"
                        style="background-color: #f8f9fa; border: 1px solid #dee2e6;">
                         <div class="rounded-circle d-flex align-items-center justify-content-center me-2" 
-                             style="width: 36px; height: 36px; background-color: #D3EE98; overflow: hidden;">
-                            <i class="bi bi-person-fill text-dark"></i>
+                             style="width: 36px; height: 36px; overflow: hidden;">
+                             <!-- รูปโปร์ไฟล์ -->
+                            <?php if (!empty($img)): ?>
+                            <img src="<?php echo htmlspecialchars($img); ?>" 
+                            alt="Avatar" 
+                            class="rounded-circle preview-clickable" 
+                            style="width: 40px; height: 40px; object-fit: cover; cursor:pointer;" 
+                            onclick="openImageModal(this.src)">
+                            <?php else: ?>
+                                <div class="rounded-circle bg-secondary text-white d-inline-flex align-items-center justify-content-center" 
+                                        style="width: 40px; height: 40px;">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            <?php endif; ?>
+                              
                         </div>
+
+                        
                         <div class="d-none d-md-block">
                             <span class="fw-medium text-dark"><?php echo htmlspecialchars($displayName); ?></span>
                             <small class="d-block text-muted" style="font-size: 0.7rem; line-height: 1;">
@@ -247,3 +284,25 @@
         </a>
     </div>
 </nav>
+
+<div id="imageModal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7);">
+    <span style="position:absolute; top:20px; right:30px; color:#fff; font-size:2em; cursor:pointer;" onclick="closeImageModal()">&times;</span>
+    <img id="modalImage" src="" style="max-width:90vw; max-height:90vh; border-radius:1em; box-shadow:0 0 20px #000; display:block; margin:auto;">
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    window.openImageModal = function(src) {
+        var modal = document.getElementById('imageModal');
+        var modalImg = document.getElementById('modalImage');
+        modalImg.src = src;
+        modal.style.display = 'flex';
+    }
+    window.closeImageModal = function() {
+        var modal = document.getElementById('imageModal');
+        modal.style.display = 'none';
+    }
+    document.getElementById('imageModal').addEventListener('click', function(e) {
+        if (e.target === this) window.closeImageModal();
+    });
+});
+</script>

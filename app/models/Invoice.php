@@ -16,7 +16,7 @@ class Invoice extends Model {
 
             $currentUser = Auth::user();
             $userRole = $currentUser['role'];
-            $chckCode = $currentUser['username'];
+            $chckCode = $currentUser['code'];
 
             // สร้างเงื่อนไข WHERE สำหรับ agent
             $whrData = "";
@@ -96,7 +96,7 @@ class Invoice extends Model {
         try {
             $currentUser = Auth::user();
             $userRole = $currentUser['role'];
-            $chckCode = $currentUser['username'];
+            $chckCode = $currentUser['code'];
 
             $sql = "SELECT inv_id, inv_no, pcode, month, year, type, price, remark, created_at, created_by, updated_at, updated_by FROM me_invoice WHERE 1";
             $params = [];
@@ -156,7 +156,7 @@ class Invoice extends Model {
 
             $currentUser = Auth::user();
             $userRole = $currentUser['role'];
-            $chckCode = $currentUser['username'];
+            $chckCode = $currentUser['code'];
 
             $whrData = "";
             if($userRole == 'agent'){
@@ -564,7 +564,7 @@ class Invoice extends Model {
         try {
             $currentUser = Auth::user();
             $userRole = $currentUser['role'];
-            $chckCode = $currentUser['username'];
+            $chckCode = $currentUser['code'];
 
             $sql = "SELECT 
                     p.pcode,

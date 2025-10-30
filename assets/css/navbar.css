@@ -376,9 +376,7 @@
 }
 
 /* User info section styling */
-.mobile-user-menu .dropdown-menu li:first-child .rounded-circle {
-    box-shadow: 0 2px 8px rgba(211, 238, 152, 0.3);
-}
+
 
 /* Role badge styling */
 .mobile-user-menu .dropdown-menu small i {

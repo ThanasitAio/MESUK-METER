@@ -13,7 +13,7 @@ class Payment extends Model {
 
             $currentUser = Auth::user();
             $userRole = $currentUser['role'];
-            $chckCode = $currentUser['username'];
+            $chckCode = $currentUser['code'];
 
             // สร้างเงื่อนไข WHERE สำหรับ agent
             $whrData = "";
@@ -108,7 +108,7 @@ class Payment extends Model {
             
             $currentUser = Auth::user();
             $userRole = $currentUser['role'];
-            $chckCode = $currentUser['username'];
+            $chckCode = $currentUser['code'];
 
             // สร้างเงื่อนไข WHERE สำหรับ agent
             $whrData = "";

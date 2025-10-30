@@ -11,7 +11,7 @@ class Product extends Model {
 
             $currentUser = Auth::user();
             $userRole = $currentUser['role'];
-            $chckCode = $currentUser['username'];
+            $chckCode = $currentUser['code'];
 
             $whrData = "";
             if($userRole == 'agent'){
