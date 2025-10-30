@@ -10,13 +10,6 @@ class MeterManagementController extends Controller {
             header('Location: /login');
             exit;
         }
-        
-        // ตรวจสอบสิทธิ์ (เฉพาะ admin เท่านั้น)
-        $currentUser = Auth::user();
-        if ($currentUser['role'] !== 'admin') {
-            http_response_code(403);
-            die(t('user_management.access_denied'));
-        }
 
         // สร้าง Database connection
         if (!class_exists('Database')) {
