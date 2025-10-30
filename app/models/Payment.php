@@ -11,31 +11,71 @@ class Payment extends Model {
             $targetMonth = $month ? (int)$month : (int)date('m');
             $targetYear = $year ? (int)$year : (int)date('Y');
 
-            // ดึง pcode ทั้งหมดที่มีใบแจ้งหนี้
-            $sqlInvoices = "SELECT DISTINCT pcode FROM me_invoice WHERE month = ? AND year = ?";
+            $currentUser = Auth::user();
+            $userRole = $currentUser['role'];
+            $chckCode = $currentUser['username'];
+
+            // สร้างเงื่อนไข WHERE สำหรับ agent
+            $whrData = "";
+            $whrParams = [];
+            
+            if($userRole == 'agent'){
+                $whrData = " AND p.sales_rep_code = ? ";
+                $whrParams[] = $chckCode;
+            }
+
+            // ดึง pcode ทั้งหมดที่มีใบแจ้งหนี้ (พร้อมเงื่อนไข agent)
+            $sqlInvoices = "SELECT DISTINCT i.pcode 
+                           FROM me_invoice i 
+                           LEFT JOIN ali_product p ON i.pcode = p.pcode 
+                           WHERE i.month = ? AND i.year = ? $whrData";
             $stmtInvoices = $this->db->prepare($sqlInvoices);
-            $stmtInvoices->execute([$targetMonth, $targetYear]);
+            $invoiceParams = array_merge([$targetMonth, $targetYear], $whrParams);
+            $stmtInvoices->execute($invoiceParams);
             $invoicePcodes = $stmtInvoices->fetchAll(PDO::FETCH_COLUMN, 0);
 
-            // ดึง pcode ที่มีการชำระเงินแล้ว
-            $sqlPaid = "SELECT COUNT(DISTINCT pcode) FROM me_payment WHERE month = ? AND year = ?";
+            if (empty($invoicePcodes)) {
+                return array(
+                    'paid_count' => 0,
+                    'not_paid_count' => 0,
+                    'total_paid' => 0,
+                    'total_invoice' => 0,
+                    'total_invoices' => 0
+                );
+            }
+
+            // ดึง pcode ที่มีการชำระเงินแล้ว (พร้อมเงื่อนไข agent)
+            $placeholders = str_repeat('?,', count($invoicePcodes) - 1) . '?';
+            $sqlPaid = "SELECT COUNT(DISTINCT pm.pcode) 
+                       FROM me_payment pm 
+                       LEFT JOIN ali_product p ON pm.pcode = p.pcode 
+                       WHERE pm.pcode IN ($placeholders) AND pm.month = ? AND pm.year = ? $whrData";
+            $paidParams = array_merge($invoicePcodes, [$targetMonth, $targetYear], $whrParams);
             $stmtPaid = $this->db->prepare($sqlPaid);
-            $stmtPaid->execute([$targetMonth, $targetYear]);
+            $stmtPaid->execute($paidParams);
             $paidCount = (int)$stmtPaid->fetchColumn();
 
             // คำนวณจำนวนที่ยังไม่ชำระ
             $notPaidCount = count($invoicePcodes) - $paidCount;
 
-            // ราคารวมที่ชำระแล้ว
-            $sqlPrice = "SELECT SUM(price) as total_paid FROM me_payment WHERE month = ? AND year = ?";
+            // ราคารวมที่ชำระแล้ว (พร้อมเงื่อนไข agent)
+            $sqlPrice = "SELECT SUM(pm.price) as total_paid 
+                        FROM me_payment pm 
+                        LEFT JOIN ali_product p ON pm.pcode = p.pcode 
+                        WHERE pm.pcode IN ($placeholders) AND pm.month = ? AND pm.year = ? $whrData";
+            $priceParams = array_merge($invoicePcodes, [$targetMonth, $targetYear], $whrParams);
             $stmtPrice = $this->db->prepare($sqlPrice);
-            $stmtPrice->execute([$targetMonth, $targetYear]);
+            $stmtPrice->execute($priceParams);
             $totalPaid = (float)$stmtPrice->fetchColumn();
 
-            // ราคารวมใบแจ้งหนี้ทั้งหมด
-            $sqlInvoicePrice = "SELECT SUM(price) as total_invoice FROM me_invoice WHERE month = ? AND year = ?";
+            // ราคารวมใบแจ้งหนี้ทั้งหมด (พร้อมเงื่อนไข agent)
+            $sqlInvoicePrice = "SELECT SUM(i.price) as total_invoice 
+                               FROM me_invoice i 
+                               LEFT JOIN ali_product p ON i.pcode = p.pcode 
+                               WHERE i.pcode IN ($placeholders) AND i.month = ? AND i.year = ? $whrData";
+            $invoicePriceParams = array_merge($invoicePcodes, [$targetMonth, $targetYear], $whrParams);
             $stmtInvoicePrice = $this->db->prepare($sqlInvoicePrice);
-            $stmtInvoicePrice->execute([$targetMonth, $targetYear]);
+            $stmtInvoicePrice->execute($invoicePriceParams);
             $totalInvoice = (float)$stmtInvoicePrice->fetchColumn();
 
             return array(
@@ -66,10 +106,27 @@ class Payment extends Model {
             $targetMonth = $month ? (int)$month : (int)date('m');
             $targetYear = $year ? (int)$year : (int)date('Y');
             
-            // ดึงเฉพาะ pcode ที่มีใบแจ้งหนี้
-            $sqlInvoices = "SELECT DISTINCT pcode FROM me_invoice WHERE month = ? AND year = ?";
+            $currentUser = Auth::user();
+            $userRole = $currentUser['role'];
+            $chckCode = $currentUser['username'];
+
+            // สร้างเงื่อนไข WHERE สำหรับ agent
+            $whrData = "";
+            $whrParams = [];
+            
+            if($userRole == 'agent'){
+                $whrData = " AND p.sales_rep_code = ? ";
+                $whrParams[] = $chckCode;
+            }
+
+            // ดึงเฉพาะ pcode ที่มีใบแจ้งหนี้ (พร้อมเงื่อนไข agent)
+            $sqlInvoices = "SELECT DISTINCT i.pcode 
+                           FROM me_invoice i 
+                           LEFT JOIN ali_product p ON i.pcode = p.pcode 
+                           WHERE i.month = ? AND i.year = ? $whrData";
+            $invoiceParams = array_merge([$targetMonth, $targetYear], $whrParams);
             $stmtInvoices = $this->db->prepare($sqlInvoices);
-            $stmtInvoices->execute([$targetMonth, $targetYear]);
+            $stmtInvoices->execute($invoiceParams);
             $invoicePcodes = $stmtInvoices->fetchAll(PDO::FETCH_COLUMN, 0);
             
             if (empty($invoicePcodes)) {
@@ -88,7 +145,7 @@ class Payment extends Model {
                 LEFT JOIN ali_product p ON pg1.id = p.group_id
                 LEFT JOIN ali_productgroup pg2 ON p.group_id = pg2.id
                 WHERE (pc.id = 34 OR pc.id = 54) AND p.sh = 1 
-                AND p.pcode IN ($placeholders)
+                AND p.pcode IN ($placeholders)  
                 ORDER BY pc.cate_name, groupname, p.pcode";
             
             $stmt = $this->db->prepare($sql);

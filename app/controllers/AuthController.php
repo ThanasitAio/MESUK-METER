@@ -59,7 +59,7 @@ class AuthController {
                         $isPasswordValid = true;
                     }
                 }
-                
+             
                 if ($isPasswordValid) {
                     // เก็บข้อมูลลง session ผ่าน Auth class
                     Auth::login(array(

@@ -9,10 +9,20 @@ class Meter extends Model {
      */
     public function getAllMeters($month = null, $year = null) {
         try {
+            $currentUser = Auth::user();
+            $userRole = $currentUser['role'];
+            $chckCode = $currentUser['username'];
+
+            $whrData = "";
+            if($userRole == 'agent'){
+                $whrData .= " AND p.sales_rep_code = '".$chckCode."' ";
+            }
+
             // ดึงรายการ pcode ทั้งหมด
             $sql = "SELECT 
                     p.pcode,
                     p.pdesc,
+                    p.sales_rep_code,
                     pc.cate_name,
                     COALESCE(pg1.groupname, pg2.groupname) as groupname,
                     COALESCE(p.meter_1_ppu, 0) as electricity_ppu,
@@ -21,8 +31,10 @@ class Meter extends Model {
                 LEFT JOIN ali_productgroup pg1 ON pc.id = pg1.id_cate
                 LEFT JOIN ali_product p ON pg1.id = p.group_id
                 LEFT JOIN ali_productgroup pg2 ON p.group_id = pg2.id
-                WHERE (pc.id = 34 OR pc.id = 54) AND p.sh = 1
+                WHERE (pc.id = 34 OR pc.id = 54) AND p.sh = 1 $whrData
                 ORDER BY pc.cate_name, groupname, p.pcode";
+
+
             
             $stmt = $this->db->prepare($sql);
             $result = $stmt->execute();
