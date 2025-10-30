@@ -29,7 +29,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
 
             <!-- สถิติ -->
             <div class="row">
-                <div class="col-6 col-md-2 mb-2">
+                <div class="col-6 col-md-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('user_management.total_users'); ?></div>
@@ -37,7 +37,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-2 mb-2">
+                <div class="col-6 col-md-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('user_management.active_users'); ?></div>
@@ -45,7 +45,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-2 mb-2">
+                <div class="col-6 col-md-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('user_management.suspended_users'); ?></div>
@@ -53,7 +53,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-2 mb-2">
+                <div class="col-6 col-md-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('user_management.admin_count'); ?></div>
@@ -61,7 +61,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-2 mb-2">
+                <div class="col-6 col-md-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('user_management.agent_count'); ?></div>
@@ -75,42 +75,52 @@ $headerConfig = require BASE_PATH . '/config/header.php';
             <div class="card <?php echo $headerConfig['classes']['filter_card']; ?>" style="position: relative; z-index: 100; overflow: visible;">
                 <div class="card-body py-2" style="overflow: visible;">
                     <div class="row align-items-end" style="overflow: visible;">
-                        <div class="col-md-6 col-lg-4">
+                        <!-- ช่องค้นหา - ใช้ความกว้างเต็มในมือถือ -->
+                        <div class="col-12 col-md-6 col-lg-4">
                             <div class="mb-0">
-                                <label for="searchUser" class="form-label fw-bold small">
+                                <label for="searchUser" class="form-label fw-bold small mb-1">
                                     <i class="fas fa-search"></i> <?php echo t('user_management.search'); ?>
                                 </label>
                                 <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control form-control-sm" id="searchUser" 
-                                           placeholder="<?php echo t('user_management.user_code'); ?>, <?php echo t('user_management.full_name'); ?>...">
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" id="resetSearch">
+                                    <input type="text" class="form-control form-control-sm mb-1" id="searchUser" 
+                                        placeholder="<?php echo t('user_management.user_code'); ?>, <?php echo t('user_management.full_name'); ?>...">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm mb-1" id="resetSearch">
                                         <i class="fas fa-times"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-lg-3 mt-2 mt-md-0">
-                            <div class="mb-0">
-                                <label for="filterRole" class="form-label fw-bold small">
-                                    <i class="fas fa-user-tag"></i> <?php echo t('user_management.role'); ?>
-                                </label>
-                                <select class="select-beast form-select form-select-sm" id="filterRole">
-                                    <option value="" selected><?php echo t('selection.all'); ?></option>
-                                    <option value="admin"><?php echo t('user_management.admin'); ?></option>
-                                    <option value="agent"><?php echo t('user_management.agent'); ?></option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-3 mt-2 mt-lg-0" style="position: relative; overflow: visible;">
-                            <div class="mb-0">
-                                <label for="filterStatus" class="form-label fw-bold small">
-                                    <i class="fas fa-check-circle"></i> <?php echo t('user_management.status'); ?>
-                                </label>
-                                <select class="select-beast form-select form-select-sm"  id="filterStatus">
-                                    <option value="" selected><?php echo t('selection.all'); ?></option>
-                                    <option value="active"><?php echo t('user_management.active'); ?></option>
-                                    <option value="suspended"><?php echo t('user_management.suspended'); ?></option>
-                                </select>
+                        
+                        <!-- กลุ่มบทบาท/สถานะ - ใช้ grid system สำหรับจัดเรียง -->
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <div class="row g-2">
+                                <!-- บทบาท -->
+                                <div class="col-6 col-md-6 col-lg-6">
+                                    <div class="mb-0">
+                                        <label for="filterRole" class="form-label fw-bold small mb-1">
+                                            <i class="fas fa-user-tag"></i> <?php echo t('user_management.role'); ?>
+                                        </label>
+                                        <select class="select-beast form-select form-select-sm mb-1" id="filterRole">
+                                            <option value="" selected><?php echo t('selection.all'); ?></option>
+                                            <option value="admin"><?php echo t('user_management.admin'); ?></option>
+                                            <option value="agent"><?php echo t('user_management.agent'); ?></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- สถานะ -->
+                                <div class="col-6 col-md-6 col-lg-6">
+                                    <div class="mb-0">
+                                        <label for="filterStatus" class="form-label fw-bold small mb-1">
+                                            <i class="fas fa-check-circle"></i> <?php echo t('user_management.status'); ?>
+                                        </label>
+                                        <select class="select-beast form-select form-select-sm mb-1" id="filterStatus">
+                                            <option value="" selected><?php echo t('selection.all'); ?></option>
+                                            <option value="active"><?php echo t('user_management.active'); ?></option>
+                                            <option value="suspended"><?php echo t('user_management.suspended'); ?></option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -138,7 +148,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                                         <th width="80" class="text-center d-none d-md-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>">
                                             <i class="fas fa-image"></i>
                                         </th>
-                                        <th style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('user_management.user_code'); ?></th>
+                                        <th width="120" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('user_management.user_code'); ?></th>
                                         <th class="d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('user_management.full_name'); ?></th>
                                         <th width="100" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('user_management.role'); ?></th>
                                         <th width="100" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('user_management.status'); ?></th>

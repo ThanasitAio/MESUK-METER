@@ -42,7 +42,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
 
                         <!-- สถิติ -->
             <div class="row" id="statsContainer">
-                <div class="col-6 col-md-4 col-xl-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('meter_management.total_meters'); ?></div>
@@ -50,7 +50,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-4 col-xl-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('meter_management.stats.saved_count'); ?></div>
@@ -58,7 +58,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-4 col-xl-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('meter_management.stats.unsaved_count'); ?></div>
@@ -66,7 +66,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-4 col-xl-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('meter_management.stats.total_electricity'); ?></div>
@@ -74,7 +74,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-4 col-xl-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('meter_management.stats.total_water'); ?></div>
@@ -82,7 +82,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-4 col-xl-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('meter_management.stats.total_garbage'); ?></div>
@@ -90,7 +90,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-4 col-xl-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('meter_management.stats.total_common_area'); ?></div>
@@ -98,7 +98,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-4 col-xl-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('meter_management.stats.grand_total'); ?></div>
@@ -109,60 +109,72 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
             </div>
 
             <!-- ตัวกรองข้อมูล -->
-            <div class="card <?php echo $headerConfig['classes']['filter_card']; ?>" style="position: relative; z-index: 100; overflow: visible;">
+            <div class="card <?php echo $headerConfig['classes']['filter_card']; ?>" style="z-index: 100; overflow: visible;">
                 <div class="card-body py-2" style="overflow: visible;">
                     <div class="row align-items-end" style="overflow: visible;">
-                        <div class="col-md-6 col-lg-4">
+                        <!-- ช่องค้นหา - ใช้ความกว้างเต็มในมือถือ -->
+                        <div class="col-12 col-md-6 col-lg-4">
                             <div class="mb-0">
-                                <label for="searchUser" class="form-label fw-bold small">
+                                <label for="searchUser" class="form-label fw-bold small mb-1">
                                     <i class="fas fa-search"></i> <?php echo t('meter_management.search'); ?>
                                 </label>
                                 <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control form-control-sm" id="searchUser" 
-                                           placeholder="<?php echo t('meter_management.meter_doc'); ?>...">
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" id="resetSearch">
+                                    <input type="text" class="form-control form-control-sm mb-1" id="searchUser" 
+                                        placeholder="<?php echo t('meter_management.meter_doc'); ?>...">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm mb-1" id="resetSearch">
                                         <i class="fas fa-times"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-lg-2">
-                            <div class="mb-0">
-                                <label for="filterMonth" class="form-label fw-bold small"><?php echo t('meter_management.month'); ?></label>
-                                <select class="select-beast form-select form-select-sm" id="filterMonth">
-                                    <option value="01" <?php echo date('m') == '01' ? 'selected' : ''; ?>><?php echo t('month.january'); ?></option>
-                                    <option value="02" <?php echo date('m') == '02' ? 'selected' : ''; ?>><?php echo t('month.february'); ?></option>
-                                    <option value="03" <?php echo date('m') == '03' ? 'selected' : ''; ?>><?php echo t('month.march'); ?></option>
-                                    <option value="04" <?php echo date('m') == '04' ? 'selected' : ''; ?>><?php echo t('month.april'); ?></option>
-                                    <option value="05" <?php echo date('m') == '05' ? 'selected' : ''; ?>><?php echo t('month.may'); ?></option>
-                                    <option value="06" <?php echo date('m') == '06' ? 'selected' : ''; ?>><?php echo t('month.june'); ?></option>
-                                    <option value="07" <?php echo date('m') == '07' ? 'selected' : ''; ?>><?php echo t('month.july'); ?></option>
-                                    <option value="08" <?php echo date('m') == '08' ? 'selected' : ''; ?>><?php echo t('month.august'); ?></option>
-                                    <option value="09" <?php echo date('m') == '09' ? 'selected' : ''; ?>><?php echo t('month.september'); ?></option>
-                                    <option value="10" <?php echo date('m') == '10' ? 'selected' : ''; ?>><?php echo t('month.october'); ?></option>
-                                    <option value="11" <?php echo date('m') == '11' ? 'selected' : ''; ?>><?php echo t('month.november'); ?></option>
-                                    <option value="12" <?php echo date('m') == '12' ? 'selected' : ''; ?>><?php echo t('month.december'); ?></option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-lg-2">
-                            <div class="mb-0">
-                                <label for="filterYear" class="form-label fw-bold small"><?php echo t('meter_management.year'); ?></label>
-                                <select class="select-beast form-select form-select-sm" id="filterYear">
-                                    <?php foreach ($years as $year): ?>
-                                        <option value="<?php echo $year; ?>" <?php echo date('Y') == $year ? 'selected' : ''; ?>><?php echo $year; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-lg-2">
-                            <div class="mb-0">
-                                <label for="filterStatus" class="form-label fw-bold small"><?php echo t('meter_management.status'); ?></label>
-                                <select class="select-beast form-select form-select-sm" id="filterStatus">
-                                    <option value=""><?php echo t('meter_management.all'); ?></option>
-                                    <option value="saved"><?php echo t('meter_management.saved'); ?></option>
-                                    <option value="unsaved"><?php echo t('meter_management.unsaved'); ?></option>
-                                </select>
+                        
+                        <!-- กลุ่มเดือน/ปี/สถานะ - ใช้ flex และ grid ร่วมกัน -->
+                        <div class="col-12 col-md-6 col-lg-8">
+                            <div class="row g-2">
+                                <!-- เดือน -->
+                                <div class="col-4 col-md-4 col-lg-2">
+                                    <div class="mb-0">
+                                        <label for="filterMonth" class="form-label fw-bold small mb-1"><?php echo t('meter_management.month'); ?></label>
+                                        <select class="select-beast form-select form-select-sm mb-1" id="filterMonth">
+                                            <option value="01" <?php echo date('m') == '01' ? 'selected' : ''; ?>><?php echo t('month.january'); ?></option>
+                                            <option value="02" <?php echo date('m') == '02' ? 'selected' : ''; ?>><?php echo t('month.february'); ?></option>
+                                            <option value="03" <?php echo date('m') == '03' ? 'selected' : ''; ?>><?php echo t('month.march'); ?></option>
+                                            <option value="04" <?php echo date('m') == '04' ? 'selected' : ''; ?>><?php echo t('month.april'); ?></option>
+                                            <option value="05" <?php echo date('m') == '05' ? 'selected' : ''; ?>><?php echo t('month.may'); ?></option>
+                                            <option value="06" <?php echo date('m') == '06' ? 'selected' : ''; ?>><?php echo t('month.june'); ?></option>
+                                            <option value="07" <?php echo date('m') == '07' ? 'selected' : ''; ?>><?php echo t('month.july'); ?></option>
+                                            <option value="08" <?php echo date('m') == '08' ? 'selected' : ''; ?>><?php echo t('month.august'); ?></option>
+                                            <option value="09" <?php echo date('m') == '09' ? 'selected' : ''; ?>><?php echo t('month.september'); ?></option>
+                                            <option value="10" <?php echo date('m') == '10' ? 'selected' : ''; ?>><?php echo t('month.october'); ?></option>
+                                            <option value="11" <?php echo date('m') == '11' ? 'selected' : ''; ?>><?php echo t('month.november'); ?></option>
+                                            <option value="12" <?php echo date('m') == '12' ? 'selected' : ''; ?>><?php echo t('month.december'); ?></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- ปี -->
+                                <div class="col-4 col-md-4 col-lg-2">
+                                    <div class="mb-0">
+                                        <label for="filterYear" class="form-label fw-bold small mb-1"><?php echo t('meter_management.year'); ?></label>
+                                        <select class="select-beast form-select form-select-sm mb-1" id="filterYear">
+                                            <?php foreach ($years as $year): ?>
+                                                <option value="<?php echo $year; ?>" <?php echo date('Y') == $year ? 'selected' : ''; ?>><?php echo $year; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- สถานะ -->
+                                <div class="col-4 col-md-4 col-lg-2">
+                                    <div class="mb-0">
+                                        <label for="filterStatus" class="form-label fw-bold small mb-1"><?php echo t('meter_management.status'); ?></label>
+                                        <select class="select-beast form-select form-select-sm mb-1" id="filterStatus">
+                                            <option value=""><?php echo t('meter_management.all'); ?></option>
+                                            <option value="saved"><?php echo t('meter_management.saved'); ?></option>
+                                            <option value="unsaved"><?php echo t('meter_management.unsaved'); ?></option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -187,16 +199,16 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                                 <tr>
                                     <th width="40" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>">#</th>
                                     <th width="120" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.product_code'); ?></th>
-                                    <th width="40" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.month'); ?>/<?php echo t('meter_management.year'); ?></th>
+                                    <th width="40" class="text-center d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.month'); ?>/<?php echo t('meter_management.year'); ?></th>
                                     <th width="40" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.status'); ?></th>
-                                    <th width="80" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.electricityData'); ?></th>
+                                    <th width="100" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.electricityData'); ?></th>
                                     <th width="80" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.waterData'); ?></th>
                                     <th width="80" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.electricity'); ?></th>
                                     <th width="80" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.water'); ?></th>
                                     <th width="80" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.garbage'); ?></th>
-                                    <th width="80" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.common_area'); ?></th>
+                                    <th width="100" class="text-right d-none d-lg-table-cell" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.common_area'); ?></th>
                                     <th width="80" class="text-right" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.total'); ?></th>
-                                    <th width="60" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.actions'); ?></th>
+                                    <th width="100" class="text-center" style="<?php echo $headerConfig['styles']['table_header']; ?>"><?php echo t('meter_management.actions'); ?></th>
                                 </tr>
                             </thead>
                             <tbody id="metersTableBody">
@@ -239,11 +251,11 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                             <label for="meterYear" class="form-label"><?php echo t('meter_management.year'); ?></label>
                             <input type="number" class="form-control form-control-sm" id="meterYear" name="year" readonly disabled>
                         </div>
-                        <div class="col-4 col-sm-4 col-md-2 mb-3">
+                        <div class="col-6 col-sm-6 col-md-2 mb-3">
                             <label for="meterMonth" class="form-label"><?php echo t('meter_management.electricity_ppu'); ?></label>
                             <input type="number" class="form-control form-control-sm" style="text-align: right;" id="electricity_ppu" name="electricity_ppu" readonly disabled>
                         </div>
-                        <div class="col-4 col-sm-4 col-md-2 mb-3">
+                        <div class="col-6 col-sm-6 col-md-2 mb-3">
                             <label for="meterYear" class="form-label"><?php echo t('meter_management.water_ppu'); ?></label>
                             <input type="number" class="form-control form-control-sm" style="text-align: right;" id="water_ppu" name="water_ppu" readonly disabled>
                         </div>
@@ -321,7 +333,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                             <textarea class="form-control" id="meterRemark" name="remark" rows="5"></textarea>
                         </div>
                     </div>
-                    <hr>
+                   
                 </form>
             </div>
             <div class="modal-footer">
@@ -481,7 +493,7 @@ function renderTable(meters) {
             <tr>
                 <td class="text-center text-muted small">${index + 1}</td>
                 <td><div class="fw-bold small">${meter.pcode || ''}</div></td>
-                <td class="text-center"><div class="small">${String(meter.month).padStart(2, '0')}/${meter.year}</div></td>
+                <td class="text-center d-none d-lg-table-cell"><div class="small">${String(meter.month).padStart(2, '0')}/${meter.year}</div></td>
                 <td class="text-center">${statusBadge}</td>
                 <td class="text-end d-none d-lg-table-cell"><div class="small">${parseFloat(meter.meterelectricity).toFixed(0)}</div></td>
                 <td class="text-end d-none d-lg-table-cell"><div class="small">${parseFloat(meter.meterwater).toFixed(0)}</div></td>

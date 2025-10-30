@@ -27,10 +27,10 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                     <div class="row align-items-end">
                         <div class="col-md-6 col-lg-4">
                             <div class="mb-0">
-                                <label for="filterMcode" class="form-label fw-bold small"><?= t('import_users.search_member') ?></label>
+                                <label for="filterMcode" class="form-label fw-bold small mb-1"><?= t('import_users.search_member') ?></label>
                                 <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control form-control-sm" id="filterMcode" placeholder="<?= t('import_users.placeholder_search') ?>">
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" id="resetFilter">
+                                    <input type="text" class="form-control form-control-sm mb-1" id="filterMcode" placeholder="<?= t('import_users.placeholder_search') ?>">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm mb-1" id="resetFilter">
                                         <i class="fas fa-times"></i>
                                     </button>
                                 </div>

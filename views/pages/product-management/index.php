@@ -24,7 +24,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
 
             <!-- สถิติ -->
             <div class="row">
-                <div class="col-6 col-md-4 col-xl-2 mb-2">
+                <div class="col-6 col-md-4 col-xl-2">
                     <div class="card text-center">
                         <div class="card-body py-2">
                             <div class="small text-muted"><?php echo t('product_management.total_products'); ?></div>
@@ -40,13 +40,13 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                     <div class="row align-items-end" style="overflow: visible;">
                         <div class="col-md-6 col-lg-4">
                             <div class="mb-0">
-                                <label for="searchUser" class="form-label fw-bold small">
+                                <label for="searchUser" class="form-label fw-bold small mb-1">
                                     <i class="fas fa-search"></i> <?php echo t('product_management.search'); ?>
                                 </label>
                                 <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control form-control-sm" id="searchUser" 
+                                    <input type="text" class="form-control form-control-sm mb-1" id="searchUser" 
                                            placeholder="<?php echo t('product_management.product_code'); ?>...">
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" id="resetSearch">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm mb-1" id="resetSearch">
                                         <i class="fas fa-times"></i>
                                     </button>
                                 </div>

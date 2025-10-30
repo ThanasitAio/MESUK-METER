@@ -34,7 +34,7 @@
             $displayName = $currentUser ? $currentUser['full_name'] : 'Guest';
             $role = $currentUser ? $currentUser['role'] : 'agent';
             $img = $currentUser ? $currentUser['img'] : '';
-
+            $id = $currentUser ? $currentUser['id'] : '';
     
             ?>
             <div class="mobile-stats">
@@ -103,7 +103,7 @@
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="min-width: 200px;">
                         <!-- User Info Header -->
                         <li class="px-3 py-2 border-bottom">
-                            <div class="d-flex align-items-center mb-2">
+                            <div class="d-flex align-items-center">
                                 <div class="rounded-circle d-flex align-items-center justify-content-center me-2" 
                                      style="width: 36px; height: 36px;overflow: hidden;">
                                     <?php if (!empty($img)): ?>
@@ -131,18 +131,6 @@
                         </li>
                         
                         <!-- Menu Items -->
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center py-2" href="/profile">
-                                <i class="bi bi-person me-3" style="color: #D3EE98;"></i>
-                                <span><?php echo t('navbar.profile', 'Profile'); ?></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center py-2" href="/settings">
-                                <i class="bi bi-gear me-3" style="color: #D3EE98;"></i>
-                                <span><?php echo t('navbar.settings', 'Settings'); ?></span>
-                            </a>
-                        </li>
                         <li>
                             <hr class="dropdown-divider my-1">
                         </li>
@@ -238,15 +226,9 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0">
                         <li>
-                            <a class="dropdown-item d-flex align-items-center py-2" href="/profile">
+                            <a class="dropdown-item d-flex align-items-center py-2" href="/users/edit/<?php echo $id; ?>">
                                 <i class="bi bi-person me-3" style="color: #D3EE98;"></i>
                                 <span><?php echo t('navbar.profile', 'Profile'); ?></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center py-2" href="/settings">
-                                <i class="bi bi-gear me-3" style="color: #D3EE98;"></i>
-                                <span><?php echo t('navbar.settings', 'Settings'); ?></span>
                             </a>
                         </li>
                         <li>
@@ -278,7 +260,7 @@
             <span><?php echo t('mobile.menu'); ?></span>
         </a>
         
-        <a href="/profile" class="mobile-nav-item">
+        <a href="/users/edit/<?php echo $id; ?>" class="mobile-nav-item">
             <i class="fa-solid fa-user"></i>
             <span><?php echo t('mobile.profile'); ?></span>
         </a>
