@@ -124,7 +124,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                 echo cardHeader(
                     t('user_management.user_list'), 
                     $userCount, 
-                    'fas fa-users'
+                    'fas fa-users-cog'
                 ); 
                 ?>
                 

@@ -97,6 +97,7 @@ class ProductManagementController extends Controller {
             'bank_acc_no' => isset($_POST['bank_acc_no']) ? $_POST['bank_acc_no'] : null,
             'meter_0_ppu' => isset($_POST['meter_0_ppu']) ? $_POST['meter_0_ppu'] : null,
             'meter_1_ppu' => isset($_POST['meter_1_ppu']) ? $_POST['meter_1_ppu'] : null,
+            'sales_rep_code' => isset($_POST['sales_rep_code']) ? str_pad($_POST['sales_rep_code'], 7, '0', STR_PAD_LEFT) : null,
         );
         // อัพเดทข้อมูลสินค้า
         if ($this->productModel->updateProduct($id, $productData)) {

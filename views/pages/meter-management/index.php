@@ -37,7 +37,7 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
             
             <!-- Header -->
             <?php       
-            echo pageHeader(t('meter_management.title'), '', '', 'fas fa-users-cog'); 
+            echo pageHeader(t('meter_management.title'), '', '', 'fa-solid fa-jug-detergent'); 
             ?>
 
                         <!-- สถิติ -->

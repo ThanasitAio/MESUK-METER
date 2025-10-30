@@ -112,7 +112,8 @@ class Product extends Model {
                     bank_branch = ?,
                     bank_acc_no = ?,
                     meter_0_ppu = ?,
-                    meter_1_ppu = ?
+                    meter_1_ppu = ?,
+                    sales_rep_code = ?
                     WHERE pcode = ? AND sh = 1";
             
             $params = array(
@@ -128,6 +129,7 @@ class Product extends Model {
                 isset($data['bank_acc_no']) ? $data['bank_acc_no'] : null,
                 isset($data['meter_0_ppu']) ? $data['meter_0_ppu'] : null,
                 isset($data['meter_1_ppu']) ? $data['meter_1_ppu'] : null,
+                isset($data['sales_rep_code']) ? $data['sales_rep_code'] : null,
                 $id
             );
             

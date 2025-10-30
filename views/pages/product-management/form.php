@@ -46,6 +46,13 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                             <div class="row">
                                 <div class="col-12 col-md-2 mb-2">
                                     <div class="form-group">
+                                        <label for="sales_rep_code"><?php echo t('product_management.sales_rep_code'); ?></label>
+                                        <input type="text" class="form-control form-control-sm text-center" id="sales_rep_code" name="sales_rep_code" 
+                                            value="<?php echo htmlspecialchars(isset($data['product']['sales_rep_code']) ? $data['product']['sales_rep_code'] : ''); ?>" autocomplete="off" OnKeyPress="return chkNumberInt(this)" onfocus="selectAllText(this)">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-2 mb-2">
+                                    <div class="form-group">
                                         <label for="meter_0_ppu"><?php echo t('product_management.meter_0_ppu'); ?></label>
                                         <input type="text" class="form-control form-control-sm text-end" id="meter_0_ppu" name="meter_0_ppu" 
                                             value="<?php echo htmlspecialchars(isset($data['product']['meter_0_ppu']) ? $data['product']['meter_0_ppu'] : '0'); ?>" autocomplete="off" OnKeyPress="return chkNumber(this)" onfocus="selectAllText(this)">
@@ -201,6 +208,14 @@ $headerConfig = require BASE_PATH . '/config/header.php';
             ele.onKeyPress=vchar;
         
     }
+
+    function chkNumberInt(ele){
+        var vchar = String.fromCharCode(event.keyCode);
+        if ((vchar<'0' || vchar>'9')) return false;
+            ele.onKeyPress=vchar;
+        
+    }
+
 
     function selectAllText(element) {
     element.select();

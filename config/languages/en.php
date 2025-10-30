@@ -1,7 +1,7 @@
 <?php
 return array(
     'app' => array(
-        'name' => 'MESUK',
+        'name' => 'METER',
         'management_system' => 'Management System',
         'version' => 'v1.0',
         'copyright' => 'All rights reserved'
@@ -173,6 +173,7 @@ return array(
         'meter_1_latest' => 'Latest Electricity Meter Reading',
         'meter_0_ppu' => 'Price Per Unit Water',
         'meter_1_ppu' => 'Price Per Unit Electricity',
+        'sales_rep_code' => 'Agent Code',
     ),
 
     'meter_management' => array(

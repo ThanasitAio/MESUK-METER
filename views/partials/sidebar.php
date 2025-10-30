@@ -4,7 +4,7 @@
             <ul class="sidebar-nav">
                 <li class="nav-item">
                     <a class="nav-link" href="/">
-                        <div class="nav-icon"><i class="bi bi-speedometer2"></i></div>
+                        <div class="nav-icon"><i class="fa-solid fa-gauge"></i></div>
                         <span class="nav-text"><?php echo t('sidebar.dashboard'); ?></span>
                     </a>
                 </li>
@@ -48,7 +48,7 @@
                     <!-- ผู้ใช้ -->
                     <li class="nav-item">
                         <a class="nav-link" href="/users">
-                            <div class="nav-icon"><i class="bi bi-people"></i></div>
+                            <div class="nav-icon"><i class="fas fa-users-cog"></i></div>
                             <span class="nav-text"><?php echo t('sidebar.user_management'); ?></span>
                         </a>
                     </li>

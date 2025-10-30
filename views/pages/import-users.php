@@ -18,7 +18,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                 </button>
             ';
             
-            echo pageHeader(t('import_users.title'), '', $importButton, 'fas fa-users-cog'); 
+            echo pageHeader(t('import_users.title'), '', $importButton, 'fa-solid fa-cloud-arrow-up'); 
             ?>
 
             <!-- ตัวกรองข้อมูลแบบกระชับ -->

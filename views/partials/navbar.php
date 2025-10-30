@@ -7,9 +7,13 @@
 
         <!-- Brand Logo & Name -->
         <a class="navbar-brand fw-bold text-dark d-flex align-items-center" href="/">
-            <div class="brand-logo me-2 d-flex align-items-center justify-content-center rounded" 
+            <!-- <div class="brand-logo me-2 d-flex align-items-center justify-content-center rounded" 
                  style="width: 40px; height: 40px; background-color: #D3EE98;margin: 0;">
                 <i class="bi bi-grid-3x3-gap-fill text-dark fs-5"></i>
+            </div> -->
+            <div class=" me-2 d-flex align-items-center justify-content-center rounded" 
+                style="width: 40px; height: 40px;margin: 0;">
+                <img src="/assets/images/meters_logo.png" alt="Description of the image" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
             <div class="d-none d-sm-block">
                 <span class="fw-bold"><?php echo t('app.name', 'MESUK'); ?></span>
@@ -228,17 +232,17 @@
 <nav class="mobile-bottom-nav d-lg-none">
     <div class="mobile-nav-container">
         <a href="/" class="mobile-nav-item">
-            <i class="bi bi-speedometer2"></i>
+            <i class="fa-solid fa-gauge"></i>
             <span><?php echo t('sidebar.dashboard'); ?></span>
         </a>
         
         <a href="#" class="mobile-nav-item mobile-menu-toggle">
-            <i class="bi bi-list"></i>
+            <i class="fa-solid fa-bars"></i>
             <span><?php echo t('mobile.menu'); ?></span>
         </a>
         
         <a href="/profile" class="mobile-nav-item">
-            <i class="bi bi-person"></i>
+            <i class="fa-solid fa-user"></i>
             <span><?php echo t('mobile.profile'); ?></span>
         </a>
     </div>

@@ -19,7 +19,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
             <?php
            
             
-            echo pageHeader(t('product_management.title'), '', '', 'fas fa-users-cog'); 
+            echo pageHeader(t('product_management.title'), '', '', 'fas fa-warehouse'); 
             ?>
 
             <!-- สถิติ -->

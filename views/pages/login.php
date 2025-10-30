@@ -73,7 +73,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #D3EE98; /* ใช้สีธีมเป็นพื้นหลังโลโก้ */
+            /* background-color: #D3EE98; ใช้สีธีมเป็นพื้นหลังโลโก้ */
             border-radius: 10px;
         }
 
@@ -181,9 +181,10 @@
         <!-- 4. เพิ่มโครงสร้าง HTML สำหรับโลโก้ -->
         <div class="login-header">
             <div class="logo-icon-wrapper">
-                <i class="bi bi-grid-3x3-gap-fill"></i>
+                 <img src="/assets/images/meters_logo.png" alt="Description of the image" style="width: 100%; height: 100%; object-fit: cover;">
+                <!-- <i class="bi bi-grid-3x3-gap-fill"></i> -->
             </div>
-            <h1>MESUK</h1>
+            <h1>METER</h1>
         </div>
 
         <p>กรุณาเข้าสู่ระบบเพื่อจัดการระบบ</p>

@@ -1,7 +1,7 @@
 <?php
 return array(
     'app' => array(
-        'name' => 'MESUK',
+        'name' => 'METER',
         'management_system' => 'ระบบจัดการ',
         'version' => 'เวอร์ชั่น 1.0',
         'copyright' => 'สงวนลิขสิทธิ์'
@@ -173,6 +173,7 @@ return array(
         'meter_1_latest' => 'เลขอ่านมิเตอร์ไฟฟ้าล่าสุด',
         'meter_0_ppu' => 'ราคาต่อหน่วยน้ำ',
         'meter_1_ppu' => 'ราคาต่อหน่วยไฟฟ้า',
+        'sales_rep_code' => 'รหัสตัวแทน',
     ),
 
     'meter_management' => array(
