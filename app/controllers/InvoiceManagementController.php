@@ -10,7 +10,7 @@ class InvoiceManagementController extends Controller {
             header('Location: /login');
             exit;
         }
-        
+
         // สร้าง Database connection
         if (!class_exists('Database')) {
             require_once __DIR__ . '/../core/Database.php';

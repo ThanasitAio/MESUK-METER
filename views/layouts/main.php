@@ -20,6 +20,7 @@
     <link href="/assets/css/app.css" rel="stylesheet">
     <link href="/assets/css/sidebar.css" rel="stylesheet">
     <link href="/assets/css/navbar.css" rel="stylesheet">
+   
 </head>
 <body>
     <div class="d-flex">

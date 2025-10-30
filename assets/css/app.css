@@ -1,7 +1,16 @@
 /* Reset and Base Styles */
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
+body {
+    font-family: 'IBM Plex Sans Thai', 'Sarabun', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    min-height: 100vh;
+}
+
 
 /* Table container */
 .table-responsive {
