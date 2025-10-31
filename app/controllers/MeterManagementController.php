@@ -120,7 +120,7 @@ class MeterManagementController extends Controller {
             http_response_code(405);
             echo json_encode(array('success' => false, 'message' => 'Method not allowed'));
             exit;
-        }
+        } 
         
         try {
             // รับข้อมูลจากฟอร์ม

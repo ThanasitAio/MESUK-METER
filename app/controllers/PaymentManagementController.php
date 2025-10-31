@@ -138,6 +138,7 @@ class PaymentManagementController extends Controller {
             $water = isset($_POST['water']) ? (float)$_POST['water'] : 0;
             $garbage = isset($_POST['garbage']) ? (float)$_POST['garbage'] : 0;
             $common_area = isset($_POST['common_area']) ? (float)$_POST['common_area'] : 0;
+            $inv_no = isset($_POST['inv_no']) ? trim($_POST['inv_no']) : '';
             
             // ตรวจสอบข้อมูล
             if (empty($pcode) || $month < 1 || $month > 12 || $year < 2000) {
@@ -152,7 +153,8 @@ class PaymentManagementController extends Controller {
                 $electricity, 
                 $water, 
                 $garbage, 
-                $common_area
+                $common_area,
+                $inv_no
             );
             
             echo json_encode($result, JSON_UNESCAPED_UNICODE);

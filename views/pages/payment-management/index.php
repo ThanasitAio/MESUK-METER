@@ -883,6 +883,7 @@ function createPayment(totalAmount) {
     formData.append('water', waterBalance);
     formData.append('garbage', garbageBalance);
     formData.append('common_area', commonAreaBalance);
+    formData.append('inv_no', currentPaymentData.inv_no);
     
     fetch('/payments/create-payment', {
         method: 'POST',

@@ -320,7 +320,7 @@ class Payment extends Model {
     /**
      * บันทึกการชำระเงิน
      */
-    public function createPayment($pcode, $month, $year, $electricity, $water, $garbage, $common_area) {
+    public function createPayment($pcode, $month, $year, $electricity, $water, $garbage, $common_area, $inv_no) {
         try {
             // ตรวจสอบว่ามียอดชำระอย่างน้อย 1 รายการที่มากกว่า 0
             $totalAmount = $electricity + $water + $garbage + $common_area;
@@ -351,8 +351,8 @@ class Payment extends Model {
                 // ลบการตรวจสอบ if ($amount > 0) 
                 
                 $sql = "INSERT INTO me_payment 
-                        (payment_id, payment_no, pcode, month, year, type, price, created_at, created_by, updated_at, updated_by) 
-                        VALUES (UUID(), ?, ?, ?, ?, ?, ?, NOW(), ?, NOW(), ?)";
+                        (payment_id, payment_no, pcode, month, year, type, price, created_at, created_by, updated_at, updated_by, inv_no) 
+                        VALUES (UUID(), ?, ?, ?, ?, ?, ?, NOW(), ?, NOW(), ?, ?)";
                 
                 $stmt = $this->db->prepare($sql);
                 $result = $stmt->execute([
@@ -363,7 +363,8 @@ class Payment extends Model {
                     $type,
                     $amount,
                     $userId,
-                    $userId
+                    $userId,
+                    $inv_no
                 ]);
                 
                 if ($result) {

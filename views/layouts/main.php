@@ -31,7 +31,7 @@
             $currentUser = Auth::user();
             $displayName = $currentUser ? $currentUser['full_name'] : 'Guest';
             $role = $currentUser ? $currentUser['role'] : 'agent';
-
+            $current_datetime = date('Y-m-d H:i:s');
          
             ?>
         <!-- Sidebar -->
