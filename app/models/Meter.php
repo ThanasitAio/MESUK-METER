@@ -34,7 +34,6 @@ class Meter extends Model {
                 WHERE (pc.id = 34 OR pc.id = 54) AND p.sh = 1 $whrData
                 ORDER BY pc.cate_name, groupname, p.pcode";
 
-
             
             $stmt = $this->db->prepare($sql);
             $result = $stmt->execute();
@@ -60,6 +59,12 @@ class Meter extends Model {
             $allOtherCosts = $this->getAllOtherCostsBatch($pcodes, $targetMonth, $targetYear);
             $allPrevMeterData = $this->getPreviousMonthMeterDataBatch($pcodes, $targetMonth, $targetYear);
             $allRemarks = $this->getAllRemarksBatch($pcodes, $targetMonth, $targetYear);
+            
+            // เพิ่มการ log เพื่อ debug
+            error_log("getAllMeters: Previous month data count - " . count($allPrevMeterData));
+            foreach($allPrevMeterData as $pcode => $data) {
+                error_log("Previous data for $pcode: " . print_r($data, true));
+            }
             
             $results = array();
             
@@ -125,8 +130,7 @@ class Meter extends Model {
                     'meterelectricity' => (int)$meterelectricity,
                     'remark' => (string)$remark,
                     'water_ppu' => (float)$product['water_ppu'],
-                    'electricity_ppu' => (float)$product['water_ppu'],
-
+                    'electricity_ppu' => (float)$product['electricity_ppu'],
                 );
             }
             
@@ -235,12 +239,13 @@ class Meter extends Model {
     }
     
     /**
-     * ดึงข้อมูล meter เดือนก่อนหน้าแบบ batch
+     * ดึงข้อมูล meter เดือนก่อนหน้าแบบ batch - แก้ไขแล้ว
      */
     private function getPreviousMonthMeterDataBatch($pcodes, $month, $year) {
         if (empty($pcodes)) return array();
         
         try {
+            // คำนวณเดือนและปีก่อนหน้า
             $prevMonth = $month - 1;
             $prevYear = $year;
             if ($prevMonth < 1) {
@@ -262,6 +267,7 @@ class Meter extends Model {
                 $results[$row['pcode']][$row['meter_type']] = $row['reading_value'];
             }
             
+            error_log("getPreviousMonthMeterDataBatch: Found " . count($results) . " records for month $prevMonth, year $prevYear");
             return $results;
         } catch (PDOException $e) {
             error_log("Error getting batch previous meter data: " . $e->getMessage());
@@ -270,48 +276,46 @@ class Meter extends Model {
     }
     
     /**
-     * คำนวณค่าไฟจากข้อมูล batch
+     * คำนวณค่าไฟจากข้อมูล batch - แก้ไขแล้ว
      */
     private function calculateElectricityCostBatch($pcode, $currentData, $prevData, $priceUnit) {
-        $current = isset($currentData[$pcode]['ค่าไฟ']) ? $currentData[$pcode]['ค่าไฟ'] : 0;
-        $previous = isset($prevData[$pcode]['ค่าไฟ']) ? $prevData[$pcode]['ค่าไฟ'] : 0;
+        $current = isset($currentData[$pcode]['ค่าไฟ']) ? (float)$currentData[$pcode]['ค่าไฟ'] : 0;
+        $previous = isset($prevData[$pcode]['ค่าไฟ']) ? (float)$prevData[$pcode]['ค่าไฟ'] : 0;
         
-        if (!$current) {
-            return [
-                'electricity' => 0,
-                'meterelectricity' => 0,
-                'electricityMeterNumberBefore' => 0,
-            ];
-        }
-        
+        // อนุญาตให้คำนวณได้แม้ค่า current จะเป็น 0
         $units = $current - $previous;
         
+        // หน่วยต้องไม่ติดลบ
+        if ($units < 0) {
+            error_log("Warning: Negative units for electricity - pcode: $pcode, current: $current, previous: $previous");
+            $units = 0;
+        }
+        
         return [
-            'electricity' => $units > 0 ? $units * $priceUnit : 0,
+            'electricity' => $units * $priceUnit,
             'meterelectricity' => $current,
             'electricityMeterNumberBefore' => $previous,
         ];
     }
     
     /**
-     * คำนวณค่าน้ำจากข้อมูล batch
+     * คำนวณค่าน้ำจากข้อมูล batch - แก้ไขแล้ว
      */
     private function calculateWaterCostBatch($pcode, $currentData, $prevData, $priceUnit) {
-        $current = isset($currentData[$pcode]['ค่าน้ำ']) ? $currentData[$pcode]['ค่าน้ำ'] : 0;
-        $previous = isset($prevData[$pcode]['ค่าน้ำ']) ? $prevData[$pcode]['ค่าน้ำ'] : 0;
+        $current = isset($currentData[$pcode]['ค่าน้ำ']) ? (float)$currentData[$pcode]['ค่าน้ำ'] : 0;
+        $previous = isset($prevData[$pcode]['ค่าน้ำ']) ? (float)$prevData[$pcode]['ค่าน้ำ'] : 0;
         
-        if (!$current) {
-            return [
-                'water' => 0,
-                'meterwater' => 0,
-                'waterMeterNumberBefore' => 0,
-            ];
-        }
-        
+        // อนุญาตให้คำนวณได้แม้ค่า current จะเป็น 0
         $units = $current - $previous;
         
+        // หน่วยต้องไม่ติดลบ
+        if ($units < 0) {
+            error_log("Warning: Negative units for water - pcode: $pcode, current: $current, previous: $previous");
+            $units = 0;
+        }
+        
         return [
-            'water' => $units > 0 ? $units * $priceUnit : 0,
+            'water' => $units * $priceUnit,
             'meterwater' => $current,
             'waterMeterNumberBefore' => $previous,
         ];
@@ -327,6 +331,48 @@ class Meter extends Model {
         return $hasMeter || $hasOther;
     }
 
+    /**
+     * ฟังก์ชัน debug เพื่อตรวจสอบข้อมูล - เพิ่มใหม่
+     */
+    public function debugMeterData($pcode, $month, $year) {
+        try {
+            // ข้อมูลเดือนปัจจุบัน
+            $currentSql = "SELECT meter_type, reading_value 
+                          FROM me_meter 
+                          WHERE pcode = ? AND month = ? AND year = ?";
+            $stmt = $this->db->prepare($currentSql);
+            $stmt->execute([$pcode, $month, $year]);
+            $currentData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // ข้อมูลเดือนก่อนหน้า
+            $prevMonth = $month - 1;
+            $prevYear = $year;
+            if ($prevMonth < 1) {
+                $prevMonth = 12;
+                $prevYear = $year - 1;
+            }
+            
+            $prevSql = "SELECT meter_type, reading_value 
+                       FROM me_meter 
+                       WHERE pcode = ? AND month = ? AND year = ?";
+            $stmt2 = $this->db->prepare($prevSql);
+            $stmt2->execute([$pcode, $prevMonth, $prevYear]);
+            $prevData = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+            
+            error_log("Debug Meter Data for $pcode:");
+            error_log("Current ($month/$year): " . print_r($currentData, true));
+            error_log("Previous ($prevMonth/$prevYear): " . print_r($prevData, true));
+            
+            return [
+                'current' => $currentData,
+                'previous' => $prevData
+            ];
+            
+        } catch (PDOException $e) {
+            error_log("Error in debugMeterData: " . $e->getMessage());
+            return null;
+        }
+    }
 
    public function saveOrUpdateMeterWithImage($data) {
     try {
@@ -581,7 +627,7 @@ class Meter extends Model {
             $stmt->execute([$pcode, $month, $year, $type]);
             
             $count = $stmt->fetchColumn();
-            error_log("Count result: " . $count);
+            error_log("meterRecordExists: pcode=$pcode, month=$month, year=$year, type=$type, count=$count");
 
             return $count > 0;
         } catch (PDOException $e) {
@@ -589,7 +635,6 @@ class Meter extends Model {
             return false;
         }
     }
-
 
     public function saveOrUpdateMeter($data) {
         try {
@@ -603,7 +648,7 @@ class Meter extends Model {
             // ตรวจสอบว่ามีข้อมูลอยู่แล้วหรือไม่
             $exists = $this->meterRecordExists($data['pcode'], $data['month'], $data['year'], $data['type']);
            
-            if ($exists == 'true') {
+            if ($exists) {
                 // Update existing record (แม้ค่าเป็น 0)
                 $sql = "UPDATE me_meter 
                         SET reading_value = ?, 
@@ -648,7 +693,5 @@ class Meter extends Model {
             return false;
         }
     }
-
-    
 
 }
