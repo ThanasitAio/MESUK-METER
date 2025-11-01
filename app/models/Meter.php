@@ -100,6 +100,12 @@ class Meter extends Model {
                 $meterwater = $waterData['meterwater'];
                 $waterMeterNumberBefore = $waterData['waterMeterNumberBefore'];
                 
+                // ดึงข้อมูลวันที่
+                $dateMeterElectricity = isset($allMeterData[$pcode]['_reading_date_ค่าไฟ']) ? 
+                                       $allMeterData[$pcode]['_reading_date_ค่าไฟ'] : '';
+                $dateMeterWater = isset($allMeterData[$pcode]['_reading_date_ค่าน้ำ']) ? 
+                                 $allMeterData[$pcode]['_reading_date_ค่าน้ำ'] : '';
+                
                 // คำนวณรวม
                 $total = $electricity + $water + $garbage + $commonArea;
                 
@@ -131,6 +137,8 @@ class Meter extends Model {
                     'remark' => (string)$remark,
                     'water_ppu' => (float)$product['water_ppu'],
                     'electricity_ppu' => (float)$product['electricity_ppu'],
+                    'dateMeterElectricity' => (string)$dateMeterElectricity,
+                    'dateMeterWater' => (string)$dateMeterWater,
                 );
             }
             
@@ -154,7 +162,7 @@ class Meter extends Model {
         
         try {
             $placeholders = str_repeat('?,', count($pcodes) - 1) . '?';
-            $sql = "SELECT pcode, meter_type, reading_value, remark 
+            $sql = "SELECT pcode, meter_type, reading_value, remark, reading_date 
                     FROM me_meter 
                     WHERE pcode IN ($placeholders) AND month = ? AND year = ?";
             
@@ -168,6 +176,10 @@ class Meter extends Model {
                 // เก็บ remark ถ้ามี
                 if (!empty($row['remark'])) {
                     $results[$row['pcode']]['_remark'] = $row['remark'];
+                }
+                // เก็บ reading_date ถ้ามี
+                if (!empty($row['reading_date'])) {
+                    $results[$row['pcode']]['_reading_date_' . $row['meter_type']] = $row['reading_date'];
                 }
             }
             
@@ -387,51 +399,70 @@ class Meter extends Model {
         $month = $data['month'];
         $year = $data['year'];
         $remark = isset($data['remark']) ? trim($data['remark']) : '';
-        $img = isset($data['img']) ? $data['img'] : null; // เปลี่ยนจาก image_path เป็น img
+        $img = isset($data['img']) ? $data['img'] : null;
+        
+        // แปลง empty string เป็น NULL สำหรับ reading_date (สำคัญสำหรับ DATE field)
+        $reading_date = isset($data['reading_date']) && $data['reading_date'] !== '' ? $data['reading_date'] : null;
+        
+        // อนุญาตให้ reading_value เป็นค่าว่างได้
+        $reading_value = isset($data['reading_value']) && $data['reading_value'] !== '' ? $data['reading_value'] : null;
         
         // ตรวจสอบว่ามีข้อมูลอยู่แล้วหรือไม่
         $exists = $this->meterRecordExists($data['pcode'], $data['month'], $data['year'], $data['type']);
+        $datetime = date('Y-m-d H:i:s');
        
         if ($exists) {
-            // Update existing record
+            // Update existing record - อนุญาตให้ reading_value เป็น NULL ได้
             $sql = "UPDATE me_meter 
                     SET reading_value = ?, 
                         remark = ?,
-                        img = ?,  -- เปลี่ยนจาก image_path เป็น img
-                        updated_at = NOW(), 
+                        img = ?,
+                        reading_date = ?,
+                        updated_at = '$datetime', 
                         updated_by = ? 
                     WHERE pcode = ? AND month = ? AND year = ? AND meter_type = ?";
             $stmt = $this->db->prepare($sql);
             $result = $stmt->execute(array(
-                $data['reading_value'],
+                $reading_value,
                 $remark,
-                $img,  // เปลี่ยนจาก imagePath เป็น img
+                $img,
+                $reading_date,
                 $userId,
                 $data['pcode'],
                 $data['month'],
                 $data['year'],
                 $data['type']
             ));
-            error_log("Updated meter with image: " . $data['type'] . " - pcode=" . $data['pcode'] . ", img=" . $img);
+            error_log("Updated meter with image: " . $data['type'] . " - pcode=" . $data['pcode'] . ", reading_value=" . ($reading_value !== null ? $reading_value : 'NULL') . ", img=" . ($img !== null ? $img : 'NULL') . ", reading_date=" . ($reading_date !== null ? $reading_date : 'NULL'));
         } else {
-            // Insert new record
+            // Insert new record - อนุญาตให้ reading_value เป็น NULL ได้
             $sql = "INSERT INTO me_meter 
                     (meter_type, pcode, month, year, reading_value, remark, img, reading_date, created_at, created_by, updated_at, updated_by) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), ?, NOW(), ?)";
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, '$datetime', ?, '$datetime', ?)";
             $stmt = $this->db->prepare($sql);
             $result = $stmt->execute(array(
                 $data['type'],
                 $data['pcode'],
                 $data['month'],
                 $data['year'],
-                $data['reading_value'],
+                $reading_value,
                 $remark,
-                $img,  // เปลี่ยนจาก imagePath เป็น img
+                $img,
+                $reading_date,
                 $userId,
                 $userId
             ));
-            error_log("Inserted meter with image: " . $data['type'] . " - pcode=" . $data['pcode'] . ", img=" . $img);
+            error_log("Inserted meter with image: " . $data['type'] . " - pcode=" . $data['pcode'] . ", reading_value=" . ($reading_value !== null ? $reading_value : 'NULL') . ", img=" . ($img !== null ? $img : 'NULL') . ", reading_date=" . ($reading_date !== null ? $reading_date : 'NULL'));
         }
+        
+        // ตรวจสอบ error ถ้าบันทึกไม่สำเร็จ
+        if (!$result) {
+            if (isset($stmt)) {
+                $errorInfo = $stmt->errorInfo();
+                error_log("SQL execute failed for " . $data['type'] . ": " . print_r($errorInfo, true));
+            }
+        }
+        
         return $result;
     } catch (PDOException $e) {
         error_log("Error saving or updating meter record with image (" . $data['type'] . "): " . $e->getMessage());
@@ -452,6 +483,9 @@ class Meter extends Model {
             $currentUser = Auth::user();
             $userId = isset($currentUser['id']) ? $currentUser['id'] : null;
             
+            // อนุญาตให้ price เป็นค่าว่างได้
+            $price_value = $price !== '' ? $price : null;
+            
             // ตรวจสอบว่ามีข้อมูลอยู่แล้วหรือไม่
             $sql = "SELECT COUNT(*) FROM me_meter_ohter 
                     WHERE pcode = ? AND month = ? AND year = ? AND meter_ohter_type = ?";
@@ -459,25 +493,26 @@ class Meter extends Model {
             $stmt->execute([$pcode, $month, $year, $type]);
             $exists = $stmt->fetchColumn() > 0;
             
+            $datetime = date('Y-m-d H:i:s');
             if ($exists) {
-                // อัพเดท
+                // อัพเดท - อนุญาตให้ price เป็น NULL ได้
                 $sql = "UPDATE me_meter_ohter 
                         SET price = ?, 
                             remark = ?,
-                            updated_at = NOW(), 
+                            updated_at = '$datetime', 
                             updated_by = ? 
                         WHERE pcode = ? AND month = ? AND year = ? AND meter_ohter_type = ?";
                 $stmt = $this->db->prepare($sql);
-                $result = $stmt->execute([$price, $remark, $userId, $pcode, $month, $year, $type]);
-                error_log("Updated other cost with remark: $type - pcode=$pcode, month=$month, year=$year, price=$price");
+                $result = $stmt->execute([$price_value, $remark, $userId, $pcode, $month, $year, $type]);
+                error_log("Updated other cost with remark: $type - pcode=$pcode, month=$month, year=$year, price=$price_value");
             } else {
-                // เพิ่มใหม่
+                // เพิ่มใหม่ - อนุญาตให้ price เป็น NULL ได้
                 $sql = "INSERT INTO me_meter_ohter 
                         (meter_ohter_type, pcode, month, year, price, remark, created_at, created_by, updated_at, updated_by) 
-                        VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, NOW(), ?)";
+                        VALUES (?, ?, ?, ?, ?, ?, '$datetime', ?, '$datetime', ?)";
                 $stmt = $this->db->prepare($sql);
-                $result = $stmt->execute([$type, $pcode, $month, $year, $price, $remark, $userId, $userId]);
-                error_log("Inserted other cost with remark: $type - pcode=$pcode, month=$month, year=$year, price=$price");
+                $result = $stmt->execute([$type, $pcode, $month, $year, $price_value, $remark, $userId, $userId]);
+                error_log("Inserted other cost with remark: $type - pcode=$pcode, month=$month, year=$year, price=$price_value");
             }
             
             return $result;
@@ -645,44 +680,47 @@ class Meter extends Model {
                 $userId = isset($currentUser['id']) ? $currentUser['id'] : null;
             }
             
+            // อนุญาตให้ reading_value เป็นค่าว่างได้
+            $reading_value = isset($data['reading_value']) && $data['reading_value'] !== '' ? $data['reading_value'] : null;
+            
             // ตรวจสอบว่ามีข้อมูลอยู่แล้วหรือไม่
             $exists = $this->meterRecordExists($data['pcode'], $data['month'], $data['year'], $data['type']);
-           
+            $datetime = date('Y-m-d H:i:s');
             if ($exists) {
-                // Update existing record (แม้ค่าเป็น 0)
+                // Update existing record - อนุญาตให้ reading_value เป็น NULL ได้
                 $sql = "UPDATE me_meter 
                         SET reading_value = ?, 
-                            updated_at = NOW(), 
+                            updated_at = '$datetime', 
                             updated_by = ? 
                         WHERE pcode = ? AND month = ? AND year = ? AND meter_type = ?";
                 $stmt = $this->db->prepare($sql);
                 $result = $stmt->execute([
-                    $data['reading_value'],
+                    $reading_value,
                     $userId,
                     $data['pcode'],
                     $data['month'],
                     $data['year'],
                     $data['type']
                 ]);
-                error_log("Updated meter: " . $data['type'] . " - pcode=" . $data['pcode'] . ", value=" . $data['reading_value'] . ", result=" . ($result ? 'success' : 'failed'));
+                error_log("Updated meter: " . $data['type'] . " - pcode=" . $data['pcode'] . ", value=" . $reading_value . ", result=" . ($result ? 'success' : 'failed'));
             } else {
                  
-                // Insert new record (แม้ค่าเป็น 0)
+                // Insert new record - อนุญาตให้ reading_value เป็น NULL ได้
                 $sql = "INSERT INTO me_meter 
                         (meter_type, pcode, month, year, reading_value, reading_date, created_at, created_by, updated_at, updated_by) 
-                        VALUES (?, ?, ?, ?, ?, NOW(), NOW(), ?, NOW(), ?)";
+                        VALUES (?, ?, ?, ?, ?, '$datetime', '$datetime', ?, '$datetime', ?)";
                 $stmt = $this->db->prepare($sql);
                 $result = $stmt->execute([
                     $data['type'],
                     $data['pcode'],
                     $data['month'],
                     $data['year'],
-                    $data['reading_value'],
+                    $reading_value,
                     $userId,
                     $userId
                 ]);
                
-                error_log("Inserted meter: " . $data['type'] . " - pcode=" . $data['pcode'] . ", value=" . $data['reading_value'] . ", result=" . ($result ? 'success' : 'failed'));
+                error_log("Inserted meter: " . $data['type'] . " - pcode=" . $data['pcode'] . ", value=" . $reading_value . ", result=" . ($result ? 'success' : 'failed'));
             }
             return $result;
         } catch (PDOException $e) {

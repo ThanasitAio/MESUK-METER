@@ -241,6 +241,8 @@ return array(
         'remark' => 'หมายเหตุ',
         'electricity_ppu' => 'ราคาต่อหน่วยไฟฟ้า',
         'water_ppu' => 'ราคาต่อหน่วยน้ำ',
+        'date_water' => 'วันที่อ่านมิเตอร์น้ำล่าสุด',
+        'date_electricity' => 'วันที่อ่านมิเตอร์ไฟฟ้าล่าสุด',
 
         // เพิ่มสถิติ
         'stats' => array(

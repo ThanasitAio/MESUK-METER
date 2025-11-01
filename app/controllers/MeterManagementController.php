@@ -123,17 +123,23 @@ class MeterManagementController extends Controller {
         } 
         
         try {
-            // รับข้อมูลจากฟอร์ม
+            // รับข้อมูลจากฟอร์ม - อนุญาตให้ค่าว่างได้
             $pcode = isset($_POST['pcode']) ? trim($_POST['pcode']) : '';
             $month = isset($_POST['month']) ? (int)$_POST['month'] : 0;
             $year = isset($_POST['year']) ? (int)$_POST['year'] : 0;
-            $electricity = isset($_POST['electricity']) ? (float)$_POST['electricity'] : 0;
-            $water = isset($_POST['water']) ? (float)$_POST['water'] : 0;
-            $garbage = isset($_POST['garbage']) ? (float)$_POST['garbage'] : 0;
-            $common_area = isset($_POST['common_area']) ? (float)$_POST['common_area'] : 0;
-            $remark = isset($_POST['remark']) ? trim($_POST['remark']) : '';
-
             
+            // รับค่าและอนุญาตให้เป็นค่าว่างได้
+            $electricity = isset($_POST['electricity']) && $_POST['electricity'] !== '' ? (float)$_POST['electricity'] : null;
+            $water = isset($_POST['water']) && $_POST['water'] !== '' ? (float)$_POST['water'] : null;
+            $garbage = isset($_POST['garbage']) && $_POST['garbage'] !== '' ? (float)$_POST['garbage'] : null;
+            $common_area = isset($_POST['common_area']) && $_POST['common_area'] !== '' ? (float)$_POST['common_area'] : null;
+            
+            $remark = isset($_POST['remark']) ? trim($_POST['remark']) : '';
+            
+            // แปลง empty string เป็น null สำหรับ date fields
+            $dateMeterElectricity = isset($_POST['dateMeterElectricity']) && trim($_POST['dateMeterElectricity']) !== '' ? trim($_POST['dateMeterElectricity']) : null;
+            $dateMeterWater = isset($_POST['dateMeterWater']) && trim($_POST['dateMeterWater']) !== '' ? trim($_POST['dateMeterWater']) : null;
+
             // ตรวจสอบข้อมูลที่จำเป็น
             if (empty($pcode) || $month === 0 || $year === 0) {
                 echo json_encode(array(
@@ -144,7 +150,7 @@ class MeterManagementController extends Controller {
             }
             
             // Debug: log ข้อมูลที่ได้รับ
-            error_log("saveMeter: pcode=$pcode, month=$month, year=$year, electricity=$electricity, water=$water, garbage=$garbage, common_area=$common_area, remark=$remark");
+            error_log("saveMeter: pcode=$pcode, month=$month, year=$year, electricity=" . ($electricity !== null ? $electricity : 'NULL') . ", water=" . ($water !== null ? $water : 'NULL') . ", garbage=" . ($garbage !== null ? $garbage : 'NULL') . ", common_area=" . ($common_area !== null ? $common_area : 'NULL') . ", remark=$remark, dateElectricity=" . ($dateMeterElectricity !== null ? $dateMeterElectricity : 'NULL') . ", dateWater=" . ($dateMeterWater !== null ? $dateMeterWater : 'NULL'));
             
             // ตัวแปรเก็บผลลัพธ์
             $allSuccess = true;
@@ -160,15 +166,16 @@ class MeterManagementController extends Controller {
 
             
             
-            // บันทึกข้อมูลค่าไฟพร้อมหมายเหตุ
+            // บันทึกข้อมูลค่าไฟพร้อมหมายเหตุและวันที่ - อนุญาตให้ reading_value เป็น NULL
             $electricityData = array(
                 'pcode' => $pcode,
                 'month' => $month,
                 'year' => $year,
                 'type' => 'ค่าไฟ',
-                'reading_value' => $electricity,
+                'reading_value' => $electricity, // อาจเป็น NULL
                 'remark' => $remark,
-                'img' => $electricityImagePath ?: $currentElectricityImage
+                'img' => $electricityImagePath ?: $currentElectricityImage,
+                'reading_date' => $dateMeterElectricity,
             );
             
             $electricityResult = $this->meterModel->saveOrUpdateMeterWithImage($electricityData);
@@ -178,15 +185,16 @@ class MeterManagementController extends Controller {
                 $errors[] = 'บันทึกค่าไฟไม่สำเร็จ';
             }
             
-            // บันทึกข้อมูลค่าน้ำพร้อมหมายเหตุ
+            // บันทึกข้อมูลค่าน้ำพร้อมหมายเหตุและวันที่ - อนุญาตให้ reading_value เป็น NULL
             $waterData = array(
                 'pcode' => $pcode,
                 'month' => $month,
                 'year' => $year,
                 'type' => 'ค่าน้ำ',
-                'reading_value' => $water,
+                'reading_value' => $water, // อาจเป็น NULL
                 'remark' => $remark,
-                'img' =>  $waterImagePath ?: $currentWaterImage
+                'img' =>  $waterImagePath ?: $currentWaterImage,
+                'reading_date' => $dateMeterWater,
             );
             $waterResult = $this->meterModel->saveOrUpdateMeterWithImage($waterData);
             error_log("Water save result: " . ($waterResult ? 'success' : 'failed'));
@@ -195,7 +203,7 @@ class MeterManagementController extends Controller {
                 $errors[] = 'บันทึกค่าน้ำไม่สำเร็จ';
             }
             
-            // บันทึกค่าขยะพร้อมหมายเหตุ
+            // บันทึกค่าขยะพร้อมหมายเหตุ - อนุญาตให้ price เป็น NULL
             $garbageResult = $this->meterModel->saveOrUpdateOtherCostWithRemark($pcode, $month, $year, 'ค่าขยะ', $garbage, $remark);
             error_log("Garbage save result: " . ($garbageResult ? 'success' : 'failed'));
             if (!$garbageResult) {
@@ -203,7 +211,7 @@ class MeterManagementController extends Controller {
                 $errors[] = 'บันทึกค่าขยะไม่สำเร็จ';
             }
             
-            // บันทึกค่าส่วนกลางพร้อมหมายเหตุ
+            // บันทึกค่าส่วนกลางพร้อมหมายเหตุ - อนุญาตให้ price เป็น NULL
             $commonAreaResult = $this->meterModel->saveOrUpdateOtherCostWithRemark($pcode, $month, $year, 'ค่าส่วนกลาง', $common_area, $remark);
             error_log("Common area save result: " . ($commonAreaResult ? 'success' : 'failed'));
             if (!$commonAreaResult) {
@@ -211,7 +219,7 @@ class MeterManagementController extends Controller {
                 $errors[] = 'บันทึกค่าส่วนกลางไม่สำเร็จ';
             }
             
-            // อัพเดทค่า meter ล่าสุดในตาราง ali_product
+            // อัพเดทค่า meter ล่าสุดในตาราง ali_product - เฉพาะค่าที่ไม่ใช่ NULL
             $this->updateLatestMeterValues($pcode, $electricity, $water);
             
             if ($allSuccess) {
@@ -284,19 +292,19 @@ class MeterManagementController extends Controller {
     }
 
     /**
-     * อัพเดทค่า meter ล่าสุดในตาราง ali_product
+     * อัพเดทค่า meter ล่าสุดในตาราง ali_product - ปรับให้รองรับ NULL
      */
     private function updateLatestMeterValues($pcode, $electricity, $water) {
         try {
-            // อัพเดทเฉพาะถ้ามีค่า (มากกว่า 0)
-            if ($electricity > 0) {
+            // อัพเดทเฉพาะถ้ามีค่า (ไม่ใช่ NULL และมากกว่า 0)
+            if ($electricity !== null && $electricity > 0) {
                 $sql = "UPDATE ali_product SET meter_1_latest = ? WHERE pcode = ?";
                 $stmt = $this->db->prepare($sql);
                 $stmt->execute([$electricity, $pcode]);
                 error_log("Updated electricity latest value: pcode=$pcode, value=$electricity");
             }
             
-            if ($water > 0) {
+            if ($water !== null && $water > 0) {
                 $sql = "UPDATE ali_product SET meter_0_latest = ? WHERE pcode = ?";
                 $stmt = $this->db->prepare($sql);
                 $stmt->execute([$water, $pcode]);
@@ -327,7 +335,7 @@ class MeterManagementController extends Controller {
             $exists = $stmt->fetchColumn() > 0;
             
             if ($exists) {
-                // อัพเดท (แม้ค่า price เป็น 0)
+                // อัพเดท (แม้ค่า price เป็น NULL)
                 $sql = "UPDATE me_meter_ohter 
                         SET price = ?, 
                             updated_at = NOW(), 
@@ -337,7 +345,7 @@ class MeterManagementController extends Controller {
                 $result = $stmt->execute([$price, $userId, $pcode, $month, $year, $type]);
                 error_log("Updated $type: pcode=$pcode, month=$month, year=$year, price=$price, result=" . ($result ? 'success' : 'failed'));
             } else {
-                // เพิ่มใหม่ (แม้ค่า price เป็น 0)
+                // เพิ่มใหม่ (แม้ค่า price เป็น NULL)
                 $sql = "INSERT INTO me_meter_ohter 
                         (meter_ohter_type, pcode, month, year, price, created_at, created_by, updated_at, updated_by) 
                         VALUES (?, ?, ?, ?, ?, NOW(), ?, NOW(), ?)";
@@ -422,4 +430,3 @@ class MeterManagementController extends Controller {
 
     
 }
-

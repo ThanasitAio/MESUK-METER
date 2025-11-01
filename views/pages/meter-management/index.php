@@ -263,12 +263,20 @@ for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
                     <hr>
                     <div class="row">
                         <div class="col-6 col-sm-6 col-md-3 mb-3">
-                            <label for="previousMeterWater" class="form-label"><?php echo t('meter_management.previous_electricity_reading'); ?></label>
+                            <label for="previousMeterElectricity" class="form-label"><?php echo t('meter_management.previous_electricity_reading'); ?></label>
                             <input type="number" class="form-control form-control-sm" style="text-align: right;" id="previousMeterElectricity" name="previous_meter_electricity" readonly disabled>
                         </div>
                         <div class="col-6 col-sm-6 col-md-3 mb-3">
-                            <label for="previousMeterElectricity" class="form-label"><?php echo t('meter_management.previous_water_reading'); ?></label>
+                            <label for="previousMeterWater" class="form-label"><?php echo t('meter_management.previous_water_reading'); ?></label>
                             <input type="number" class="form-control form-control-sm" style="text-align: right;" id="previousMeterWater" name="previous_meter_water" readonly disabled>
+                        </div>
+                        <div class="col-6 col-sm-6 col-md-3 mb-3">
+                            <label for="dateMeterElectricity" class="form-label"><?php echo t('meter_management.date_electricity'); ?></label>
+                            <input type="date" class="form-control form-control-sm" style="text-align: center;" id="dateMeterElectricity" name="dateMeterElectricity" >
+                        </div>
+                        <div class="col-6 col-sm-6 col-md-3 mb-3">
+                            <label for="dateMeterWater" class="form-label"><?php echo t('meter_management.date_water'); ?></label>
+                            <input type="date" class="form-control form-control-sm" style="text-align: center;" id="dateMeterWater" name="dateMeterWater" >
                         </div>
                     </div>
                     <div class="row">
@@ -641,20 +649,24 @@ document.addEventListener('click', function(event) {
             const month = String(meter.month).padStart(2, '0');
             const year = meter.year;
             document.getElementById('modalMonthYear').textContent = `${monthNames[month]} ${year}`;
+            
             // เติมข้อมูลในฟอร์ม
             document.getElementById('meterPcode').value = meter.pcode || '';
             document.getElementById('meterMonth').value = meter.month || '';
             document.getElementById('meterYear').value = meter.year || '';
-            document.getElementById('previousMeterWater').value = meter.waterMeterNumberBefore || '0';
             document.getElementById('previousMeterElectricity').value = meter.electricityMeterNumberBefore || '0';
+            document.getElementById('previousMeterWater').value = meter.waterMeterNumberBefore || '0';
             document.getElementById('readingValueElectricity').value = meter.meterelectricity || '';
             document.getElementById('readingValueWater').value = meter.meterwater || '';
             document.getElementById('readingValueGarbage').value = meter.garbage || '';
             document.getElementById('readingValueCommonArea').value = meter.common_area || '';
             document.getElementById('meterRemark').value = meter.remark || '';
-
             document.getElementById('electricity_ppu').value = meter.electricity_ppu || 0;
             document.getElementById('water_ppu').value = meter.water_ppu || 0;
+
+            // เติมข้อมูลวันที่
+            document.getElementById('dateMeterElectricity').value = meter.dateMeterElectricity || '';
+            document.getElementById('dateMeterWater').value = meter.dateMeterWater || '';
 
             // เก็บข้อมูลปัจจุบัน
             currentMeterData = meter;
@@ -825,9 +837,6 @@ document.getElementById('editMeterModal').addEventListener('hidden.bs.modal', fu
     currentMeterData = {};
 });
 
-
-
-
 // บันทึกข้อมูลเมื่อคลิกปุ่มบันทึก
 saveMeterChanges.addEventListener('click', function() {
     // รวบรวมข้อมูลจากฟอร์ม
@@ -841,6 +850,8 @@ saveMeterChanges.addEventListener('click', function() {
     const remark = document.getElementById('meterRemark').value;
     const currentElectricityImage = document.getElementById('currentElectricityImage').value;
     const currentWaterImage = document.getElementById('currentWaterImage').value;
+    const dateMeterElectricity = document.getElementById('dateMeterElectricity').value;
+    const dateMeterWater = document.getElementById('dateMeterWater').value;
 
     // รับไฟล์รูปภาพ
     const imgElectricity = document.getElementById('img_electricity').files[0];
@@ -880,6 +891,8 @@ saveMeterChanges.addEventListener('click', function() {
             formData.append('remark', remark || '');
             formData.append('current_electricity_image', currentElectricityImage || '');
             formData.append('current_water_image', currentWaterImage || '');
+            formData.append('dateMeterElectricity', dateMeterElectricity || '');
+            formData.append('dateMeterWater', dateMeterWater || '');
 
             // เพิ่มไฟล์รูปภาพถ้ามี
             if (imgElectricity) {
@@ -891,8 +904,8 @@ saveMeterChanges.addEventListener('click', function() {
 
             // แสดง loading ใน SweetAlert
             Swal.fire({
-                title: translations.swal.saving_data_title,
-                text: translations.swal.saving_data_text,
+                title: translations.swal.saving_title,
+                text: translations.swal.saving_text,
                 icon: 'info',
                 showConfirmButton: false,
                 allowOutsideClick: false,

@@ -241,6 +241,8 @@ return array(
         'remark' => 'Remark',
         'electricity_ppu' => 'Price Per Unit Electricity',
         'water_ppu' => 'Price Per Unit Water',
+        'date_water' => 'Date of Latest Water Meter Reading',
+        'date_electricity' => 'Date of Latest Electricity Meter Reading',
 
         // เพิ่มสถิติ
         'stats' => array(
