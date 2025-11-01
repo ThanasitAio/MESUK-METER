@@ -345,14 +345,14 @@ class Payment extends Model {
             
             $createdCount = 0;
             $totalPaid = 0;
-            
+            $datetime = date('Y-m-d H:i:s');
             foreach ($paymentTypes as $type => $amount) {
                 // อนุญาตให้บันทึกแม้ยอดเป็น 0
                 // ลบการตรวจสอบ if ($amount > 0) 
                 
                 $sql = "INSERT INTO me_payment 
                         (payment_id, payment_no, pcode, month, year, type, price, created_at, created_by, updated_at, updated_by, inv_no) 
-                        VALUES (UUID(), ?, ?, ?, ?, ?, ?, NOW(), ?, NOW(), ?, ?)";
+                        VALUES (UUID(), ?, ?, ?, ?, ?, ?, '$datetime', ?, '$datetime', ?, ?)";
                 
                 $stmt = $this->db->prepare($sql);
                 $result = $stmt->execute([

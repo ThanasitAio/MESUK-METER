@@ -162,6 +162,7 @@ class User extends Model {
      * อัพเดทข้อมูลผู้ใช้
      */
     public function updateUser($id, $data) {
+        $datetime = date('Y-m-d H:i:s');
         try {
             $sql = "UPDATE {$this->table} SET 
                     code = ?, 
@@ -175,7 +176,7 @@ class User extends Model {
                     status = ?, 
                     role = ?, 
                     updated_by = ?,
-                    updated_date = NOW()";
+                    updated_date = '$datetime'";
             
             $params = [
                 $data['code'],
@@ -226,11 +227,12 @@ class User extends Model {
      * เปลี่ยนสถานะผู้ใช้
      */
     public function changeStatus($id, $status, $updatedBy = null) {
+        $datetime = date('Y-m-d H:i:s');
         try {
             $sql = "UPDATE {$this->table} SET 
                     status = ?, 
                     updated_by = ?,
-                    updated_date = NOW()
+                    updated_date = '$datetime'
                     WHERE id = ?";
             
             $stmt = $this->db->prepare($sql);

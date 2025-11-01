@@ -502,13 +502,13 @@ class Invoice extends Model {
             $stmt = $this->db->prepare($sql);
             $stmt->execute([$pcode, $month, $year, $type]);
             $exists = $stmt->fetchColumn() > 0;
-            
+            $datetime = date('Y-m-d H:i:s');
             if ($exists) {
                 // อัพเดท
                 $sql = "UPDATE me_meter_ohter 
                         SET price = ?, 
                             remark = ?,
-                            updated_at = NOW(), 
+                            updated_at = '$datetime', 
                             updated_by = ? 
                         WHERE pcode = ? AND month = ? AND year = ? AND meter_ohter_type = ?";
                 $stmt = $this->db->prepare($sql);
@@ -518,7 +518,7 @@ class Invoice extends Model {
                 // เพิ่มใหม่
                 $sql = "INSERT INTO me_meter_ohter 
                         (meter_ohter_type, pcode, month, year, price, remark, created_at, created_by, updated_at, updated_by) 
-                        VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, NOW(), ?)";
+                        VALUES (?, ?, ?, ?, ?, ?, '$datetime', ?, '$datetime', ?)";
                 $stmt = $this->db->prepare($sql);
                 $result = $stmt->execute([$type, $pcode, $month, $year, $price, $remark, $userId, $userId]);
                 error_log("Inserted other cost with remark: $type - pcode=$pcode, month=$month, year=$year, price=$price");
@@ -650,12 +650,12 @@ class Invoice extends Model {
             
             // ตรวจสอบว่ามีข้อมูลอยู่แล้วหรือไม่
             $exists = $this->meterRecordExists($data['pcode'], $data['month'], $data['year'], $data['type']);
-           
+            $datetime = date('Y-m-d H:i:s');
             if ($exists == 'true') {
                 // Update existing record (แม้ค่าเป็น 0)
                 $sql = "UPDATE me_meter 
                         SET reading_value = ?, 
-                            updated_at = NOW(), 
+                            updated_at = '$datetime', 
                             updated_by = ? 
                         WHERE pcode = ? AND month = ? AND year = ? AND meter_type = ?";
                 $stmt = $this->db->prepare($sql);
@@ -673,7 +673,7 @@ class Invoice extends Model {
                 // Insert new record (แม้ค่าเป็น 0)
                 $sql = "INSERT INTO me_meter 
                         (meter_type, pcode, month, year, reading_value, reading_date, created_at, created_by, updated_at, updated_by) 
-                        VALUES (?, ?, ?, ?, ?, NOW(), NOW(), ?, NOW(), ?)";
+                        VALUES (?, ?, ?, ?, ?, '$datetime', ?, '$datetime', ?)";
                 $stmt = $this->db->prepare($sql);
                 $result = $stmt->execute([
                     $data['type'],
@@ -724,12 +724,12 @@ class Invoice extends Model {
             
             $createdCount = 0;
             $totalPrice = 0;
-            
+            $datetime = date('Y-m-d H:i:s');
             foreach ($invoiceTypes as $type => $price) {
                
                 $sql = "INSERT INTO me_invoice 
                         (inv_id, inv_no, pcode, month, year, type, price, remark, created_at, created_by, updated_at, updated_by) 
-                        VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, NOW(), ?, NOW(), ?)";
+                        VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, '$datetime', ?, '$datetime', ?)";
                 
                 $stmt = $this->db->prepare($sql);
                 $result = $stmt->execute([

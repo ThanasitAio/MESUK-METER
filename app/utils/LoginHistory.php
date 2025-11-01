@@ -19,12 +19,12 @@ class LoginHistory {
             
             // ดึง IP Address
             $ipAddress = self::getClientIP();
-            
+            $datetime = date('Y-m-d H:i:s');
             // ดึง User Agent
             $userAgent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null;
             
             $sql = "INSERT INTO login_history (user_id, username, login_time, ip_address, user_agent, status) 
-                    VALUES (:user_id, :username, NOW(), :ip_address, :user_agent, :status)";
+                    VALUES (:user_id, :username, '$datetime', :ip_address, :user_agent, :status)";
             
             $stmt = $db->prepare($sql);
             return $stmt->execute(array(
@@ -48,12 +48,13 @@ class LoginHistory {
      */
     public static function getActiveUsersCount($days = 3) {
         try {
+            $datetime = date('Y-m-d H:i:s');
             $db = Database::getInstance();
             
             $sql = "SELECT COUNT(DISTINCT user_id) as total 
                     FROM login_history 
                     WHERE status = 'success' 
-                    AND login_time >= DATE_SUB(NOW(), INTERVAL :days DAY)";
+                    AND login_time >= DATE_SUB('$datetime', INTERVAL :days DAY)";
             
             $stmt = $db->prepare($sql);
             $stmt->execute(array(':days' => $days));
@@ -76,7 +77,7 @@ class LoginHistory {
     public static function getActiveUsers($days = 3, $limit = 10) {
         try {
             $db = Database::getInstance();
-            
+            $datetime = date('Y-m-d H:i:s');
             $sql = "SELECT 
                         u.username, 
                         u.name, 
@@ -86,7 +87,7 @@ class LoginHistory {
                     FROM login_history h
                     JOIN me_users u ON h.user_id = u.id
                     WHERE h.status = 'success'
-                    AND h.login_time >= DATE_SUB(NOW(), INTERVAL :days DAY)
+                    AND h.login_time >= DATE_SUB('$datetime', INTERVAL :days DAY)
                     GROUP BY u.id, u.username, u.name, u.role
                     ORDER BY last_login DESC
                     LIMIT :limit";
@@ -165,10 +166,10 @@ class LoginHistory {
     public static function cleanOldRecords($days = 90) {
         try {
             $db = Database::getInstance();
-            
+            $datetime = date('Y-m-d H:i:s');
             $sql = "DELETE FROM login_history 
-                    WHERE login_time < DATE_SUB(NOW(), INTERVAL :days DAY)";
-            
+                    WHERE login_time < DATE_SUB('$datetime', INTERVAL :days DAY)";
+
             $stmt = $db->prepare($sql);
             $stmt->execute(array(':days' => $days));
             

@@ -326,6 +326,7 @@ class MeterManagementController extends Controller {
             // ดึง user ID ของผู้ใช้ปัจจุบัน
             $currentUser = Auth::user();
             $userId = isset($currentUser['id']) ? $currentUser['id'] : null;
+            $datetime = date('Y-m-d H:i:s');
             
             // ตรวจสอบว่ามีข้อมูลอยู่แล้วหรือไม่
             $sql = "SELECT COUNT(*) FROM me_meter_ohter 
@@ -338,7 +339,7 @@ class MeterManagementController extends Controller {
                 // อัพเดท (แม้ค่า price เป็น NULL)
                 $sql = "UPDATE me_meter_ohter 
                         SET price = ?, 
-                            updated_at = NOW(), 
+                            updated_at = '$datetime', 
                             updated_by = ? 
                         WHERE pcode = ? AND month = ? AND year = ? AND meter_ohter_type = ?";
                 $stmt = $this->db->prepare($sql);
@@ -348,7 +349,7 @@ class MeterManagementController extends Controller {
                 // เพิ่มใหม่ (แม้ค่า price เป็น NULL)
                 $sql = "INSERT INTO me_meter_ohter 
                         (meter_ohter_type, pcode, month, year, price, created_at, created_by, updated_at, updated_by) 
-                        VALUES (?, ?, ?, ?, ?, NOW(), ?, NOW(), ?)";
+                        VALUES (?, ?, ?, ?, ?, '$datetime', ?, '$datetime', ?)";
                 $stmt = $this->db->prepare($sql);
                 $result = $stmt->execute([$type, $pcode, $month, $year, $price, $userId, $userId]);
                 error_log("Inserted $type: pcode=$pcode, month=$month, year=$year, price=$price, result=" . ($result ? 'success' : 'failed'));
