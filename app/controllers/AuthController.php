@@ -25,7 +25,7 @@ class AuthController {
 
         if (empty($username) || empty($password)) {
             $_SESSION['error'] = 'กรุณากรอก Username และ Password';
-            header('Location: /login');
+            header('Location: ' . url('/login'));
             exit();
         }
 
@@ -80,7 +80,7 @@ class AuthController {
                     LoginHistory::record($user['id'], $user['username'], 'success');
                     
                     // ถ้ามี intended URL ให้ redirect กลับไป
-                    $redirectTo = isset($_SESSION['intended_url']) ? $_SESSION['intended_url'] : '/';
+                    $redirectTo = isset($_SESSION['intended_url']) ? $_SESSION['intended_url'] : url('/');
                     unset($_SESSION['intended_url']);
                     
                     $_SESSION['success'] = 'เข้าสู่ระบบสำเร็จ';
@@ -92,17 +92,17 @@ class AuthController {
                         LoginHistory::record($user['id'], $user['username'], 'failed');
                     }
                     $_SESSION['error'] = 'Username หรือ Password ไม่ถูกต้อง';
-                    header('Location: /login');
+                    header('Location: ' . url('/login'));
                     exit();
                 }
             } else {
                 $_SESSION['error'] = 'ไม่พบ Username นี้ในระบบ';
-                header('Location: /login');
+                header('Location: ' . url('/login'));
                 exit();
             }
         } catch (PDOException $e) {
             $_SESSION['error'] = 'เกิดข้อผิดพลาด: ' . $e->getMessage();
-            header('Location: /login');
+            header('Location: ' . url('/login'));
             exit();
         }
     }
@@ -111,7 +111,7 @@ class AuthController {
     {
         Auth::logout();
         $_SESSION['success'] = 'ออกจากระบบสำเร็จ';
-        header('Location: /login');
+        header('Location: ' . url('/login'));
         exit();
     }
 }

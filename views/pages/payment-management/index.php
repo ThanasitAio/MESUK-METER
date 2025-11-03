@@ -552,7 +552,8 @@ function loadPayments() {
     }
     
     // เรียก AJAX
-    fetch('/payments/get-by-period?month=' + month + '&year=' + year)
+    const basePath = window.APP_BASE_PATH || '';
+    fetch(basePath + '/payments/get-by-period?month=' + month + '&year=' + year)
         .then(function(response) {
             return response.json();
         })
@@ -786,7 +787,8 @@ function checkPaymentStatus(payment) {
     }
     
     // เรียก API เพื่อตรวจสอบว่ามีการชำระเงินแล้วหรือไม่
-    fetch('/payments/check-payment?pcode=' + payment.pcode + '&month=' + payment.month + '&year=' + payment.year)
+    const basePath = window.APP_BASE_PATH || '';
+    fetch(basePath + '/payments/check-payment?pcode=' + payment.pcode + '&month=' + payment.month + '&year=' + payment.year)
         .then(function(response) {
             return response.json();
         })
@@ -885,7 +887,8 @@ function createPayment(totalAmount) {
     formData.append('common_area', commonAreaBalance);
     formData.append('inv_no', currentPaymentData.inv_no);
     
-    fetch('/payments/create-payment', {
+    const basePath = window.APP_BASE_PATH || '';
+    fetch(basePath + '/payments/create-payment', {
         method: 'POST',
         body: formData
     })

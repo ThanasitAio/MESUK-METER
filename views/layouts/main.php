@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo isset($title) ? $title : 'Dashboard'; ?></title>
     <!-- logo -->
-    <link rel="icon" type="image/png" href="/assets/images/meters_logo.png"> 
-    <link rel="shortcut icon" type="image/png" href="/assets/images/meters_logo.png">
+    <link rel="icon" type="image/png" href="<?php echo basePath('/assets/images/meters_logo.png'); ?>"> 
+    <link rel="shortcut icon" type="image/png" href="<?php echo basePath('/assets/images/meters_logo.png'); ?>">
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -16,10 +16,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <!-- Tom Select CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
-    <link href="/assets/css/theme-generated.css" rel="stylesheet">
-    <link href="/assets/css/app.css" rel="stylesheet">
-    <link href="/assets/css/sidebar.css" rel="stylesheet">
-    <link href="/assets/css/navbar.css" rel="stylesheet">
+    <link href="<?php echo basePath('/assets/css/theme-generated.css'); ?>" rel="stylesheet">
+    <link href="<?php echo basePath('/assets/css/app.css'); ?>" rel="stylesheet">
+    <link href="<?php echo basePath('/assets/css/sidebar.css'); ?>" rel="stylesheet">
+    <link href="<?php echo basePath('/assets/css/navbar.css'); ?>" rel="stylesheet">
    
 </head>
 <body>
@@ -58,7 +58,7 @@
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script>window.jQuery || document.write('<script src="/assets/js/jquery.min.js"><\/script>');</script>
+    <script>window.jQuery || document.write('<script src="<?php echo basePath('/assets/js/jquery.min.js'); ?>"><\/script>');</script>
 
     <!-- Bootstrap JS (โหลดครั้งเดียวเท่านั้น!) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
@@ -68,6 +68,11 @@
 
     <!-- Tom Select JS -->
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+
+    <!-- Base Path Configuration -->
+    <script>
+        window.APP_BASE_PATH = '<?php echo basePath(); ?>';
+    </script>
 
     <!-- Initialize Tom Select -->
     <script>
@@ -84,8 +89,8 @@
     </script>
 
     <!-- Main JS -->
-    <script src="/assets/js/app.js"></script>
-    <script src="/assets/js/sidebar.js"></script>
+    <script src="<?php echo basePath('/assets/js/app.js'); ?>"></script>
+    <script src="<?php echo basePath('/assets/js/sidebar.js'); ?>"></script>
 
 </body>
 </html>

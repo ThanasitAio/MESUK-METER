@@ -1,10 +1,9 @@
-# Apache Configuration for MESUK-METER System
+# Apache Configuration สำหรับ Apache Server (Subfolder)
 <IfModule mod_rewrite.c>
     RewriteEngine On
     
     # Set base directory 
-    # สำหรับ Docker: ใช้ / 
-    # สำหรับ Apache: เปลี่ยนเป็น /mesuk/ 
+    # เปลี่ยน /mesuk/ เป็นชื่อโฟลเดอร์ที่คุณใช้
     RewriteBase /mesuk/
     
     # อนุญาตให้เข้าถึง static files โดยตรง
@@ -22,3 +21,10 @@ AddDefaultCharset UTF-8
 # Disable directory listing
 Options -Indexes
 
+# ตั้งค่า PHP settings (optional)
+<IfModule mod_php7.c>
+    php_value upload_max_filesize 10M
+    php_value post_max_size 10M
+    php_value max_execution_time 300
+    php_value max_input_time 300
+</IfModule>

@@ -367,28 +367,28 @@ $role = $user['role'];
                 </div>
                 <div class="card-body p-3">
                     <div class="d-grid gap-3">
-                        <a href="/meters" class="btn text-start p-3 rounded d-flex align-items-center fw-medium animate-hover-grow" style="background: linear-gradient(135deg, #F8FDF0, #E8F8D8); border: 2px solid #D3EE98; font-size: 1rem; transition: all 0.3s ease;">
+                        <a href="<?php echo url('/meters'); ?>" class="btn text-start p-3 rounded d-flex align-items-center fw-medium animate-hover-grow" style="background: linear-gradient(135deg, #F8FDF0, #E8F8D8); border: 2px solid #D3EE98; font-size: 1rem; transition: all 0.3s ease;">
                             <div class="p-2 rounded-circle me-3 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #A8D46F, #95C257); width: 45px; height: 45px;">
                                 <i class="bi bi-speedometer2 fs-5 text-white"></i>
                             </div>
                             <span><?php echo t('meter_management.title'); ?></span>
                             <i class="bi bi-arrow-right ms-auto fs-6" style="color: #A8D46F;"></i>
                         </a>
-                        <a href="/invoices" class="btn text-start p-3 rounded d-flex align-items-center fw-medium animate-hover-grow" style="background: linear-gradient(135deg, #F8FDF0, #E8F8D8); border: 2px solid #D3EE98; font-size: 1rem; transition: all 0.3s ease;">
+                        <a href="<?php echo url('/invoices'); ?>" class="btn text-start p-3 rounded d-flex align-items-center fw-medium animate-hover-grow" style="background: linear-gradient(135deg, #F8FDF0, #E8F8D8); border: 2px solid #D3EE98; font-size: 1rem; transition: all 0.3s ease;">
                             <div class="p-2 rounded-circle me-3 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #8BA85F, #7A974B); width: 45px; height: 45px;">
                                 <i class="bi bi-receipt fs-5 text-white"></i>
                             </div>
                             <span><?php echo t('invoice_management.title'); ?></span>
                             <i class="bi bi-arrow-right ms-auto fs-6" style="color: #8BA85F;"></i>
                         </a>
-                        <a href="/payments" class="btn text-start p-3 rounded d-flex align-items-center fw-medium animate-hover-grow" style="background: linear-gradient(135deg, #F8FDF0, #E8F8D8); border: 2px solid #D3EE98; font-size: 1rem; transition: all 0.3s ease;">
+                        <a href="<?php echo url('/payments'); ?>" class="btn text-start p-3 rounded d-flex align-items-center fw-medium animate-hover-grow" style="background: linear-gradient(135deg, #F8FDF0, #E8F8D8); border: 2px solid #D3EE98; font-size: 1rem; transition: all 0.3s ease;">
                             <div class="p-2 rounded-circle me-3 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #7AA35C, #698F47); width: 45px; height: 45px;">
                                 <i class="bi bi-credit-card fs-5 text-white"></i>
                             </div>
                             <span><?php echo t('payment_management.title'); ?></span>
                             <i class="bi bi-arrow-right ms-auto fs-6" style="color: #7AA35C;"></i>
                         </a>
-                        <a href="/products" class="btn text-start p-3 rounded d-flex align-items-center fw-medium animate-hover-grow" style="background: linear-gradient(135deg, #F8FDF0, #E8F8D8); border: 2px solid #D3EE98; font-size: 1rem; transition: all 0.3s ease;">
+                        <a href="<?php echo url('/products'); ?>" class="btn text-start p-3 rounded d-flex align-items-center fw-medium animate-hover-grow" style="background: linear-gradient(135deg, #F8FDF0, #E8F8D8); border: 2px solid #D3EE98; font-size: 1rem; transition: all 0.3s ease;">
                             <div class="p-2 rounded-circle me-3 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #D3EE98, #C4E87A); width: 45px; height: 45px;">
                                 <i class="bi bi-house-exclamation-fill fs-5 text-white"></i>
                             </div>

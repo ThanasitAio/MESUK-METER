@@ -393,6 +393,10 @@ function renderTable(meters) {
                         <button class="btn btn-primary btn-sm btn-create-invoice" data-id="${meter.id}" title="${translations.create_invoice}">
                             <i class="fas fa-file-invoice"></i>
                         </button>
+                        &nbsp;
+                        <button class="btn btn-info btn-sm btn-edit-meter" >
+                            <i class="fa-solid fa-file"></i>
+                        </button>
                     </div>
                 </td>
             </tr>
@@ -651,7 +655,8 @@ function createInvoice() {
     formData.append('garbage', currentInvoiceData.garbage || 0);
     formData.append('common_area', currentInvoiceData.common_area || 0);
     
-    fetch('/invoices/create-invoice', {
+    const basePath = window.APP_BASE_PATH || '';
+    fetch(basePath + '/invoices/create-invoice', {
         method: 'POST',
         body: formData
     })

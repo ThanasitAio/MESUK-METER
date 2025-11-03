@@ -13,7 +13,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                         <i class="fas fa-<?php echo $data['action'] === 'create' ? 'plus' : 'edit'; ?>"></i>
                         <h1 class="h4 d-inline-block ms-2 mb-0"><?php echo htmlspecialchars($data['title']); ?></h1>
                     </div>
-                    <form method="POST" id="userForm" action="<?php echo $data['action'] === 'create' ? '/users/store' : '/users/update/' . $data['user']['id']; ?>" enctype="multipart/form-data">
+                    <form method="POST" id="userForm" action="<?php echo $data['action'] === 'create' ? url('/users/store') : url('/users/update/' . $data['user']['id']); ?>" enctype="multipart/form-data">
                         <div class="form-body">
                         <div class="row">
                             <div class="col-12 col-sm-6 col-md-2 mb-2">
@@ -112,7 +112,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                     </div>
                     <hr>
                     <div class="form-footer">
-                        <a href="/users" class="btn btn-secondary">
+                        <a href="<?php echo url('/users'); ?>" class="btn btn-secondary">
                             <i class="fas fa-times"></i> <?php echo t('user_management.cancel'); ?>
                         </a>
                         <button type="submit" class="btn btn-primary">
@@ -162,7 +162,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                     timer: 1200,
                     showConfirmButton: false
                 }).then(function() {
-                    window.location.replace('/users');
+                    window.location.replace('<?php echo url('/users'); ?>');
                 });
             } else {
                 var errorMsg = data.errors ? data.errors.join('<br>') : data.message;

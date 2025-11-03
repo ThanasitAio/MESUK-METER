@@ -106,7 +106,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                                          
                                             <td class="text-center">
                                                 <div class="btn-group btn-group-sm" role="group">
-                                                    <a href="/products/edit/<?php echo $product['pcode']; ?>" 
+                                                    <a href="<?php echo url('/products/edit/' . $product['pcode']); ?>" 
                                                        class="btn btn-warning btn-sm" 
                                                        title="<?php echo t('product_management.edit'); ?>">
                                                         <i class="fas fa-edit"></i>

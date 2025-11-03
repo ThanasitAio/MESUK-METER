@@ -6,28 +6,32 @@
     <title>เข้าสู่ระบบ</title>
 
     <!-- logo -->
+    <?php 
+    require_once __DIR__ . '/../../app/utils/helpers.php';
+    $logoPath = basePath('/assets/images/meters_logo.png');
+    ?>
     <!-- Favicon สำหรับทุกขนาด -->
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/meters_logo.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/meters_logo.png">
-    <link rel="icon" type="image/png" sizes="48x48" href="/assets/images/meters_logo.png">
-    <link rel="icon" type="image/png" sizes="64x64" href="/assets/images/meters_logo.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/assets/images/meters_logo.png">
-    <link rel="icon" type="image/png" sizes="128x128" href="/assets/images/meters_logo.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/assets/images/meters_logo.png">
-    <link rel="icon" type="image/png" sizes="256x256" href="/assets/images/meters_logo.png">
-    <link rel="icon" type="image/png" sizes="384x384" href="/assets/images/meters_logo.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="/assets/images/meters_logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?php echo $logoPath; ?>">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo $logoPath; ?>">
+    <link rel="icon" type="image/png" sizes="48x48" href="<?php echo $logoPath; ?>">
+    <link rel="icon" type="image/png" sizes="64x64" href="<?php echo $logoPath; ?>">
+    <link rel="icon" type="image/png" sizes="96x96" href="<?php echo $logoPath; ?>">
+    <link rel="icon" type="image/png" sizes="128x128" href="<?php echo $logoPath; ?>">
+    <link rel="icon" type="image/png" sizes="192x192" href="<?php echo $logoPath; ?>">
+    <link rel="icon" type="image/png" sizes="256x256" href="<?php echo $logoPath; ?>">
+    <link rel="icon" type="image/png" sizes="384x384" href="<?php echo $logoPath; ?>">
+    <link rel="icon" type="image/png" sizes="512x512" href="<?php echo $logoPath; ?>">
 
     <!-- สำหรับ Apple Devices -->
-    <link rel="apple-touch-icon" sizes="57x57" href="/assets/images/meters_logo.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/assets/images/meters_logo.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/assets/images/meters_logo.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/assets/images/meters_logo.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/assets/images/meters_logo.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/assets/images/meters_logo.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/assets/images/meters_logo.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/assets/images/meters_logo.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/meters_logo.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="<?php echo $logoPath; ?>">
+    <link rel="apple-touch-icon" sizes="60x60" href="<?php echo $logoPath; ?>">
+    <link rel="apple-touch-icon" sizes="72x72" href="<?php echo $logoPath; ?>">
+    <link rel="apple-touch-icon" sizes="76x76" href="<?php echo $logoPath; ?>">
+    <link rel="apple-touch-icon" sizes="114x114" href="<?php echo $logoPath; ?>">
+    <link rel="apple-touch-icon" sizes="120x120" href="<?php echo $logoPath; ?>">
+    <link rel="apple-touch-icon" sizes="144x144" href="<?php echo $logoPath; ?>">
+    <link rel="apple-touch-icon" sizes="152x152" href="<?php echo $logoPath; ?>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo $logoPath; ?>">
     
     <!-- 1. เพิ่มลิงก์สำหรับ Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
@@ -181,7 +185,7 @@
         <!-- 4. เพิ่มโครงสร้าง HTML สำหรับโลโก้ -->
         <div class="login-header">
             <div class="logo-icon-wrapper">
-                 <img src="/assets/images/meters_logo.png" alt="Description of the image" style="width: 100%; height: 100%; object-fit: cover;">
+                 <img src="<?php echo $logoPath; ?>" alt="Description of the image" style="width: 100%; height: 100%; object-fit: cover;">
                 <!-- <i class="bi bi-grid-3x3-gap-fill"></i> -->
             </div>
             <h1>METER</h1>
@@ -217,7 +221,7 @@
         endif;
         ?>
 
-        <form action="/login" method="POST">
+        <form action="<?php echo url('/login'); ?>" method="POST">
             <div class="form-group">
                 <label for="username">ชื่อผู้ใช้</label>
                 <input type="text" id="username" name="username" autocomplete="off" placeholder="กรอกชื่อผู้ใช้" required>

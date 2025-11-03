@@ -1,14 +1,15 @@
 <?php
+// Configuration สำหรับ Docker (Development)
 date_default_timezone_set('Asia/Bangkok');
 
 return [
     'app' => [
         'name' => 'MESUK',
         'version' => '1.0.0',
-        'env' => 'development',
-        'debug' => true,
+        'env' => 'development',  // development mode
+        'debug' => true,         // เปิด debug mode
         'url' => 'http://localhost:8000',
-        'base_path' => '/mesuk'  // Base path for URLs (ใช้ '' สำหรับ Docker, '/mesuk' สำหรับ Apache)
+        'base_path' => ''  // Base path ว่างสำหรับ Docker/Root
     ],
     
     'database' => [

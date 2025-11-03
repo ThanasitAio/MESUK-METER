@@ -18,9 +18,12 @@ class Router {
         // Debug: แสดง path ที่ได้รับ
         error_log("Request Path: " . $path);
         
-        // Remove project folder from path if exists
-        $basePath = '/mesuk';
-        if (strpos($path, $basePath) === 0) {
+        // Load base path from config
+        $config = require BASE_PATH . '/config/app.php';
+        $basePath = isset($config['app']['base_path']) ? $config['app']['base_path'] : '';
+        
+        // Remove base path from URL if exists
+        if (!empty($basePath) && strpos($path, $basePath) === 0) {
             $path = substr($path, strlen($basePath));
         }
         

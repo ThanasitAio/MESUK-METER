@@ -104,10 +104,10 @@ class Auth {
     public static function requireLogin() {
         if (!self::check()) {
             // บันทึก URL ที่ต้องการเข้าถึง เพื่อ redirect กลับหลัง login
-            $_SESSION['intended_url'] = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
+            $_SESSION['intended_url'] = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : url('/');
             
             // Redirect ไปหน้า login
-            header('Location: /login');
+            header('Location: ' . url('/login'));
             exit();
         }
         
@@ -115,7 +115,7 @@ class Auth {
         if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 1800)) {
             self::logout();
             $_SESSION['error'] = 'Session หมดอายุ กรุณา login อีกครั้ง';
-            header('Location: /login');
+            header('Location: ' . url('/login'));
             exit();
         }
         
@@ -129,7 +129,7 @@ class Auth {
      */
     public static function guest() {
         if (self::check()) {
-            header('Location: /');
+            header('Location: ' . url('/'));
             exit();
         }
     }

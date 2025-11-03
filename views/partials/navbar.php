@@ -6,14 +6,14 @@
         </button>
 
         <!-- Brand Logo & Name -->
-        <a class="navbar-brand fw-bold text-dark d-flex align-items-center" href="/">
+        <a class="navbar-brand fw-bold text-dark d-flex align-items-center" href="<?php echo url('/'); ?>">
             <!-- <div class="brand-logo me-2 d-flex align-items-center justify-content-center rounded" 
                  style="width: 40px; height: 40px; background-color: #D3EE98;margin: 0;">
                 <i class="bi bi-grid-3x3-gap-fill text-dark fs-5"></i>
             </div> -->
             <div class=" me-2 d-flex align-items-center justify-content-center rounded" 
                 style="width: 40px; height: 40px;margin: 0;">
-                <img src="/assets/images/meters_logo.png" alt="Description of the image" style="width: 100%; height: 100%; object-fit: cover;">
+                <img src="<?php echo basePath('/assets/images/meters_logo.png'); ?>" alt="Description of the image" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
             <div class="d-none d-sm-block">
                 <span class="fw-bold"><?php echo t('app.name', 'MESUK'); ?></span>
@@ -57,7 +57,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0">
                         <li>
-                            <form method="POST" action="/language/switch" class="dropdown-item p-0">
+                            <form method="POST" action="<?php echo url('/language/switch'); ?>" class="dropdown-item p-0">
                                 <input type="hidden" name="lang" value="en">
                                 <button type="submit" class="dropdown-item d-flex align-items-center py-2 <?php echo currentLang() === 'en' ? 'active' : ''; ?>">
                                     <i class="bi bi-flag me-2"></i>
@@ -66,7 +66,7 @@
                             </form>
                         </li>
                         <li>
-                            <form method="POST" action="/language/switch" class="dropdown-item p-0">
+                            <form method="POST" action="<?php echo url('/language/switch'); ?>" class="dropdown-item p-0">
                                 <input type="hidden" name="lang" value="th">
                                 <button type="submit" class="dropdown-item d-flex align-items-center py-2 <?php echo currentLang() === 'th' ? 'active' : ''; ?>">
                                     <i class="bi bi-flag me-2"></i>
@@ -135,7 +135,7 @@
                             <hr class="dropdown-divider my-1">
                         </li>
                         <li>
-                            <a class="dropdown-item d-flex align-items-center py-2 text-danger" href="/logout">
+                            <a class="dropdown-item d-flex align-items-center py-2 text-danger" href="<?php echo url('/logout'); ?>">
                                 <i class="bi bi-box-arrow-right me-3"></i>
                                 <span><?php echo t('navbar.logout', 'Logout'); ?></span>
                             </a>
@@ -173,7 +173,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0">
                         <li>
-                            <form method="POST" action="/mesuk/language/switch" class="dropdown-item p-0">
+                            <form method="POST" action="<?php echo url('/language/switch'); ?>" class="dropdown-item p-0">
                                 <input type="hidden" name="lang" value="en">
                                 <button type="submit" class="dropdown-item d-flex align-items-center py-2 <?php echo currentLang() === 'en' ? 'active' : ''; ?>">
                                     <i class="bi bi-flag me-2"></i>
@@ -182,7 +182,7 @@
                             </form>
                         </li>
                         <li>
-                            <form method="POST" action="/mesuk/language/switch" class="dropdown-item p-0">
+                            <form method="POST" action="<?php echo url('/language/switch'); ?>" class="dropdown-item p-0">
                                 <input type="hidden" name="lang" value="th">
                                 <button type="submit" class="dropdown-item d-flex align-items-center py-2 <?php echo currentLang() === 'th' ? 'active' : ''; ?>">
                                     <i class="bi bi-flag me-2"></i>
@@ -226,7 +226,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0">
                         <li>
-                            <a class="dropdown-item d-flex align-items-center py-2" href="/users/edit/<?php echo $id; ?>">
+                            <a class="dropdown-item d-flex align-items-center py-2" href="<?php echo url('/users/edit/' . $id); ?>">
                                 <i class="bi bi-person me-3" style="color: #D3EE98;"></i>
                                 <span><?php echo t('navbar.profile', 'Profile'); ?></span>
                             </a>
@@ -235,7 +235,7 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item d-flex align-items-center py-2 text-danger" href="/logout">
+                            <a class="dropdown-item d-flex align-items-center py-2 text-danger" href="<?php echo url('/logout'); ?>">
                                 <i class="bi bi-box-arrow-right me-3"></i>
                                 <span><?php echo t('navbar.logout', 'Logout'); ?></span>
                             </a>
@@ -250,7 +250,7 @@
 <!-- Mobile Bottom Navigation -->
 <nav class="mobile-bottom-nav d-lg-none">
     <div class="mobile-nav-container">
-        <a href="/" class="mobile-nav-item">
+        <a href="<?php echo url('/'); ?>" class="mobile-nav-item">
             <i class="fa-solid fa-gauge"></i>
             <span><?php echo t('sidebar.dashboard'); ?></span>
         </a>
@@ -260,7 +260,7 @@
             <span><?php echo t('mobile.menu'); ?></span>
         </a>
         
-        <a href="/users/edit/<?php echo $id; ?>" class="mobile-nav-item">
+        <a href="<?php echo url('/users/edit/' . $id); ?>" class="mobile-nav-item">
             <i class="fa-solid fa-user"></i>
             <span><?php echo t('mobile.profile'); ?></span>
         </a>

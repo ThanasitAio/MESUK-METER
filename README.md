@@ -1,53 +1,44 @@
 # MESUK-METER
 
-ระบบ MESUK-METER ที่รันได้โดยไม่ต้องพึ่ง XAMPP
+ระบบจัดการมิเตอร์น้ำ MESUK พร้อม Multi-path Support
 
-## วิธีการรันโปรเจค
+## 🚀 วิธีการรันโปรเจค
 
-### วิธีที่ 1: ใช้ PHP Built-in Server (แนะนำสำหรับการพัฒนา)
+### 🎯 แนะนำสำหรับคุณ: ใช้ Apache/XAMPP
 
-#### ข้อกำหนด:
-- PHP 7.4 ขึ้นไป (ติดตั้งแยกต่างหาก)
-- MySQL หรือ MariaDB (ติดตั้งแยกต่างหาก)
+เหมาะสำหรับ:
+- ✅ มีหลายโปรเจ็คในเครื่อง
+- ✅ ต้องการ URL แบบ `http://localhost/mesuk/`
+- ✅ พร้อม deploy production
+- ✅ จำลองสภาพแวดล้อมจริง
 
-#### วิธีรัน:
+#### 📖 คู่มือด่วน 3 ขั้นตอน → [QUICKSTART_APACHE.md](./QUICKSTART_APACHE.md)
+#### 📚 คู่มือละเอียด → [APACHE_SETUP_GUIDE.md](./APACHE_SETUP_GUIDE.md)
 
-**สำหรับ Windows (PowerShell):**
-```powershell
-.\start-server.ps1
-```
-
-**หรือใช้ Command Prompt:**
-```cmd
-start-server.bat
-```
-
-**หรือรันด้วยคำสั่ง PHP โดยตรง:**
-```bash
-php -S localhost:8000 -t .
-```
-
-เปิดเบราว์เซอร์ที่: `http://localhost:8000`
+**TL;DR:**
+1. วางโปรเจ็คใน `C:\xampp\htdocs\mesuk\`
+2. ตั้งค่า `base_path = '/mesuk'` ใน `config/app.php`
+3. แก้ `RewriteBase /mesuk/` ใน `.htaccess`
+4. เปิด mod_rewrite และ restart Apache
+5. เข้า `http://localhost/mesuk/`
 
 ---
 
-### วิธีที่ 2: ใช้ Docker (แนะนำที่สุด - ไม่ต้องติดตั้งอะไรเลย)
+### วิธีอื่นๆ (สำหรับพัฒนา)
 
-#### ข้อกำหนด:
-- Docker Desktop (ดาวน์โหลดได้ที่ https://www.docker.com/products/docker-desktop)
+#### วิธีที่ 1: PHP Built-in Server
 
-#### วิธีรัน:
+**ข้อกำหนด:**
+- PHP 5.6+ 
+- MySQL/MariaDB
 
-1. **เริ่มต้น Docker:**
+**วิธีรัน:**
 ```bash
-docker-compose up -d
+php -S localhost:8000
 ```
+เข้า: `http://localhost:8000`
 
-2. **เข้าใช้งานระบบ:**
-- เว็บไซต์: `http://localhost:8000`
-- phpMyAdmin: `http://localhost:8080`
-
-3. **หยุด Docker:**
+**หมายเหตุ:** ไม่เหมาะกับหลายโปรเจ็ค
 ```bash
 docker-compose down
 ```
@@ -59,89 +50,126 @@ docker-compose logs -f
 
 ---
 
-## การตั้งค่า Database
+## ⚙️ การตั้งค่า
 
-### สำหรับ PHP Built-in Server:
-แก้ไขไฟล์ `.env`:
-```
-DB_HOST=localhost
-DB_PORT=3306
-DB_DATABASE=meesuk_db
-DB_USERNAME=root
-DB_PASSWORD=your_password
+### 1. Base Path Configuration
+
+ระบบรองรับการติดตั้งทั้ง root domain และ subdirectory:
+
+```php
+// config/app.php
+
+// สำหรับ http://localhost/mesuk/
+'base_path' => '/mesuk'
+
+// สำหรับ http://localhost/ (root)
+'base_path' => ''
+
+// สำหรับ http://localhost/projects/mesuk/
+'base_path' => '/projects/mesuk'
 ```
 
-### สำหรับ Docker:
-แก้ไขไฟล์ `docker-compose.yml` (ค่าเริ่มต้น: root/secret)
+**📖 อ่านเพิ่มเติม:** [BASE_PATH_GUIDE.md](./BASE_PATH_GUIDE.md)
+
+### 2. Database
+
+แก้ไขไฟล์ `config/database.php`:
+```php
+'host' => 'localhost',
+'database' => 'mesuk_db',
+'username' => 'root',
+'password' => '',
+```
+
+### 3. Apache (ถ้าใช้)
+
+แก้ไขไฟล์ `.htaccess` ให้ตรงกับ base_path:
+```apache
+# ตรงกับ config/app.php
+RewriteBase /mesuk/
+```
+
+**📖 อ่านเพิ่มเติม:** [APACHE_SETUP_GUIDE.md](./APACHE_SETUP_GUIDE.md)
 
 ---
 
-## โครงสร้างโปรเจค
+## 🧪 การทดสอบระบบ
+
+### ตรวจสอบ Configuration
+```
+http://localhost/mesuk/test_base_path.php      # ทดสอบ base path
+http://localhost/mesuk/check_apache.php        # ตรวจสอบ Apache config
+```
+
+### เข้าสู่ระบบ
+```
+URL: http://localhost/mesuk/login
+Username: 0000999
+Password: 999
+Role: admin
+```
+
+---
+
+## 📁 โครงสร้างโปรเจค
 
 ```
 MESUK-METER/
+├── .htaccess              # Apache rewrite rules
+├── index.php              # Entry point
+├── config/
+│   ├── app.php           # App config (base_path here!)
+│   └── database.php      # Database config
 ├── app/
-│   ├── controllers/    # Controllers
-│   │   ├── AuthController.php
-│   │   ├── HomeController.php
-│   │   ├── UserManagementController.php  # 🆕 จัดการผู้ใช้
-│   │   └── ...
-│   ├── models/        # 🆕 Models
-│   │   └── User.php   # 🆕 Model สำหรับจัดการข้อมูลผู้ใช้
-│   ├── core/          # Core classes
-│   └── utils/         # Utilities
+│   ├── controllers/      # Controllers
+│   ├── models/          # Models
+│   ├── core/            # Core classes (Router, Database)
+│   └── utils/           # Utilities (helpers.php, Auth.php)
 ├── assets/
-│   ├── css/          # CSS files
-│   └── js/           # JavaScript files
-├── config/           # Configuration files
-├── views/            # View templates
+│   ├── css/
+│   └── js/
+├── views/
+│   ├── layouts/
+│   ├── partials/
 │   └── pages/
-│       ├── user-management/  # 🆕 หน้าจัดการผู้ใช้
-│       │   ├── index.php     # 🆕 รายการผู้ใช้
-│       │   └── form.php      # 🆕 ฟอร์มเพิ่ม/แก้ไข
-│       └── ...
-├── public/
-│   └── uploads/
-│       └── users/    # 🆕 รูปภาพผู้ใช้
-├── index.php         # Entry point
-└── .env              # Environment variables
+└── public/
+    └── uploads/
 ```
+
+---
+
+## 📚 เอกสารทั้งหมด
+
+### 🚀 Quick Start
+- **[QUICKSTART_APACHE.md](./QUICKSTART_APACHE.md)** - เริ่มใช้ Apache ใน 3 ขั้นตอน ⭐
+- **[QUICKSTART_USER_MANAGEMENT.md](./QUICKSTART_USER_MANAGEMENT.md)** - ใช้งานระบบผู้ใช้
+
+### 📖 Guides
+- **[APACHE_SETUP_GUIDE.md](./APACHE_SETUP_GUIDE.md)** - คู่มือติดตั้ง Apache/XAMPP
+- **[BASE_PATH_GUIDE.md](./BASE_PATH_GUIDE.md)** - เกี่ยวกับ Base Path Configuration
+- **[USER_MANAGEMENT_GUIDE.md](./USER_MANAGEMENT_GUIDE.md)** - คู่มือระบบผู้ใช้
+
+### 📋 Documentation
+- **[DEPLOYMENT_SUMMARY.md](./DEPLOYMENT_SUMMARY.md)** - สรุปการ deploy
+- **[APACHE_READY.md](./APACHE_READY.md)** - สรุปการตั้งค่า Apache
+- **[USER_MANAGEMENT_SUMMARY.md](./USER_MANAGEMENT_SUMMARY.md)** - สรุประบบผู้ใช้
 
 ---
 
 ## 🆕 ระบบจัดการผู้ใช้ (User Management System)
 
 ### ฟีเจอร์หลัก
-- ✅ แสดงรายการผู้ใช้ทั้งหมดในรูปแบบตาราง
-- ✅ เพิ่มผู้ใช้ใหม่ (พร้อมอัพโหลดรูปภาพ)
-- ✅ แก้ไขข้อมูลผู้ใช้
-- ✅ ลบผู้ใช้
-- ✅ เปลี่ยนสถานะผู้ใช้ (ใช้งาน/ระงับ)
+- ✅ แสดงรายการผู้ใช้พร้อมสถิติ
+- ✅ เพิ่ม/แก้ไข/ลบผู้ใช้
+- ✅ อัพโหลดรูปภาพโปรไฟล์
 - ✅ จัดการ Role (Admin, Agent, User)
-- ✅ แสดงสถิติผู้ใช้
+- ✅ เปลี่ยนสถานะ (Active/Suspended)
 
-### เริ่มใช้งาน
-1. **อัพเดทฐานข้อมูล:**
-   ```sql
-   source update_me_users_table.sql;
-   ```
-
-2. **ตรวจสอบความพร้อม:**
-   ```
-   http://localhost:8000/check_user_system.php
-   ```
-
-3. **เข้าสู่ระบบ:**
-   - URL: `http://localhost:8000/users`
-   - Username: `0000999`
-   - Password: `999`
-   - Role: `admin`
-
-### 📚 เอกสารเพิ่มเติม
-- [Quick Start Guide](QUICKSTART_USER_MANAGEMENT.md) - เริ่มใช้งานใน 3 ขั้นตอน
-- [User Management Guide](USER_MANAGEMENT_GUIDE.md) - คู่มือใช้งานฉบับเต็ม
-- [Summary](USER_MANAGEMENT_SUMMARY.md) - สรุประบบแบบย่อ
-- [File List](USER_MANAGEMENT_FILES.md) - รายการไฟล์ทั้งหมด
+### เข้าใช้งาน
+```
+URL: http://localhost/mesuk/users
+Admin: username=0000999, password=999
+```
 
 ---
 

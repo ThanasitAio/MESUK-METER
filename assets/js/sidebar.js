@@ -123,14 +123,18 @@ function initSidebar() {
 
 // ฟังก์ชันตั้งค่าเมนู active ตาม URL
 function setActiveMenu() {
-    const currentPath = window.location.pathname;
+    const basePath = window.APP_BASE_PATH || '';
+    const currentPath = window.location.pathname.replace(basePath, '') || '/';
     const navLinks = document.querySelectorAll('.sidebar .nav-link');
 
     navLinks.forEach(link => {
         link.classList.remove('active');
         const href = link.getAttribute('href');
-        if (href && currentPath === href) {
-            link.classList.add('active');
+        if (href) {
+            const linkPath = href.replace(basePath, '') || '/';
+            if (currentPath === linkPath || currentPath.startsWith(linkPath + '/')) {
+                link.classList.add('active');
+            }
         }
     });
 }

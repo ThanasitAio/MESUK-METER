@@ -6,6 +6,12 @@
     <title>404 - Page Not Found</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <?php 
+    // Load helpers for url function
+    if (!function_exists('url')) {
+        require_once __DIR__ . '/../../app/utils/helpers.php';
+    }
+    ?>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
         
@@ -463,7 +469,7 @@
                         or is temporarily unavailable. Let's get you back on track!
                     </p>
                     
-                    <a href="/mesuk" class="btn btn-home">
+                    <a href="<?php echo url('/'); ?>" class="btn btn-home">
                         <i class="fas fa-home me-2"></i>Go Home
                     </a>
                 </div>
@@ -540,7 +546,7 @@
                 
                 // Navigate after animation
                 setTimeout(() => {
-                    window.location.href = '/mesuk';
+                    window.location.href = '<?php echo url('/'); ?>';
                 }, 800);
             });
             

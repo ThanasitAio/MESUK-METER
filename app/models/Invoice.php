@@ -149,7 +149,6 @@ class Invoice extends Model {
             $stmtSaved = $this->db->prepare($sqlSavedPcodes);
             $stmtSaved->execute([$targetMonth, $targetYear, $targetMonth, $targetYear]);
             $savedPcodes = $stmtSaved->fetchAll(PDO::FETCH_COLUMN, 0);
-            
             if (empty($savedPcodes)) {
                 return array(); // ไม่มีข้อมูลที่บันทึกแล้ว
             }

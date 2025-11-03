@@ -12,7 +12,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                         <i class="fas fa-<?php echo $data['action'] === 'create' ? 'plus' : 'edit'; ?>"></i>
                         <h1 class="h4 d-inline-block ms-2 mb-0"><?php echo htmlspecialchars($data['title']); ?></h1>
                     </div>
-                    <form id="userForm" action="/products/update/<?php echo htmlspecialchars($data['product']['pcode']); ?>" method="POST">
+                    <form id="userForm" action="<?php echo url('/products/update/' . htmlspecialchars($data['product']['pcode'])); ?>" method="POST">
                         <input type="hidden" name="pcode" value="<?php echo htmlspecialchars($data['product']['pcode']); ?>">
                         <div class="form-body">
                             <div class="row">
@@ -133,7 +133,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                         </div>
                         <hr>
                         <div class="form-footer">
-                            <a href="/products" class="btn btn-secondary">
+                            <a href="<?php echo url('/products'); ?>" class="btn btn-secondary">
                                 <i class="fas fa-times"></i> <?php echo t('user_management.cancel'); ?>
                             </a>
                             <button type="submit" class="btn btn-primary">
@@ -177,7 +177,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                     timer: 1200,
                     showConfirmButton: false
                 }).then(function() {
-                    window.location.replace('/products');
+                    window.location.replace('<?php echo url('/products'); ?>');
                 });
             } else {
                 var errorMsg = data.errors ? data.errors.join('<br>') : data.message;

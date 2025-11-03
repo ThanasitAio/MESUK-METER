@@ -10,14 +10,14 @@ class LanguageController {
             Language::setLanguage($lang);
             
             // Redirect back - แก้ไขสำหรับ PHP ต่ำกว่า 7.0
-            $redirect = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/mesuk';
+            $redirect = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : url('/');
             error_log("Redirecting to: " . $redirect);
             header('Location: ' . $redirect);
             exit;
         } else {
             error_log("Invalid language parameter");
             // Redirect to home if invalid lang
-            header('Location: /mesuk');
+            header('Location: ' . url('/'));
             exit;
         }
     }

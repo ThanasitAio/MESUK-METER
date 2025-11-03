@@ -7,7 +7,7 @@ class InvoiceManagementController extends Controller {
     public function __construct() {
         // ตรวจสอบการ login
         if (!Auth::check()) {
-            header('Location: /login');
+            header('Location: ' . url('/login'));
             exit;
         }
 

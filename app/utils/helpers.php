@@ -8,6 +8,29 @@ if (!class_exists('Language')) {
     }
 }
 
+/**
+ * Get base path from config
+ */
+function basePath($path = '') {
+    static $basePath = null;
+    
+    if ($basePath === null) {
+        $config = require BASE_PATH . '/config/app.php';
+        $basePath = isset($config['app']['base_path']) ? $config['app']['base_path'] : '';
+    }
+    
+    // Ensure no double slashes
+    $fullPath = $basePath . '/' . ltrim($path, '/');
+    return rtrim($fullPath, '/');
+}
+
+/**
+ * Generate URL with base path
+ */
+function url($path = '') {
+    return basePath($path);
+}
+
 function t($key, $default = '') {
     if (class_exists('Language') && method_exists('Language', 'get')) {
         return Language::get($key, $default);

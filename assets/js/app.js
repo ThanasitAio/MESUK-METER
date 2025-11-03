@@ -1,7 +1,8 @@
 // public/assets/js/app.js
 class UniversalApp {
     constructor() {
-        this.baseUrl = window.location.origin;
+        this.basePath = window.APP_BASE_PATH || '';
+        this.baseUrl = window.location.origin + this.basePath;
         this.csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
         this.init();
     }
@@ -178,7 +179,7 @@ class UniversalApp {
             }
         } else if (xhr.status === 401) {
             message = 'Please login again';
-            window.location.href = '/login';
+            window.location.href = this.basePath + '/login';
         } else if (xhr.status === 403) {
             message = 'Access denied';
         } else if (xhr.status === 404) {

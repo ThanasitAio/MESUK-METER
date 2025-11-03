@@ -18,7 +18,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
             <!-- Header -->
             <?php
             $addButton = '
-                <a href="/users/create" class="btn btn-primary btn-sm">
+                <a href="' . url('/users/create') . '" class="btn btn-primary btn-sm">
                     <i class="fas fa-plus"></i> 
                     <span class="d-none d-md-inline">' . t('user_management.add_user') . '</span>
                 </a>
@@ -209,7 +209,7 @@ $headerConfig = require BASE_PATH . '/config/header.php';
                                             </td>
                                             <td class="text-center">
                                                 <div class="btn-group btn-group-sm" role="group">
-                                                    <a href="/users/edit/<?php echo $user['id']; ?>" 
+                                                    <a href="<?php echo url('/users/edit/' . $user['id']); ?>" 
                                                        class="btn btn-warning btn-sm" 
                                                        title="<?php echo t('user_management.edit'); ?>">
                                                         <i class="fas fa-edit"></i>
@@ -322,7 +322,8 @@ function toggleStatus(userId) {
         cancelButtonText: '<?php echo t('user_management.cancel'); ?>'
     }).then(function(result) {
         if (result.isConfirmed) {
-            fetch('/users/change-status/' + userId, {
+            const basePath = window.APP_BASE_PATH || '';
+            fetch(basePath + '/users/change-status/' + userId, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -364,7 +365,8 @@ function deleteUser(userId, userName) {
         cancelButtonText: '<?php echo t('user_management.cancel'); ?>'
     }).then(function(result) {
         if (result.isConfirmed) {
-            fetch('/users/delete/' + userId, {
+            const basePath = window.APP_BASE_PATH || '';
+            fetch(basePath + '/users/delete/' + userId, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

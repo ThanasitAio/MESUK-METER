@@ -3,7 +3,7 @@
         <div class="sidebar-nav-container">
             <ul class="sidebar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">
+                    <a class="nav-link" href="<?php echo url('/'); ?>">
                         <div class="nav-icon"><i class="fa-solid fa-gauge"></i></div>
                         <span class="nav-text"><?php echo t('sidebar.dashboard'); ?></span>
                     </a>
@@ -11,7 +11,7 @@
 
                 <!-- มิเตอร์ -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/meters">
+                    <a class="nav-link" href="<?php echo url('/meters'); ?>">
                         <div class="nav-icon"><i class="fa-solid fa-jug-detergent"></i></div>
                         <span class="nav-text"><?php echo t('sidebar.meter_data'); ?></span>
                     </a>
@@ -19,7 +19,7 @@
 
                 <!-- ใบแจ้งหนี้ -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/invoices">
+                    <a class="nav-link" href="<?php echo url('/invoices'); ?>">
                         <div class="nav-icon"><i class="fa-solid fa-file-invoice"></i></div>
                         <span class="nav-text"><?php echo t('sidebar.invoice'); ?></span>
                     </a>
@@ -27,7 +27,7 @@
 
                 <!-- รับชำระหนี้ -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/payments">
+                    <a class="nav-link" href="<?php echo url('/payments'); ?>">
                         <div class="nav-icon"><i class="fa-brands fa-paypal"></i></i></div>
                         <span class="nav-text"><?php echo t('sidebar.payment'); ?></span>
                     </a>
@@ -36,7 +36,7 @@
                 
                 <!-- สินค้า -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/products">
+                    <a class="nav-link" href="<?php echo url('/products'); ?>">
                         <div class="nav-icon"><i class="fa-solid fa-warehouse"></i></div>
                         <span class="nav-text"><?php echo t('sidebar.product_data'); ?></span>
                     </a>
@@ -47,14 +47,14 @@
                     ?>
                     <!-- ผู้ใช้ -->
                     <li class="nav-item">
-                        <a class="nav-link" href="/users">
+                        <a class="nav-link" href="<?php echo url('/users'); ?>">
                             <div class="nav-icon"><i class="fas fa-users-cog"></i></div>
                             <span class="nav-text"><?php echo t('sidebar.user_management'); ?></span>
                         </a>
                     </li>
                     <!-- นำเข้าผู้ใช้ -->
                     <li class="nav-item">
-                        <a class="nav-link" href="/import-users">
+                        <a class="nav-link" href="<?php echo url('/import-users'); ?>">
                             <div class="nav-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
                             <span class="nav-text"><?php echo t('sidebar.import_user_data'); ?></span>
                         </a>
@@ -75,9 +75,9 @@
                         <i class="bi bi-chevron-down submenu-arrow"></i>
                     </a>
                     <ul class="submenu">
-                        <li><a href="/reports/sales"><?php echo t('sidebar.sales_report'); ?></a></li>
-                        <li><a href="/reports/users"><?php echo t('sidebar.user_report'); ?></a></li>
-                        <li><a href="/reports/system"><?php echo t('sidebar.system_logs'); ?></a></li>
+                        <li><a href="<?php echo url('/reports/sales'); ?>"><?php echo t('sidebar.sales_report'); ?></a></li>
+                        <li><a href="<?php echo url('/reports/users'); ?>"><?php echo t('sidebar.user_report'); ?></a></li>
+                        <li><a href="<?php echo url('/reports/system'); ?>"><?php echo t('sidebar.system_logs'); ?></a></li>
                     </ul>
                 </li> -->
 
@@ -89,9 +89,9 @@
                         <i class="bi bi-chevron-down submenu-arrow"></i>
                     </a>
                     <ul class="submenu">
-                        <li><a href="/settings/general"><?php echo t('sidebar.general_settings'); ?></a></li>
-                        <li><a href="/settings/appearance"><?php echo t('sidebar.appearance'); ?></a></li>
-                        <li><a href="/settings/notifications"><?php echo t('sidebar.notifications'); ?></a></li>
+                        <li><a href="<?php echo url('/settings/general'); ?>"><?php echo t('sidebar.general_settings'); ?></a></li>
+                        <li><a href="<?php echo url('/settings/appearance'); ?>"><?php echo t('sidebar.appearance'); ?></a></li>
+                        <li><a href="<?php echo url('/settings/notifications'); ?>"><?php echo t('sidebar.notifications'); ?></a></li>
                     </ul>
                 </li> -->
 

@@ -211,7 +211,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
                 
-                fetch('/import-users/action', {
+                const basePath = window.APP_BASE_PATH || '';
+                fetch(basePath + '/import-users/action', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ users: selectedUsers })

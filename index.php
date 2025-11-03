@@ -36,6 +36,15 @@ if (php_sapi_name() === 'cli-server') {
 if (php_sapi_name() !== 'cli-server') {
     $uri = $_SERVER['REQUEST_URI'];
     
+    // Load config to get base_path
+    $tempConfig = require __DIR__ . '/config/app.php';
+    $configBasePath = isset($tempConfig['app']['base_path']) ? $tempConfig['app']['base_path'] : '';
+    
+    // Remove base path from URI if exists
+    if (!empty($configBasePath) && strpos($uri, $configBasePath) === 0) {
+        $uri = substr($uri, strlen($configBasePath));
+    }
+    
     // ตรวจสอบ path ที่ขึ้นต้นด้วย /uploads/, /assets/, /css/, /js/
     if (preg_match('#^/(uploads|assets|css|js)/#', $uri)) {
         

@@ -1,11 +1,9 @@
-# Apache Configuration for MESUK-METER System
+# Apache Configuration สำหรับ Docker (Root Path)
 <IfModule mod_rewrite.c>
     RewriteEngine On
     
-    # Set base directory 
-    # สำหรับ Docker: ใช้ / 
-    # สำหรับ Apache: เปลี่ยนเป็น /mesuk/ 
-    RewriteBase /mesuk/
+    # Set base directory (root for Docker)
+    RewriteBase /
     
     # อนุญาตให้เข้าถึง static files โดยตรง
     RewriteCond %{REQUEST_FILENAME} -f [OR]
@@ -21,4 +19,3 @@ AddDefaultCharset UTF-8
 
 # Disable directory listing
 Options -Indexes
-

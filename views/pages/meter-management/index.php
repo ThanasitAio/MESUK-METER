@@ -915,7 +915,8 @@ saveMeterChanges.addEventListener('click', function() {
             });
 
             // ส่งข้อมูลไปยัง server
-            fetch('/meter-management/save-meter', {
+            const basePath = window.APP_BASE_PATH || '';
+            fetch(basePath + '/meter-management/save-meter', {
                 method: 'POST',
                 body: formData
             })
